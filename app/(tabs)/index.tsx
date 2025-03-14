@@ -1,74 +1,83 @@
-import { Image, StyleSheet, Platform } from 'react-native';
+import {ScrollView, StyleSheet, Text, View} from "react-native";
+import {Header} from "@/components/Header";
+import {MySafeAreaView as SafeAreaView} from "@/components/ui/SafeAreaView";
+import {IconScrollView} from "@/components/ui/home/IconScrollView";
+import {FeaturedCarousel} from "@/components/ui/home/FeaturedCarousel";
+import {ListingPresenter, ListingPresenterElements, ListingPresenterTitle} from "@/components/ui/home/ListPresenter";
+import {Colors} from "@/constants/Colors";
+import {Footer} from "@/components/Footer";
 
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
+const nearYouData = [
+    {
+        id: 0,
+        title: "Paper work",
+        workplace: "Google",
+        salary: "800 kr / hour",
+        location: "Central Stockholm",
+        image: "https://www.evolution-design.info/var/site/storage/images/evolution-design/all-projects/commercial/google-dublin/13285-1-eng-GB/google-dublin_i1920.jpg"
+    },
+    {
+        id: 1,
+        title: "Dog walk",
+        workplace: "Walk with Max",
+        salary: "100 kr / hour",
+        location: "Central Stockholm",
+        image: "https://media.istockphoto.com/id/1386939001/photo/young-man-and-his-dog-walking-on-a-rainy-day.jpg?s=612x612&w=0&k=20&c=hBBYAnrNcu2h16UwaO4k9ePC7u0mUYfoIZgdc_BJ-Ws="
+    }
+];
+
+const longTermData = [
+    {
+        id: 0,
+        title: "Software engineering",
+        workplace: "Netflix",
+        salary: "35000 kr / month",
+        location: "New York",
+        image: "https://images.ctfassets.net/i5wc420v2vd1/5dOUDH5gGwfJn2v46DAZJt/aa64e6719a8e5faef084ea57c18e48ed/BW7A0361.jpg"
+    },
+    {
+        id: 1,
+        title: "Accounting",
+        workplace: "Meta",
+        salary: "45000 kr / month",
+        location: "San Francisco",
+        image: "https://propmodo.com/wp-content/uploads/2022/10/meta.webp"
+    }
+]
 
 export default function HomeScreen() {
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12'
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          Tap the Explore tab to learn more about what's included in this starter app.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          When you're ready, run{' '}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+    <SafeAreaView style={styles.safeContainer}>
+        <Header />
+        <ScrollView>
+            <IconScrollView />
+            <FeaturedCarousel />
+            <ListingPresenter>
+                <ListingPresenterTitle>
+                    <Text style={styles.text}>Near you</Text>
+                </ListingPresenterTitle>
+                <ListingPresenterElements data={nearYouData} />
+            </ListingPresenter>
+            <ListingPresenter style={{ marginTop: 10 }}>
+                <ListingPresenterTitle>
+                    <Text style={styles.text}>Long-term works</Text>
+                </ListingPresenterTitle>
+                <ListingPresenterElements data={longTermData} />
+            </ListingPresenter>
+            <Footer />
+        </ScrollView>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
+  safeContainer: {
+    flex: 1,
+    backgroundColor: "#fff",
   },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
-  },
-});
+    text: {
+      fontFamily: "Zain-Bold",
+        fontSize: 22,
+        color: Colors.light.text
+    }
+})
