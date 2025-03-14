@@ -1,6 +1,6 @@
 import {ScrollView, StyleSheet, Text, View} from "react-native";
 import {Header} from "@/components/Header";
-import {MySafeAreaView as SafeAreaView} from "@/components/ui/SafeAreaView";
+import {MySafeAreaView as SafeAreaView} from "@/components/SafeAreaView";
 import {IconScrollView} from "@/components/ui/home/IconScrollView";
 import {FeaturedCarousel} from "@/components/ui/home/FeaturedCarousel";
 import {ListingPresenter, ListingPresenterElements, ListingPresenterTitle} from "@/components/ui/home/ListPresenter";

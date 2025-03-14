@@ -2,7 +2,7 @@ import {Pressable, ScrollView, StyleSheet, Text, View} from "react-native";
 import {useAuth, useClerk} from "@clerk/clerk-expo";
 import {Redirect, router} from "expo-router";
 import {useEffect} from "react";
-import {MySafeAreaView as SafeAreaView} from "@/components/ui/SafeAreaView";
+import {MySafeAreaView as SafeAreaView} from "@/components/SafeAreaView";
 import {Header} from "@/components/Header";
 import {ProfileHeader} from "@/components/ui/profile/ProfileHeader";
 import {ProfilePaymentBox, ProfilePaymentBoxItem} from "@/components/ui/profile/ProfilePaymentBox";
