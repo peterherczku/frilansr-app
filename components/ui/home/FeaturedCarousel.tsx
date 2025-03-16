@@ -10,6 +10,7 @@ import {
 import { Image } from "expo-image";
 import { useRef, useState } from "react";
 import { Colors } from "@/constants/Colors";
+import { router, useRouter } from "expo-router";
 
 const { width } = Dimensions.get("window");
 
@@ -58,10 +59,11 @@ const featuredPlaces = [
 
 export function FeaturedCarousel() {
 	const [activeItem, setActiveItem] = useState(0);
+	const router = useRouter();
 
 	function renderItem({ item, index }) {
 		return (
-			<Pressable style={styles.box}>
+			<Pressable onPress={() => router.push("(listing)/1")} style={styles.box}>
 				<Image source={{ uri: item.image }} style={styles.image} />
 				<View style={styles.detailsContainer}>
 					<Text style={[styles.text, styles.nameText]}>{item.name}</Text>
