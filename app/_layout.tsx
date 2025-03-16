@@ -13,6 +13,7 @@ import "react-native-reanimated";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { ClerkLoaded, ClerkProvider } from "@clerk/clerk-expo";
 import { tokenCache } from "@/cache";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -39,26 +40,34 @@ export default function RootLayout() {
 		}
 	}, [loaded]);
 
+	const queryClient = new QueryClient();
+
 	if (!loaded) {
 		return null;
 	}
 
 	return (
-		<ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-			<ClerkProvider tokenCache={tokenCache} publishableKey={publishableKey}>
-				<ClerkLoaded>
-					<Stack>
-						<Stack.Screen name="(listing)" options={{ headerShown: false }} />
-						<Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-						<Stack.Screen
-							name={"(auth)"}
-							options={{ presentation: "modal", headerShown: false }}
-						/>
-						<Stack.Screen name="+not-found" />
-					</Stack>
-					<StatusBar style="auto" />
-				</ClerkLoaded>
-			</ClerkProvider>
-		</ThemeProvider>
+		<QueryClientProvider client={queryClient}>
+			<ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+				<ClerkProvider tokenCache={tokenCache} publishableKey={publishableKey}>
+					<ClerkLoaded>
+						<Stack>
+							<Stack.Screen name="(listing)" options={{ headerShown: false }} />
+							<Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+							<Stack.Screen
+								name="(messages)"
+								options={{ headerShown: false }}
+							/>
+							<Stack.Screen
+								name={"(auth)"}
+								options={{ presentation: "modal", headerShown: false }}
+							/>
+							<Stack.Screen name="+not-found" />
+						</Stack>
+						<StatusBar style="auto" />
+					</ClerkLoaded>
+				</ClerkProvider>
+			</ThemeProvider>
+		</QueryClientProvider>
 	);
 }

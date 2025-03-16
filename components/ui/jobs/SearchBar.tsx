@@ -16,6 +16,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { PreviousSearches } from "@/components/ui/jobs/PreviousSearches";
 import { SearchSuggestions } from "@/components/ui/jobs/SearchSuggestions";
 import { SearchRecentJobs } from "./SearchRecentJobs";
+import { usePreviousSearches } from "@/hooks/usePreviousSearches";
 
 const searchResults = [
 	{
@@ -70,6 +71,7 @@ const searchResults = [
 	},
 ];
 export function SearchBar() {
+	const { saveSearch } = usePreviousSearches();
 	const [isSearching, setSearching] = useState(false);
 	const [searchInput, setSearchInput] = useState("");
 	const searchState = useMemo(() => {
@@ -101,6 +103,7 @@ export function SearchBar() {
 	function search(text: string) {
 		Keyboard.dismiss();
 		setSearching(false);
+		saveSearch(text);
 	}
 
 	return (

@@ -1,21 +1,24 @@
 import { StatusBar } from "react-native";
 import ParallaxScrollView from "@/components/ParallaxScrollView";
-import { Ionicons } from "@expo/vector-icons";
+import { Feather, FontAwesome6, Ionicons } from "@expo/vector-icons";
 import { Image } from "expo-image";
 import { useLocalSearchParams } from "expo-router";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Colors } from "@/constants/Colors";
 import { ListingHeader } from "@/components/ui/listing/ListingHeader";
 import { useUser } from "@clerk/clerk-expo";
+import { LocationBox } from "@/components/ui/listing/LocationBox";
+import { ListingJobLister } from "@/components/ui/listing/ListingJobLister";
+import { Dimensions } from "react-native";
 
 export default function ListingIndexPage() {
 	const { id } = useLocalSearchParams();
 	const { user } = useUser();
 
 	return (
-		<View style={styles.container}>
+		<>
 			<ListingHeader>
-				<View style={{ margin: 20 }}>
+				<View style={{ margin: 20, zIndex: 0 }}>
 					<View
 						style={{
 							flexDirection: "row",
@@ -61,9 +64,159 @@ export default function ListingIndexPage() {
 							/>
 						</View>
 					</View>
+					<View style={{ flexDirection: "row", gap: 10, marginVertical: 20 }}>
+						<View
+							style={[
+								styles.box,
+								{
+									flex: 1,
+									flexDirection: "row",
+									alignItems: "center",
+									justifyContent: "space-between",
+									paddingHorizontal: 12,
+								},
+							]}
+						>
+							<View
+								style={{ flexDirection: "row", alignItems: "center", gap: 10 }}
+							>
+								<FontAwesome6
+									name="clock"
+									size={25}
+									color={Colors.light.themeColor}
+								/>
+								<Text
+									style={[
+										styles.text,
+										{ color: Colors.light.themeColor, fontSize: 20 },
+									]}
+								>
+									Job length
+								</Text>
+							</View>
+							<View>
+								<Text
+									style={[
+										styles.text,
+										{
+											color: Colors.light.themeColor,
+											fontSize: 19,
+											fontFamily: "Zain-Bold",
+										},
+									]}
+								>
+									40 - 50 mins
+								</Text>
+							</View>
+						</View>
+						<TouchableOpacity
+							style={[
+								styles.box,
+								{
+									width: 45,
+									flexDirection: "row",
+									alignItems: "center",
+									justifyContent: "center",
+								},
+							]}
+						>
+							<FontAwesome6
+								name="heart-circle-plus"
+								size={20}
+								color={Colors.light.themeColor}
+							/>
+						</TouchableOpacity>
+						<TouchableOpacity
+							style={[
+								styles.box,
+								{
+									width: 45,
+									flexDirection: "row",
+									alignItems: "center",
+									justifyContent: "center",
+								},
+							]}
+						>
+							<Feather name="share" size={20} color={Colors.light.themeColor} />
+						</TouchableOpacity>
+					</View>
+					<View
+						style={{
+							flexDirection: "row",
+							justifyContent: "space-between",
+							alignItems: "center",
+							marginVertical: 5,
+						}}
+					>
+						<Text
+							style={[styles.text, { fontSize: 23, fontFamily: "Zain-Bold" }]}
+						>
+							Date
+						</Text>
+						<View>
+							<Text
+								style={[
+									styles.text,
+									{
+										fontSize: 20,
+										fontFamily: "Zain-Bold",
+										color: Colors.light.themeColor,
+									},
+								]}
+							>
+								Monday at 13:00 - 14:00
+							</Text>
+						</View>
+					</View>
+					<View
+						style={{
+							flexDirection: "row",
+							justifyContent: "space-between",
+							alignItems: "center",
+							marginVertical: 5,
+						}}
+					>
+						<Text
+							style={[styles.text, { fontSize: 23, fontFamily: "Zain-Bold" }]}
+						>
+							Salary
+						</Text>
+						<Text
+							style={[
+								styles.text,
+								{
+									fontSize: 23,
+									fontFamily: "Zain-Bold",
+									color: Colors.light.themeColor,
+								},
+							]}
+						>
+							120,00 kr / hour
+						</Text>
+					</View>
+					<LocationBox />
+					<ListingJobLister />
 				</View>
 			</ListingHeader>
-		</View>
+			<TouchableOpacity style={styles.button}>
+				<Text
+					style={[
+						styles.text,
+						{ color: "white", fontFamily: "Zain-Bold", fontSize: 20 },
+					]}
+				>
+					Apply for the job
+				</Text>
+				<Text
+					style={[
+						styles.text,
+						{ color: "white", fontFamily: "Zain-Bold", fontSize: 20 },
+					]}
+				>
+					180,00 kr
+				</Text>
+			</TouchableOpacity>
+		</>
 	);
 }
 
@@ -75,5 +228,30 @@ const styles = StyleSheet.create({
 		fontSize: 18,
 		fontFamily: "Zain",
 		color: Colors.light.text,
+	},
+	box: {
+		backgroundColor: "rgba(85,147,62,0.4)",
+		borderRadius: 8,
+		height: 45,
+	},
+	button: {
+		position: "absolute",
+		bottom: 40,
+		left: 20,
+		width: Dimensions.get("window").width - 40,
+		height: 50,
+		margin: "auto",
+		backgroundColor: Colors.light.themeColor,
+		borderRadius: 8,
+		shadowOffset: {
+			width: 0,
+			height: 0,
+		},
+		shadowRadius: 2,
+		shadowOpacity: 0.25,
+		flexDirection: "row",
+		alignItems: "center",
+		justifyContent: "space-between",
+		paddingHorizontal: 25,
 	},
 });
