@@ -33,6 +33,6 @@ const styles = StyleSheet.create({
 	text: {
 		fontFamily: "Zain",
 		color: Colors.light.text,
-		fontSize: 18,
+		fontSize: 16,
 	},
 });

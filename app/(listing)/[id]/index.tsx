@@ -48,16 +48,6 @@ export default function ListingIndexPage() {
 								justifyContent: "space-between",
 							}}
 						>
-							<View>
-								<Text
-									style={[
-										styles.text,
-										{ marginRight: 10, fontFamily: "Zain-Bold", fontSize: 16 },
-									]}
-								>
-									Peter
-								</Text>
-							</View>
 							<Image
 								source={{ uri: user?.imageUrl }}
 								style={{ width: 50, height: 50, borderRadius: 100 }}
@@ -88,7 +78,7 @@ export default function ListingIndexPage() {
 								<Text
 									style={[
 										styles.text,
-										{ color: Colors.light.themeColor, fontSize: 20 },
+										{ color: Colors.light.themeColor, fontSize: 18 },
 									]}
 								>
 									Job length
@@ -100,7 +90,7 @@ export default function ListingIndexPage() {
 										styles.text,
 										{
 											color: Colors.light.themeColor,
-											fontSize: 19,
+											fontSize: 17,
 											fontFamily: "Zain-Bold",
 										},
 									]}
@@ -149,7 +139,7 @@ export default function ListingIndexPage() {
 						}}
 					>
 						<Text
-							style={[styles.text, { fontSize: 23, fontFamily: "Zain-Bold" }]}
+							style={[styles.text, { fontSize: 20, fontFamily: "Zain-Bold" }]}
 						>
 							Date
 						</Text>
@@ -158,7 +148,7 @@ export default function ListingIndexPage() {
 								style={[
 									styles.text,
 									{
-										fontSize: 20,
+										fontSize: 18,
 										fontFamily: "Zain-Bold",
 										color: Colors.light.themeColor,
 									},
@@ -177,7 +167,7 @@ export default function ListingIndexPage() {
 						}}
 					>
 						<Text
-							style={[styles.text, { fontSize: 23, fontFamily: "Zain-Bold" }]}
+							style={[styles.text, { fontSize: 20, fontFamily: "Zain-Bold" }]}
 						>
 							Salary
 						</Text>
@@ -185,7 +175,7 @@ export default function ListingIndexPage() {
 							style={[
 								styles.text,
 								{
-									fontSize: 23,
+									fontSize: 18,
 									fontFamily: "Zain-Bold",
 									color: Colors.light.themeColor,
 								},
@@ -247,8 +237,9 @@ const styles = StyleSheet.create({
 			width: 0,
 			height: 0,
 		},
-		shadowRadius: 2,
-		shadowOpacity: 0.25,
+		elevation: 3,
+		shadowRadius: 4,
+		shadowOpacity: 0.35,
 		flexDirection: "row",
 		alignItems: "center",
 		justifyContent: "space-between",

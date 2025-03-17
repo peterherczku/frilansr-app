@@ -39,9 +39,10 @@ export function ListingJobLister() {
 						Peter
 					</Text>
 					<Text
+						numberOfLines={2}
 						style={[
 							styles.text,
-							{ color: Colors.light.muted, lineHeight: 20, maxWidth: 300 },
+							{ color: Colors.light.muted, lineHeight: 20, maxWidth: 200 },
 						]}
 					>
 						Pellentesque tincidunt lectus et mi lacinia interdum. Nam sit amet
@@ -57,6 +58,6 @@ const styles = StyleSheet.create({
 	text: {
 		fontFamily: "Zain",
 		color: Colors.light.text,
-		fontSize: 18,
+		fontSize: 16,
 	},
 });

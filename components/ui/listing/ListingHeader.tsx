@@ -3,10 +3,17 @@ import { Colors } from "@/constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
 import { Image } from "expo-image";
 import { router } from "expo-router";
-import { ReactNode } from "react";
+import { setStatusBarStyle } from "expo-status-bar";
+import { ReactNode, useEffect } from "react";
 import { StatusBar, StyleSheet, TouchableOpacity, View } from "react-native";
 
 export function ListingHeader({ children }: { children: ReactNode }) {
+	useEffect(() => {
+		setStatusBarStyle("light");
+		return () => {
+			setStatusBarStyle("auto");
+		};
+	}, []);
 	function back() {
 		router.back();
 	}

@@ -96,14 +96,20 @@ export function SearchBar() {
 		setSearching(false);
 	}
 
-	function selectPreviousSearch(text: string) {
+	function selectSearch(text: string) {
 		setSearchInput(text);
 	}
 
-	function search(text: string) {
+	function searchFromSuggestions(text: string) {
+		selectSearch(text);
+		search();
+	}
+
+	function search() {
 		Keyboard.dismiss();
 		setSearching(false);
-		saveSearch(text);
+		if (searchInput.trim() == "") return;
+		saveSearch(searchInput);
 	}
 
 	return (
@@ -118,7 +124,7 @@ export function SearchBar() {
 					style={styles.input}
 					value={searchInput}
 					onChangeText={(text) => setSearchInput(text)}
-					onSubmitEditing={() => setSearching(false)}
+					onSubmitEditing={() => search()}
 				/>
 				{searchInput.trim() != "" && (
 					<TouchableOpacity onPress={clearInput} style={{ paddingRight: 15 }}>
@@ -134,10 +140,13 @@ export function SearchBar() {
 				<SearchResults results={searchResults} />
 			)}
 			{searchState === "PREVIOUS_SEARCHES" && (
-				<PreviousSearches onSelectPreviousSearch={selectPreviousSearch} />
+				<PreviousSearches onSelectPreviousSearch={selectSearch} />
 			)}
 			{searchState === "SEARCH_SUGGESTIONS" && (
-				<SearchSuggestions searchInput={searchInput} onSearch={search} />
+				<SearchSuggestions
+					searchInput={searchInput}
+					onSearch={searchFromSuggestions}
+				/>
 			)}
 			{searchState === "JOBS_AND_CATEGORIES" && <SearchRecentJobs />}
 		</View>

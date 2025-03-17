@@ -46,13 +46,14 @@ const createSearchCache = () => {
 			}
 		},
 		saveSearch: async (search: string) => {
-			const item = await retrieveSearches();
+			let item = await retrieveSearches();
 			if (!item) {
 				return SecureStore.setItemAsync("searches", JSON.stringify([search]));
 			}
+			item = item.slice(0, 9);
 			return SecureStore.setItemAsync(
 				"searches",
-				JSON.stringify([...item, search])
+				JSON.stringify([search, ...item])
 			);
 		},
 		clear: async () => {
