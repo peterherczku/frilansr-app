@@ -2,7 +2,6 @@ import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { useAuth, useClerk } from "@clerk/clerk-expo";
 import { Redirect, router } from "expo-router";
 import { useEffect } from "react";
-import { MySafeAreaView as SafeAreaView } from "@/components/SafeAreaView";
 import { Header } from "@/components/Header";
 import { ProfileHeader } from "@/components/ui/profile/ProfileHeader";
 import {
@@ -16,6 +15,7 @@ import {
 	ProfileSettingsBoxItem,
 } from "@/components/ui/profile/ProfileSettingsBox";
 import { Footer } from "@/components/Footer";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const data = [
 	{
@@ -57,24 +57,34 @@ export default function ProfileScreen() {
 					<ProfilePaymentBoxItem
 						title={"Payment history"}
 						subtitle={"15 payments"}
+						onPress={() => router.push("/(settings)/(payment)/history")}
 					/>
 					<View
 						style={{ height: 2, backgroundColor: "#ECECEC", borderRadius: 8 }}
 					/>
-					<ProfilePaymentBoxItem title={"Go to Payment settings"} />
+					<ProfilePaymentBoxItem
+						title={"Go to Payment settings"}
+						onPress={() => router.push("/(settings)/(payment)/payment")}
+					/>
 				</ProfilePaymentBox>
 				<ProfileAffiliateProgram />
 				<ProfileRecentWorks data={data} />
 				<ProfileSettingsBox>
-					<ProfileSettingsBoxItem title={"Account"} />
+					<ProfileSettingsBoxItem
+						onPress={() => router.push("/(settings)/account")}
+						title={"Account"}
+					/>
 					<View
 						style={{ height: 2, backgroundColor: "#ECECEC", borderRadius: 8 }}
 					/>
-					<ProfileSettingsBoxItem title={"Payment"} />
+					<ProfileSettingsBoxItem
+						onPress={() => router.push("/(settings)/payment")}
+						title={"Payment"}
+					/>
 					<View
 						style={{ height: 2, backgroundColor: "#ECECEC", borderRadius: 8 }}
 					/>
-					<ProfileSettingsBoxItem title={"Change to Enterprise mode"} />
+					<ProfileSettingsBoxItem title={"Change to Job Lister mode"} />
 					<View
 						style={{ height: 2, backgroundColor: "#ECECEC", borderRadius: 8 }}
 					/>

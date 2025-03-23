@@ -31,7 +31,7 @@ export function MessagesList({
 		};
 	}) {
 		function selectMessageChannel() {
-			router.push("(messages)/" + item.id);
+			router.push(`/(messages)/${item.id}`);
 		}
 
 		return (

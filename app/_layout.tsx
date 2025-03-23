@@ -59,6 +59,10 @@ export default function RootLayout() {
 								options={{ headerShown: false }}
 							/>
 							<Stack.Screen
+								name="(settings)"
+								options={{ headerShown: false }}
+							/>
+							<Stack.Screen
 								name={"(auth)"}
 								options={{ presentation: "modal", headerShown: false }}
 							/>

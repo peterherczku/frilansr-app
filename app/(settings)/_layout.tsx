@@ -2,7 +2,7 @@ import { Redirect, Stack } from "expo-router";
 import { useAuth } from "@clerk/clerk-expo";
 import { View } from "react-native";
 
-export default function ListingRoutesLayout() {
+export default function SettingsRoutesLayout() {
 	const { isSignedIn } = useAuth();
 
 	if (!isSignedIn) {
@@ -11,8 +11,8 @@ export default function ListingRoutesLayout() {
 
 	return (
 		<Stack>
-			<Stack.Screen name={"index"} options={{ headerShown: false }} />
-			<Stack.Screen name={"apply"} options={{ headerShown: false }} />
+			<Stack.Screen name={"(account)"} options={{ headerShown: false }} />
+			<Stack.Screen name={"(payment)"} options={{ headerShown: false }} />
 		</Stack>
 	);
 }

@@ -34,7 +34,7 @@ export function PreviousSearches({
 }) {
 	const { previousSearches, clearSearch } = usePreviousSearches();
 
-	function renderItem({ item }) {
+	function renderItem({ item }: { item: string }) {
 		return (
 			<TouchableOpacity
 				onPress={(e) => {

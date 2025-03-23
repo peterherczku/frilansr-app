@@ -2,12 +2,15 @@ import { StatusBar } from "react-native";
 import ParallaxScrollView from "@/components/ParallaxScrollView";
 import { Feather, FontAwesome6, Ionicons } from "@expo/vector-icons";
 import { Image } from "expo-image";
-import { useLocalSearchParams } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Colors } from "@/constants/Colors";
 import { ListingHeader } from "@/components/ui/listing/ListingHeader";
 import { useUser } from "@clerk/clerk-expo";
-import { LocationBox } from "@/components/ui/listing/LocationBox";
+import {
+	LocationBox,
+	LocationMapView,
+} from "@/components/ui/listing/LocationBox";
 import { ListingJobLister } from "@/components/ui/listing/ListingJobLister";
 import { Dimensions } from "react-native";
 
@@ -184,11 +187,16 @@ export default function ListingIndexPage() {
 							120,00 kr / hour
 						</Text>
 					</View>
-					<LocationBox />
+					<LocationBox>
+						<LocationMapView style={{ marginVertical: 10 }} />
+					</LocationBox>
 					<ListingJobLister />
 				</View>
 			</ListingHeader>
-			<TouchableOpacity style={styles.button}>
+			<TouchableOpacity
+				style={styles.button}
+				onPress={() => router.push(`/(listing)/${id}/apply`)}
+			>
 				<Text
 					style={[
 						styles.text,

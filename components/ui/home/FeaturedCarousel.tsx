@@ -61,9 +61,22 @@ export function FeaturedCarousel() {
 	const [activeItem, setActiveItem] = useState(0);
 	const router = useRouter();
 
-	function renderItem({ item, index }) {
+	function renderItem({
+		item,
+	}: {
+		item: {
+			id: number;
+			name: string;
+			category: string;
+			workType: string;
+			image: string;
+		};
+	}) {
 		return (
-			<Pressable onPress={() => router.push("(listing)/1")} style={styles.box}>
+			<Pressable
+				onPress={() => router.push("(listing)/" + item.id)}
+				style={styles.box}
+			>
 				<Image source={{ uri: item.image }} style={styles.image} />
 				<View style={styles.detailsContainer}>
 					<Text style={[styles.text, styles.nameText]}>{item.name}</Text>

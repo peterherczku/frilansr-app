@@ -11,6 +11,7 @@ import {
 	Foundation,
 	MaterialCommunityIcons,
 } from "@expo/vector-icons";
+import { ReactNode } from "react";
 
 const categories = [
 	{
@@ -43,7 +44,17 @@ const categories = [
 ];
 
 export function IconScrollView({}) {
-	function renderItem({ item, index }) {
+	function renderItem({
+		item,
+		index,
+	}: {
+		item: {
+			id: number;
+			name: string;
+			icon: ReactNode;
+		};
+		index: number;
+	}) {
 		return (
 			<TouchableOpacity
 				style={[

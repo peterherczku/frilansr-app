@@ -1,4 +1,3 @@
-import { useKeyboardFocused } from "@/hooks/useKeyboardFocused";
 import {
 	Keyboard,
 	Platform,

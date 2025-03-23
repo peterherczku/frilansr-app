@@ -2,6 +2,7 @@ import { Footer } from "@/components/Footer";
 import { Colors } from "@/constants/Colors";
 import { FontAwesome6 } from "@expo/vector-icons";
 import { Image } from "expo-image";
+import { router } from "expo-router";
 import {
 	FlatList,
 	StyleSheet,
@@ -48,7 +49,10 @@ export function SearchUrgentWorks() {
 		};
 	}) {
 		return (
-			<TouchableOpacity style={styles.card}>
+			<TouchableOpacity
+				style={styles.card}
+				onPress={() => router.push(`/(listing)/${item.id}`)}
+			>
 				<View style={styles.imageContainer}>
 					<Image source={{ uri: item.image }} style={styles.image} />
 					<View style={styles.imageOverlay} />
