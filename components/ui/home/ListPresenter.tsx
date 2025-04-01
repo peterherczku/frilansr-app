@@ -13,6 +13,31 @@ import { Image } from "expo-image";
 import { Colors } from "@/constants/Colors";
 import { AntDesign, FontAwesome6 } from "@expo/vector-icons";
 import { router } from "expo-router";
+import { Listing } from "@/api/listingFunctions";
+import { Skeleton } from "@/components/Skeleton";
+
+export function ListingPresenterSkeleton() {
+	return (
+		<View>
+			<FlatList
+				data={[1, 2, 3]}
+				renderItem={({ item, index }) => (
+					<Skeleton
+						style={[
+							{ marginVertical: 10, marginHorizontal: 10 },
+							index === 0 && { marginLeft: 20 },
+							index === 2 && { marginRight: 20 },
+						]}
+						width={220}
+						height={220 * 0.6}
+					/>
+				)}
+				horizontal={true}
+				showsHorizontalScrollIndicator={false}
+			/>
+		</View>
+	);
+}
 
 export function ListingPresenterTitle({ children }: { children: ReactNode }) {
 	return (
@@ -34,32 +59,8 @@ export function ListingPresenterTitle({ children }: { children: ReactNode }) {
 	);
 }
 
-export function ListingPresenterElements({
-	data,
-}: {
-	data: {
-		id: string;
-		image: string;
-		workplace: string;
-		salary: string;
-		title: string;
-		location: string;
-	}[];
-}) {
-	function renderItem({
-		item,
-		index,
-	}: {
-		item: {
-			id: string;
-			image: string;
-			workplace: string;
-			salary: string;
-			title: string;
-			location: string;
-		};
-		index: number;
-	}) {
+export function ListingPresenterElements({ data }: { data: Listing[] }) {
+	function renderItem({ item, index }: { item: Listing; index: number }) {
 		return (
 			<Pressable
 				style={[
@@ -74,7 +75,7 @@ export function ListingPresenterElements({
 				<View style={styles.informationContainer}>
 					<View style={styles.textContainer}>
 						<Text style={[styles.text, styles.workplaceText]}>
-							{item.workplace}
+							{/*item.workplace*/}
 						</Text>
 						<Text style={[styles.text, styles.titleText]}>{item.title}</Text>
 					</View>
@@ -97,7 +98,7 @@ export function ListingPresenterElements({
 								color={Colors.light.muted}
 							/>
 							<Text style={[styles.text, styles.detailText]}>
-								{item.location}
+								{/*item.location*/}
 							</Text>
 						</View>
 					</View>

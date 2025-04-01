@@ -1,10 +1,24 @@
 import { Colors } from "@/constants/Colors";
-import { useUser } from "@clerk/clerk-expo";
+import { useListing } from "@/hooks/listing/useListing";
 import { Image } from "expo-image";
 import { StyleSheet, Text, View } from "react-native";
 
-export function ListingJobLister() {
-	const { user } = useUser();
+export function ListingJobLister({ id }: { id: string }) {
+	const { listing, isLoading, error } = useListing(id as string);
+	if (isLoading) {
+		return (
+			<View>
+				<Text>Loading</Text>
+			</View>
+		);
+	}
+	if (error || !listing) {
+		return (
+			<View>
+				<Text>Error {error?.message ?? ""}</Text>
+			</View>
+		);
+	}
 
 	return (
 		<View style={{ marginVertical: 20 }}>
@@ -24,7 +38,7 @@ export function ListingJobLister() {
 				}}
 			>
 				<Image
-					source={{ uri: user?.imageUrl }}
+					source={{ uri: listing.user.imageUrl }}
 					style={{
 						width: 100,
 						height: 100,
@@ -36,7 +50,7 @@ export function ListingJobLister() {
 					<Text
 						style={[styles.text, { fontFamily: "Zain-Bold", fontSize: 20 }]}
 					>
-						Peter
+						{listing.user.name}
 					</Text>
 					<Text
 						numberOfLines={2}

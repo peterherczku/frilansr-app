@@ -13,10 +13,28 @@ import {
 } from "@/components/ui/listing/LocationBox";
 import { ListingJobLister } from "@/components/ui/listing/ListingJobLister";
 import { Dimensions } from "react-native";
+import { useListing } from "@/hooks/listing/useListing";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function ListingIndexPage() {
 	const { id } = useLocalSearchParams();
 	const { user } = useUser();
+
+	const { listing, isLoading, error } = useListing(id as string);
+	if (isLoading) {
+		return (
+			<SafeAreaView>
+				<Text>Loading</Text>
+			</SafeAreaView>
+		);
+	}
+	if (error || !listing) {
+		return (
+			<SafeAreaView>
+				<Text>Error {error?.message}</Text>
+			</SafeAreaView>
+		);
+	}
 
 	return (
 		<>
@@ -33,7 +51,7 @@ export default function ListingIndexPage() {
 							<Text
 								style={[styles.text, { fontFamily: "Zain-Bold", fontSize: 22 }]}
 							>
-								Take a walk with Max
+								{listing.title}
 							</Text>
 							<Text
 								style={[
@@ -41,7 +59,7 @@ export default function ListingIndexPage() {
 									{ fontSize: 17, color: Colors.light.muted, marginTop: -8 },
 								]}
 							>
-								Dog walking
+								{listing.type}
 							</Text>
 						</View>
 						<View
@@ -190,7 +208,7 @@ export default function ListingIndexPage() {
 					<LocationBox>
 						<LocationMapView style={{ marginVertical: 10 }} />
 					</LocationBox>
-					<ListingJobLister />
+					<ListingJobLister id={id as string} />
 				</View>
 			</ListingHeader>
 			<TouchableOpacity

@@ -6,84 +6,57 @@ import {
 	Text,
 	TouchableOpacity,
 	View,
+	ViewBase,
 } from "react-native";
 import { Image } from "expo-image";
 import { useRef, useState } from "react";
 import { Colors } from "@/constants/Colors";
 import { router, useRouter } from "expo-router";
+import { useFeaturedListings } from "@/hooks/listing/useFeaturedListings";
+import { Listing } from "@/api/listingFunctions";
+import { Skeleton } from "@/components/Skeleton";
 
 const { width } = Dimensions.get("window");
 
-const featuredPlaces = [
-	{
-		id: 4,
-		name: "Take a walk with Max",
-		category: "Pets",
-		workType: "Dog walking",
-		image:
-			"https://i.ytimg.com/vi/fa3Slv2i0Uw/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLAWGk8rcsk5pPehDJ-uhCLmw0q9EA",
-	},
-	{
-		id: 0,
-		name: "McDonald's",
-		category: "Restaurant",
-		workType: "Doing dishes",
-		image:
-			"https://www.eatthis.com/wp-content/uploads/sites/4/2021/06/mcdonalds-2.jpg?quality=82&strip=all",
-	},
-	{
-		id: 1,
-		name: "Five Guys",
-		category: "Restaurant",
-		workType: "Making hamburgers",
-		image:
-			"https://wp-api.bokabord.se/wp-content/uploads/2024/09/Five-Guys-oppnar-i-Sverige-%E2%80%93-vid-Sergels-torg-i-Stockholm-960x715.png",
-	},
-	{
-		id: 2,
-		name: "frilansr.",
-		category: "Office",
-		workType: "Accounting",
-		image:
-			"https://www.jll.pt/images/people/people-photography/privacy-in-the-open-plan-office.jpg",
-	},
-	{
-		id: 3,
-		name: "After school tutoring",
-		category: "Education",
-		workType: "Math teaching",
-		image:
-			"https://s39613.pcdn.co/wp-content/uploads/2021/11/day-picture-id1163588010.jpg",
-	},
-];
+function CarouselSkeleton() {
+	return (
+		<Skeleton
+			style={{ marginVertical: 20, marginHorizontal: 20 }}
+			width={width - 40}
+			height={200}
+		/>
+	);
+}
 
 export function FeaturedCarousel() {
-	const [activeItem, setActiveItem] = useState(0);
+	const [activeItem, setActiveItem] = useState("0");
 	const router = useRouter();
+	const { featuredListings, isLoading, error } = useFeaturedListings();
 
-	function renderItem({
-		item,
-	}: {
-		item: {
-			id: number;
-			name: string;
-			category: string;
-			workType: string;
-			image: string;
-		};
-	}) {
+	if (isLoading) {
+		return <CarouselSkeleton />;
+	}
+	if (error || !featuredListings) {
+		return (
+			<View>
+				<Text>Error {error?.message}</Text>
+			</View>
+		);
+	}
+
+	function renderItem({ item }: { item: Listing }) {
 		return (
 			<Pressable
-				onPress={() => router.push("(listing)/" + item.id)}
+				onPress={() => router.push(`/(listing)/${item.id}`)}
 				style={styles.box}
 			>
 				<Image source={{ uri: item.image }} style={styles.image} />
 				<View style={styles.detailsContainer}>
-					<Text style={[styles.text, styles.nameText]}>{item.name}</Text>
-					<Text style={[styles.text, styles.workText]}>{item.workType}</Text>
+					<Text style={[styles.text, styles.nameText]}>{item.title}</Text>
+					<Text style={[styles.text, styles.workText]}>{item.type}</Text>
 				</View>
 				<View style={styles.overlay} />
-				<Text style={[styles.text, styles.category]}>{item.category}</Text>
+				<Text style={[styles.text, styles.category]}>{item.description}</Text>
 			</Pressable>
 		);
 	}
@@ -91,7 +64,7 @@ export function FeaturedCarousel() {
 	return (
 		<View style={styles.container}>
 			<FlatList
-				data={featuredPlaces}
+				data={featuredListings}
 				renderItem={renderItem}
 				keyExtractor={(item) => item.id.toString()}
 				horizontal={true}
@@ -105,7 +78,7 @@ export function FeaturedCarousel() {
 				}}
 			/>
 			<View style={styles.pagesContainer}>
-				{featuredPlaces.map((item, index) => {
+				{featuredListings.map((item, index) => {
 					return (
 						<View
 							key={item.id}

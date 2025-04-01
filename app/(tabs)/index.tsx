@@ -10,6 +10,10 @@ import {
 import { Colors } from "@/constants/Colors";
 import { Footer } from "@/components/Footer";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useAuth } from "@clerk/clerk-expo";
+import { useEffect } from "react";
+import { useNearbyListings } from "@/hooks/listing/useNearbyListings";
+import { NearbyListings } from "@/components/ui/home/NearbyListings";
 
 const nearYouData = [
 	{
@@ -63,13 +67,13 @@ export default function HomeScreen() {
 					<ListingPresenterTitle>
 						<Text style={styles.text}>Near you</Text>
 					</ListingPresenterTitle>
-					<ListingPresenterElements data={nearYouData} />
+					<NearbyListings />
 				</ListingPresenter>
 				<ListingPresenter style={{ marginTop: 10 }}>
 					<ListingPresenterTitle>
 						<Text style={styles.text}>Long-term works</Text>
 					</ListingPresenterTitle>
-					<ListingPresenterElements data={longTermData} />
+					{/*<ListingPresenterElements data={longTermData} />*/}
 				</ListingPresenter>
 				<Footer />
 			</ScrollView>

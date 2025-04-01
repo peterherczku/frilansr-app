@@ -14,6 +14,7 @@ import { useColorScheme } from "@/hooks/useColorScheme";
 import { ClerkLoaded, ClerkProvider } from "@clerk/clerk-expo";
 import { tokenCache } from "@/cache";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { useReactQueryFocusSync } from "@/hooks/useReactQueryFocusSync";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -33,6 +34,7 @@ export default function RootLayout() {
 		"Zain-Bold": require("../assets/fonts/Zain-Bold.ttf"),
 		"Zain-ExtraBold": require("../assets/fonts/Zain-ExtraBold.ttf"),
 	});
+	useReactQueryFocusSync();
 
 	useEffect(() => {
 		if (loaded) {
