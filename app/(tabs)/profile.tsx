@@ -1,7 +1,6 @@
-import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
-import { useAuth, useClerk } from "@clerk/clerk-expo";
-import { Redirect, router } from "expo-router";
-import { useEffect } from "react";
+import { ScrollView, View } from "react-native";
+import { useClerk } from "@clerk/clerk-expo";
+import { router } from "expo-router";
 import { Header } from "@/components/Header";
 import { ProfileHeader } from "@/components/ui/profile/ProfileHeader";
 import {
@@ -49,7 +48,7 @@ const data = [
 export default function ProfileScreen() {
 	const { signOut } = useClerk();
 	return (
-		<SafeAreaView style={styles.safeContainer}>
+		<SafeAreaView className="flex-1 bg-white">
 			<Header />
 			<ScrollView>
 				<ProfileHeader />
@@ -59,9 +58,7 @@ export default function ProfileScreen() {
 						subtitle={"15 payments"}
 						onPress={() => router.push("/(settings)/(payment)/history")}
 					/>
-					<View
-						style={{ height: 2, backgroundColor: "#ECECEC", borderRadius: 8 }}
-					/>
+					<View className="h-[2] bg-[#ECECEC] rounded-lg" />
 					<ProfilePaymentBoxItem
 						title={"Go to Payment settings"}
 						onPress={() => router.push("/(settings)/(payment)/payment")}
@@ -74,20 +71,15 @@ export default function ProfileScreen() {
 						onPress={() => router.push("/(settings)/account")}
 						title={"Account"}
 					/>
-					<View
-						style={{ height: 2, backgroundColor: "#ECECEC", borderRadius: 8 }}
-					/>
+					<View className="h-[2] bg-[#ECECEC] rounded-lg" />
 					<ProfileSettingsBoxItem
 						onPress={() => router.push("/(settings)/payment")}
 						title={"Payment"}
 					/>
-					<View
-						style={{ height: 2, backgroundColor: "#ECECEC", borderRadius: 8 }}
-					/>
+					<View className="h-[2] bg-[#ECECEC] rounded-lg" />
+
 					<ProfileSettingsBoxItem title={"Change to Job Lister mode"} />
-					<View
-						style={{ height: 2, backgroundColor: "#ECECEC", borderRadius: 8 }}
-					/>
+					<View className="h-[2] bg-[#ECECEC] rounded-lg" />
 					<ProfileSettingsBoxItem title={"Delete account"} destructive={true} />
 				</ProfileSettingsBox>
 				<Footer />
@@ -95,10 +87,3 @@ export default function ProfileScreen() {
 		</SafeAreaView>
 	);
 }
-
-const styles = StyleSheet.create({
-	safeContainer: {
-		flex: 1,
-		backgroundColor: "#fff",
-	},
-});
