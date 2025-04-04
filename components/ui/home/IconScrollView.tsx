@@ -1,16 +1,11 @@
-import {
-	FlatList,
-	StyleSheet,
-	Text,
-	TouchableOpacity,
-	View,
-} from "react-native";
+import { FlatList, TouchableOpacity, View } from "react-native";
 import {
 	FontAwesome5,
 	Foundation,
 	MaterialCommunityIcons,
 } from "@expo/vector-icons";
 import { ReactNode } from "react";
+import { Text } from "../Text";
 
 const categories = [
 	{
@@ -56,14 +51,14 @@ export function IconScrollView({}) {
 	}) {
 		return (
 			<TouchableOpacity
-				style={[
-					styles.element,
-					index === 0 && styles.marginLeft,
-					index === categories.length - 1 && styles.marginRight,
-				]}
+				className={`flex-col items-center mx-[5] ${index === 0 && "ml-[20"} ${
+					index === categories.length - 1 && "mr-[20]"
+				}`}
 			>
-				<View style={styles.box}>{item.icon}</View>
-				<Text style={[styles.text]}>{item.name}</Text>
+				<View className="w-[80] h-[80] rounded-lg bg-[#D9D9D9] flex-row items-center justify-center">
+					{item.icon}
+				</View>
+				<Text>{item.name}</Text>
 			</TouchableOpacity>
 		);
 	}
@@ -80,31 +75,3 @@ export function IconScrollView({}) {
 		</View>
 	);
 }
-
-const styles = StyleSheet.create({
-	element: {
-		display: "flex",
-		flexDirection: "column",
-		alignItems: "center",
-		marginHorizontal: 5,
-	},
-	box: {
-		width: 80,
-		height: 80,
-		borderRadius: 8,
-		backgroundColor: "#D9D9D9",
-		flexDirection: "row",
-		alignItems: "center",
-		justifyContent: "center",
-	},
-	text: {
-		fontFamily: "Zain",
-		fontSize: 16,
-	},
-	marginLeft: {
-		marginLeft: 20,
-	},
-	marginRight: {
-		marginRight: 20,
-	},
-});

@@ -1,26 +1,24 @@
 import { Dimensions, FlatList, Pressable, View } from "react-native";
-import { Image } from "expo-image";
+import { Image as ExpoImage } from "expo-image";
 import { useState } from "react";
 import { useRouter } from "expo-router";
 import { useFeaturedListings } from "@/hooks/listing/useFeaturedListings";
 import { Listing } from "@/api/listingFunctions";
 import { Skeleton } from "@/components/Skeleton";
 import { Text } from "../Text";
-import { cssInterop } from "nativewind";
+import { remapProps } from "nativewind";
 
 const { width } = Dimensions.get("window");
 
 function CarouselSkeleton() {
 	return (
-		<Skeleton
-			style={{ marginVertical: 20, marginHorizontal: 20 }}
-			width={width - 40}
-			height={200}
-		/>
+		<Skeleton className="my-[20] mx-[20]" width={width - 40} height={200} />
 	);
 }
 
-cssInterop(Image, { className: "style" });
+const Image = remapProps(ExpoImage, {
+	className: "style",
+});
 
 export function FeaturedCarousel() {
 	const [activeItem, setActiveItem] = useState("0");
@@ -57,7 +55,10 @@ export function FeaturedCarousel() {
 					</Text>
 					<Text className="mt-[-10] text-white text-sm">{item.type}</Text>
 				</View>
-				<View className="w-full h-[200] absolute bg-[rgba(0,0,0,0.5)] rounded-lg z-[1]" />
+				<View
+					className="w-full h-[200] absolute rounded-lg z-[1]"
+					style={{ backgroundColor: "rgba(0,0,0,0.5)" }}
+				/>
 				<Text className="z-[2] absolute top-[10] left-[10] text-[#c1c1c1] font-zain-extrabold uppercase">
 					{item.description}
 				</Text>

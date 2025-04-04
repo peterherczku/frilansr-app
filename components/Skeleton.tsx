@@ -1,18 +1,18 @@
+import { cn } from "@/utils/cn";
 import React, { useEffect, useRef } from "react";
-import { Animated, ViewStyle, StyleSheet, StyleProp } from "react-native";
+import { Animated } from "react-native";
 
 type SkeletonProps = {
 	width?: number | `${number}%`;
 	height?: number;
 	borderRadius?: number;
-	style?: StyleProp<ViewStyle>;
+	className?: string;
 };
 
 const Skeleton: React.FC<SkeletonProps> = ({
 	width = "100%",
 	height = 20,
-	borderRadius = 8,
-	style,
+	className,
 }) => {
 	const pulseAnim = useRef(new Animated.Value(0.3)).current;
 
@@ -35,24 +35,14 @@ const Skeleton: React.FC<SkeletonProps> = ({
 
 	return (
 		<Animated.View
-			style={[
-				styles.skeleton,
-				{
-					width,
-					height,
-					borderRadius,
-					opacity: pulseAnim,
-				} as Animated.AnimatedProps<ViewStyle>, // ✅ Cast to Animated-compatible style
-				style,
-			]}
+			className={cn(
+				width && "w-[width]",
+				height && "h-[height]",
+				"rounded-lg bg-[#aeaeae]",
+				className
+			)}
 		/>
 	);
 };
-
-const styles = StyleSheet.create({
-	skeleton: {
-		backgroundColor: "#aeaeae",
-	},
-});
 
 export { Skeleton };

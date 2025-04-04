@@ -1,19 +1,19 @@
 import { Footer } from "@/components/Footer";
 import { Colors } from "@/constants/Colors";
+import { cn } from "@/utils/cn";
 import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
 import { useState } from "react";
 import {
 	FlatList,
 	Pressable,
-	StyleSheet,
-	Text,
 	TouchableOpacity,
 	View,
 	TextInput,
 	Platform,
 	Keyboard,
 } from "react-native";
+import { Text } from "../Text";
 
 const data = [
 	{
@@ -53,32 +53,15 @@ const data = [
 function CalendarFooter() {
 	return (
 		<View style={{ position: "relative" }}>
-			<View style={styles.row}>
-				<View
-					style={[
-						styles.iconContainer,
-						{
-							backgroundColor: "#dbf2d3",
-							shadowColor: Colors.light.themeColor,
-						},
-					]}
-				>
+			<View className="flex-row items-center gap-[5]">
+				<View className="w-[50] h-[50] rounded-full shadow-md flex-row justify-center shadow-theme items-center ml-[20] mr-[10] my-[10] bg-[#dbf2d3]">
 					<Ionicons
 						name="checkmark"
 						size={24}
 						color={Colors.light.themeColor}
 					/>
 				</View>
-				<Text
-					style={[
-						styles.text,
-						{
-							fontSize: 20,
-							fontFamily: "Zain-Bold",
-							color: Colors.light.themeColor,
-						},
-					]}
-				>
+				<Text className="text-theme font-zain-bold text-[20]">
 					You are done!
 				</Text>
 			</View>
@@ -105,76 +88,41 @@ export function CalendarList() {
 		function onPressJob() {}
 
 		return (
-			<View style={{ position: "relative" }}>
-				<View style={styles.row}>
-					<View style={styles.iconContainer}>
+			<View className="relative">
+				<View className="flex-row items-center gap-[5]">
+					<View className="w-[50] h-[50] rounded-full shadow-md flex-row justify-center  items-center ml-[20] mr-[10] my-[10] bg-white">
 						<Ionicons
 							name="calendar-outline"
 							size={24}
 							color={Colors.light.text}
 						/>
 					</View>
-					<Text
-						style={[styles.text, { fontSize: 18, fontFamily: "Zain-Bold" }]}
-					>
-						{item.date}
-					</Text>
+					<Text className="text-lg font-zain-bold">{item.date}</Text>
 				</View>
-				<Pressable onPress={onPressJob} style={styles.card}>
-					<View style={[styles.row, { justifyContent: "space-between" }]}>
+				<Pressable
+					onPress={onPressJob}
+					className="bg-white shadow-md mx-[20] my-[10] p-[10] rounded-lg"
+				>
+					<View className="flex-row items-center gap-[5] justify-between">
 						<View>
-							<Text
-								style={[styles.text, { fontSize: 18, fontFamily: "Zain-Bold" }]}
-							>
-								{item.title}
-							</Text>
-							<Text
-								style={[
-									styles.text,
-									{ fontSize: 16, color: Colors.light.muted, marginTop: -6 },
-								]}
-							>
-								{item.category}
-							</Text>
-							<View style={[styles.row]}>
-								<View style={styles.row}>
-									<Text
-										style={[
-											styles.text,
-											{ color: Colors.light.muted, fontSize: 16 },
-										]}
-									>
-										{item.salary}
-									</Text>
+							<Text className="text-lg font-zain-bold">{item.title}</Text>
+							<Text className="text-muted mt-[-6]">{item.category}</Text>
+							<View className="flex-row items-center gap-[5]">
+								<View className="flex-row items-center gap-[5]">
+									<Text className="text-muted">{item.salary}</Text>
 								</View>
-								<View style={styles.separator} />
-								<View style={styles.row}>
-									<Text
-										style={[
-											styles.text,
-											{ color: Colors.light.muted, fontSize: 16 },
-										]}
-									>
-										{item.location}
-									</Text>
+								<View className="w-[4] h-[4] rounded-full bg-[gray]" />
+								<View className="flex-row items-center gap-[5]">
+									<Text className="text-muted">{item.location}</Text>
 								</View>
 							</View>
 						</View>
-						<Text
-							style={[
-								styles.text,
-								{
-									color: Colors.light.themeColor,
-									fontFamily: "Zain-Bold",
-									marginRight: 10,
-								},
-							]}
-						>
+						<Text className="text-theme font-zain-bold mr-[10] text-[18]">
 							in 2 days 1 hour
 						</Text>
 					</View>
 				</Pressable>
-				<View style={styles.line} />
+				<View className="absolute w-[2] h-full bg-[#D9D9D9] left-[44] z-[-2] my-[20]" />
 			</View>
 		);
 	}
@@ -189,19 +137,27 @@ export function CalendarList() {
 	}
 
 	return (
-		<View style={styles.container}>
-			<View style={styles.inputBox}>
-				<TouchableOpacity onPress={back} style={{ padding: 5 }}>
+		<View className="flex-1">
+			<View
+				className={cn(
+					"bg-[#D9D9D9] mx-[20] rounded-lg mb-[10] flex-row items-center",
+					Platform.OS === "ios" && "py-[12]"
+				)}
+			>
+				<TouchableOpacity onPress={back} className="p-[5]">
 					<Ionicons name="chevron-back" size={20} color={Colors.light.muted} />
 				</TouchableOpacity>
 				<TextInput
 					placeholder={"Search between upcoming jobs"}
-					style={styles.input}
+					className={cn(
+						"text-muted font-zain text-[17] mt-[3.5] flex-1",
+						Platform.OS === "ios" && "ml-[5]"
+					)}
 					value={searchInput}
 					onChangeText={(text) => setSearchInput(text)}
 				/>
 				{searchInput.trim() != "" && (
-					<TouchableOpacity onPress={clearInput} style={{ paddingRight: 15 }}>
+					<TouchableOpacity onPress={clearInput} className="pr-[15]">
 						<Ionicons
 							name="close-circle"
 							size={20}
@@ -210,19 +166,7 @@ export function CalendarList() {
 					</TouchableOpacity>
 				)}
 			</View>
-			<Text
-				style={[
-					styles.text,
-					{
-						marginLeft: 20,
-						fontFamily: "Zain-Bold",
-						fontSize: 20,
-						marginBottom: 5,
-					},
-				]}
-			>
-				Calendar
-			</Text>
+			<Text className="text-muted font-zain text-[20] mb-[5]">Calendar</Text>
 			<FlatList
 				data={data}
 				renderItem={renderItem}
@@ -234,92 +178,3 @@ export function CalendarList() {
 		</View>
 	);
 }
-
-const styles = StyleSheet.create({
-	text: {
-		color: Colors.light.text,
-		fontSize: 18,
-		fontFamily: "Zain",
-	},
-	container: {
-		flex: 1,
-	},
-	line: {
-		position: "absolute",
-		width: 2,
-		height: "100%",
-		backgroundColor: "#D9D9D9",
-		left: 44,
-		zIndex: -2,
-		marginVertical: 20,
-	},
-	inputBox: {
-		backgroundColor: "#D9D9D9",
-		marginHorizontal: 20,
-		borderRadius: 8,
-		marginBottom: 10,
-		flexDirection: "row",
-		alignItems: "center",
-		...Platform.select({
-			ios: {
-				paddingVertical: 12,
-			},
-		}),
-	},
-	input: {
-		color: Colors.light.muted,
-		fontFamily: "Zain",
-		fontSize: 17,
-		marginTop: 3.5,
-		flex: 1,
-		...Platform.select({
-			ios: {
-				marginLeft: 5,
-			},
-		}),
-	},
-	iconContainer: {
-		width: 50,
-		height: 50,
-		backgroundColor: "white",
-		borderRadius: 50,
-		elevation: 2,
-		shadowOffset: {
-			width: 0,
-			height: 0,
-		},
-		shadowRadius: 2,
-		shadowOpacity: 0.25,
-		flexDirection: "row",
-		justifyContent: "center",
-		alignItems: "center",
-		marginLeft: 20,
-		marginRight: 10,
-		marginVertical: 10,
-	},
-	row: {
-		flexDirection: "row",
-		alignItems: "center",
-		gap: 5,
-	},
-	card: {
-		backgroundColor: "white",
-		elevation: 2,
-		shadowOffset: {
-			width: 0,
-			height: 0,
-		},
-		shadowRadius: 2,
-		shadowOpacity: 0.25,
-		marginHorizontal: 20,
-		marginVertical: 10,
-		padding: 10,
-		borderRadius: 8,
-	},
-	separator: {
-		width: 4,
-		height: 4,
-		backgroundColor: "gray",
-		borderRadius: 8,
-	},
-});

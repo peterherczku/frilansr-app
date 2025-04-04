@@ -1,20 +1,22 @@
-import {
-	FlatList,
-	Platform,
-	Pressable,
-	StyleSheet,
-	Text,
-	TouchableOpacity,
-	View,
-	ViewStyle,
-} from "react-native";
+import { FlatList, Pressable, TouchableOpacity, View } from "react-native";
 import { ReactNode } from "react";
-import { Image } from "expo-image";
+import { Image as ExpoImage } from "expo-image";
 import { Colors } from "@/constants/Colors";
 import { AntDesign, FontAwesome6 } from "@expo/vector-icons";
 import { router } from "expo-router";
 import { Listing } from "@/api/listingFunctions";
 import { Skeleton } from "@/components/Skeleton";
+import { cn } from "@/utils/cn";
+import { remapProps } from "nativewind";
+import { Text } from "../Text";
+
+const CustomAntDesign = remapProps(AntDesign, {
+	className: "style",
+});
+
+const Image = remapProps(ExpoImage, {
+	className: "style",
+});
 
 export function ListingPresenterSkeleton() {
 	return (
@@ -23,11 +25,11 @@ export function ListingPresenterSkeleton() {
 				data={[1, 2, 3]}
 				renderItem={({ item, index }) => (
 					<Skeleton
-						style={[
-							{ marginVertical: 10, marginHorizontal: 10 },
-							index === 0 && { marginLeft: 20 },
-							index === 2 && { marginRight: 20 },
-						]}
+						className={cn(
+							"m-[10]",
+							index === 0 && "ml-[20]",
+							index === 2 && "mr-[20]"
+						)}
 						width={220}
 						height={220 * 0.6}
 					/>
@@ -41,17 +43,17 @@ export function ListingPresenterSkeleton() {
 
 export function ListingPresenterTitle({ children }: { children: ReactNode }) {
 	return (
-		<View style={styles.row}>
+		<View className="flex-row justify-between items-center mx-[20]">
 			{children}
 			<TouchableOpacity
 				onPress={() => router.navigate("/(tabs)/jobs")}
-				style={styles.row}
+				className="flex-row justify-between items-center mx-[20]"
 			>
-				<Text style={[styles.text, styles.greenText]}>Show all</Text>
-				<AntDesign
+				<Text className="text-xl text-theme underline">Show all</Text>
+				<CustomAntDesign
 					name="arrowright"
 					size={20}
-					style={{ marginLeft: 6, marginRight: -15 }}
+					className="ml-[6] mr-[-15]"
 					color={Colors.light.themeColor}
 				/>
 			</TouchableOpacity>
@@ -63,41 +65,51 @@ export function ListingPresenterElements({ data }: { data: Listing[] }) {
 	function renderItem({ item, index }: { item: Listing; index: number }) {
 		return (
 			<Pressable
-				style={[
-					styles.box,
-					index === 0 && { marginLeft: 20 },
-					index === data.length - 1 && { marginRight: 20 },
-				]}
+				className={cn(
+					"flex-col mx-5 relative",
+					index === 0 && "ml-[20]",
+					index === data.length - 1 && "mr-[20]"
+				)}
 				onPress={() => router.push(`/(listing)/${item.id}`)}
 			>
-				<Image style={styles.image} source={{ uri: item.image }} />
-				<View style={styles.overlay} />
-				<View style={styles.informationContainer}>
-					<View style={styles.textContainer}>
-						<Text style={[styles.text, styles.workplaceText]}>
+				<Image
+					className="rounded-t-lg"
+					width={220}
+					height={220 * 0.6}
+					source={{ uri: item.image }}
+				/>
+				<View
+					className="rounded-t-lg absolute w-[220] h-[132]"
+					style={{ backgroundColor: "rgba(0,0,0,0.35)" }}
+				/>
+				<View className="pl-[10] pt-[6] rounded-b-lg bg-white shadow-md overflow-visible pb-[5]">
+					<View className="pb-[6]">
+						<Text className="text-muted text-[13] font-zain-extrabold">
 							{/*item.workplace*/}
 						</Text>
-						<Text style={[styles.text, styles.titleText]}>{item.title}</Text>
+						<Text className="mt-[-6] text-[17] font-zain-bold">
+							{item.title}
+						</Text>
 					</View>
-					<View style={[styles.detailsContainer]}>
-						<View style={styles.detailsRow}>
+					<View className="pt-[8] border-t-[1] border-dashed border-muted flex-row gap-[8] items-center">
+						<View className="flex-row items-center gap-[5]">
 							<FontAwesome6
 								name="sack-dollar"
 								size={10}
 								color={Colors.light.muted}
 							/>
-							<Text style={[styles.text, styles.detailText]}>
+							<Text className="text-muted text-[13] font-zain-bold">
 								{item.salary}
 							</Text>
 						</View>
-						<View style={styles.separator} />
-						<View style={styles.detailsRow}>
+						<View className="w-[5] h-[5] rounded-full bg-muted" />
+						<View className="flex-row items-center gap-[5]">
 							<FontAwesome6
 								name="location-dot"
 								size={10}
 								color={Colors.light.muted}
 							/>
-							<Text style={[styles.text, styles.detailText]}>
+							<Text className="text-[13] text-muted font-zain-bold">
 								{/*item.location*/}
 							</Text>
 						</View>
@@ -121,106 +133,11 @@ export function ListingPresenterElements({ data }: { data: Listing[] }) {
 }
 
 export function ListingPresenter({
-	style,
+	className,
 	children,
 }: {
-	style?: ViewStyle;
+	className?: string;
 	children: ReactNode;
 }) {
-	return <View style={[styles.container, style]}>{children}</View>;
+	return <View className={cn("flex-col gap-[20]", className)}>{children}</View>;
 }
-
-const styles = StyleSheet.create({
-	text: {
-		fontFamily: "Zain",
-		fontSize: 20,
-		color: Colors.light.text,
-	},
-	greenText: {
-		color: Colors.light.themeColor,
-		textDecorationLine: "underline",
-	},
-	container: {
-		flexDirection: "column",
-		gap: 20,
-	},
-	row: {
-		flexDirection: "row",
-		justifyContent: "space-between",
-		alignItems: "center",
-		marginHorizontal: 20,
-	},
-	box: {
-		flexDirection: "column",
-		marginHorizontal: 5,
-		position: "relative",
-	},
-	informationContainer: {
-		paddingLeft: 10,
-		paddingTop: 6,
-		borderBottomRightRadius: 8,
-		borderBottomLeftRadius: 8,
-		backgroundColor: "white",
-		shadowOffset: {
-			width: 0,
-			height: 2,
-		},
-		shadowOpacity: 0.25,
-		shadowRadius: 3,
-		elevation: 3,
-		overflow: "visible",
-		paddingBottom: 5,
-	},
-	image: {
-		borderTopLeftRadius: 8,
-		borderTopRightRadius: 8,
-		width: 220,
-		height: 220 * 0.6,
-	},
-	overlay: {
-		borderTopLeftRadius: 8,
-		borderTopRightRadius: 8,
-		position: "absolute",
-		width: 220,
-		height: 220 * 0.6,
-		backgroundColor: "rgba(0,0,0,0.35)",
-	},
-	textContainer: {
-		paddingBottom: 6,
-	},
-	detailsContainer: {
-		paddingTop: 8,
-		borderTopWidth: 1,
-		borderStyle: "dashed",
-		borderColor: Colors.light.muted,
-		flexDirection: "row",
-		gap: 8,
-		alignItems: "center",
-	},
-	detailsRow: {
-		flexDirection: "row",
-		alignItems: "center",
-		gap: 5,
-	},
-	workplaceText: {
-		color: Colors.light.muted,
-		fontSize: 13,
-		fontFamily: "Zain-ExtraBold",
-	},
-	titleText: {
-		marginTop: -6,
-		fontSize: 17,
-		fontFamily: "Zain-Bold",
-	},
-	detailText: {
-		fontSize: 13,
-		color: Colors.light.muted,
-		fontFamily: "Zain-Bold",
-	},
-	separator: {
-		width: 5,
-		height: 5,
-		borderRadius: 50,
-		backgroundColor: Colors.light.muted,
-	},
-});

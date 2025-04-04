@@ -1,16 +1,9 @@
-import {
-	FlatList,
-	Pressable,
-	StyleSheet,
-	Text,
-	TouchableOpacity,
-	View,
-} from "react-native";
+import { FlatList, TouchableOpacity, View } from "react-native";
 import { Image } from "expo-image";
 import { Colors } from "@/constants/Colors";
 import { FontAwesome6 } from "@expo/vector-icons";
-import { useState } from "react";
 import { usePreviousSearches } from "@/hooks/usePreviousSearches";
+import { Text } from "../Text";
 
 const data = [
 	{
@@ -40,25 +33,27 @@ export function PreviousSearches({
 				onPress={(e) => {
 					onSelectPreviousSearch(item);
 				}}
-				style={[styles.box]}
+				className="mx-[20] px-[5] py-[10] flex-row gap-[12] items-center border-b-[1] border-solid"
+				style={{ borderColor: "rgba(0,0,0,0.15)" }} // Fix for border color
 			>
 				<FontAwesome6 name="clock" size={14} color={Colors.light.text} />
-				<Text style={styles.text}>{item}</Text>
+				<Text className="text-lg font-zain-bold">{item}</Text>
 			</TouchableOpacity>
 		);
 	}
 
 	return (
-		<View style={styles.mainContainer}>
-			<View style={styles.row}>
-				<Text style={[styles.text]}>Previous searches</Text>
+		<View className="flex-1">
+			<View className="flex-row items-center justify-between mx-[20] pb-[10] px-[5]">
+				<Text className="text-lg font-zain-bold">Previous searches</Text>
 				<TouchableOpacity onPress={() => clearSearch()}>
-					<Text style={[styles.text, { color: Colors.light.themeColor }]}>
-						Clear
-					</Text>
+					<Text className="text-lg font-zain-bold text-theme">Clear</Text>
 				</TouchableOpacity>
 			</View>
-			<View style={styles.container}>
+			<View
+				className="flex-1 border-t-[1]"
+				style={{ borderColor: "rgba(0,0,0,0.15)" }}
+			>
 				<FlatList
 					keyboardShouldPersistTaps={"handled"}
 					style={{ flex: 1 }}
@@ -70,38 +65,3 @@ export function PreviousSearches({
 		</View>
 	);
 }
-
-const styles = StyleSheet.create({
-	mainContainer: {
-		flex: 1,
-	},
-	container: {
-		flex: 1,
-		borderTopWidth: 1,
-		borderColor: "rgba(0,0,0,0.15)",
-	},
-	row: {
-		flexDirection: "row",
-		alignItems: "center",
-		justifyContent: "space-between",
-		marginHorizontal: 20,
-		paddingBottom: 10,
-		paddingHorizontal: 5,
-	},
-	box: {
-		marginHorizontal: 20,
-		paddingHorizontal: 5,
-		paddingVertical: 10,
-		flexDirection: "row",
-		gap: 12,
-		alignItems: "center",
-		borderBottomWidth: 1,
-		borderStyle: "solid",
-		borderColor: "rgba(0,0,0,0.15)",
-	},
-	text: {
-		fontFamily: "Zain-Bold",
-		fontSize: 18,
-		color: Colors.light.text,
-	},
-});

@@ -24,7 +24,7 @@ export default function HomeScreen() {
 					</ListingPresenterTitle>
 					<NearbyListings />
 				</ListingPresenter>
-				<ListingPresenter style={{ marginTop: 10 }}>
+				<ListingPresenter className="mt-[10]">
 					<ListingPresenterTitle>
 						<Text className="text-2xl">Long-term works</Text>
 					</ListingPresenterTitle>
