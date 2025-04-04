@@ -1,9 +1,10 @@
 import { Colors } from "@/constants/Colors";
 import { FontAwesome, MaterialCommunityIcons } from "@expo/vector-icons";
 import { ReactNode } from "react";
-import { FlatList, StyleSheet, Text, View } from "react-native";
+import { FlatList, View } from "react-native";
 import { SearchUrgentWorks } from "./SearchUrgentWorks";
-import { Footer } from "@/components/Footer";
+import { Text } from "../Text";
+import { cn } from "@/utils/cn";
 
 const categoriesData = [
 	{
@@ -55,32 +56,17 @@ export function CategorySlider() {
 	}) {
 		return (
 			<View
-				style={[
-					styles.card,
-					index === categoriesData.length - 1 && { marginRight: 0 },
-				]}
+				className={cn(
+					"bg-white shadow-md rounded-lg w-[120] mb-[15] mr-[10]",
+					index === categoriesData.length - 1 && "mr-0"
+				)}
 			>
-				<View style={styles.iconContainer}>{item.icon}</View>
-				<View style={styles.textContainer}>
-					<Text
-						style={[
-							styles.text,
-							{
-								fontSize: 16,
-							},
-						]}
-					>
-						{item.title}
-					</Text>
-					<Text
-						style={[
-							styles.text,
-							{
-								color: Colors.light.muted,
-								marginTop: -8,
-							},
-						]}
-					>
+				<View className="bg-[#D9D9D9] rounded-t-lg w-[120] h-[120] flex-row items-center justify-center">
+					{item.icon}
+				</View>
+				<View className="p-[10]">
+					<Text>{item.title}</Text>
+					<Text className="text-muted mt-[-8]">
 						{item.activeJobs} active jobs
 					</Text>
 				</View>
@@ -103,64 +89,11 @@ export function CategorySlider() {
 
 export function SearchRecentJobs() {
 	return (
-		<View style={styles.container}>
-			<Text
-				style={[
-					styles.text,
-					{ fontFamily: "Zain-Bold", fontSize: 22, marginVertical: 8 },
-				]}
-			>
-				Categories
-			</Text>
+		<View className="mx-[20] flex-1">
+			<Text className="text-2xl my-[8] font-zain-bold">Categories</Text>
 			<CategorySlider />
-			<Text
-				style={[
-					styles.text,
-					{ fontFamily: "Zain-Bold", fontSize: 22, marginBottom: 8 },
-				]}
-			>
-				Urgent works
-			</Text>
+			<Text className="text-2xl font-zain-bold mb-[8]">Urgent works</Text>
 			<SearchUrgentWorks />
 		</View>
 	);
 }
-
-const styles = StyleSheet.create({
-	container: {
-		marginHorizontal: 20,
-		flex: 1,
-	},
-	text: {
-		fontFamily: "Zain",
-		fontSize: 14,
-		color: Colors.light.text,
-	},
-	card: {
-		backgroundColor: "white",
-		elevation: 2,
-		shadowOffset: {
-			width: 0,
-			height: 2,
-		},
-		shadowRadius: 2,
-		shadowOpacity: 0.15,
-		borderRadius: 8,
-		width: 120,
-		marginBottom: 15,
-		marginRight: 10,
-	},
-	iconContainer: {
-		backgroundColor: "#D9D9D9",
-		borderTopLeftRadius: 8,
-		borderTopRightRadius: 8,
-		width: 120,
-		height: 120,
-		flexDirection: "row",
-		alignItems: "center",
-		justifyContent: "center",
-	},
-	textContainer: {
-		padding: 10,
-	},
-});

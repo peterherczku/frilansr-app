@@ -1,9 +1,6 @@
 import {
 	Keyboard,
 	Platform,
-	Pressable,
-	StyleSheet,
-	Text,
 	TextInput,
 	TouchableOpacity,
 	View,
@@ -16,6 +13,7 @@ import { PreviousSearches } from "@/components/ui/jobs/PreviousSearches";
 import { SearchSuggestions } from "@/components/ui/jobs/SearchSuggestions";
 import { SearchRecentJobs } from "./SearchRecentJobs";
 import { usePreviousSearches } from "@/hooks/usePreviousSearches";
+import { cn } from "@/utils/cn";
 
 const searchResults = [
 	{
@@ -112,21 +110,29 @@ export function SearchBar() {
 	}
 
 	return (
-		<View style={styles.container}>
-			<View style={styles.inputBox}>
-				<TouchableOpacity onPress={back} style={{ padding: 5 }}>
+		<View className="flex-1">
+			<View
+				className={cn(
+					"bg-[#D9D9D9] mx-[20] rounded-lg mb-[10] flex-row items-center",
+					Platform.OS === "ios" && "py-[12]"
+				)}
+			>
+				<TouchableOpacity onPress={back} className="p-[5]">
 					<Ionicons name="chevron-back" size={20} color={Colors.light.muted} />
 				</TouchableOpacity>
 				<TextInput
 					onFocus={() => setSearching(true)}
 					placeholder={"Search job, workplace, etc."}
-					style={styles.input}
+					className={cn(
+						"text-muted font-zain text-[17] mt-[3.5] flex-1",
+						Platform.OS === "ios" && "ml-[5]"
+					)}
 					value={searchInput}
 					onChangeText={(text) => setSearchInput(text)}
 					onSubmitEditing={() => search()}
 				/>
 				{searchInput.trim() != "" && (
-					<TouchableOpacity onPress={clearInput} style={{ paddingRight: 15 }}>
+					<TouchableOpacity onPress={clearInput} className="pr-[15]">
 						<Ionicons
 							name="close-circle"
 							size={20}
@@ -151,34 +157,3 @@ export function SearchBar() {
 		</View>
 	);
 }
-
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-	},
-	inputBox: {
-		backgroundColor: "#D9D9D9",
-		marginHorizontal: 20,
-		borderRadius: 8,
-		marginBottom: 10,
-		flexDirection: "row",
-		alignItems: "center",
-		...Platform.select({
-			ios: {
-				paddingVertical: 12,
-			},
-		}),
-	},
-	input: {
-		color: Colors.light.muted,
-		fontFamily: "Zain",
-		fontSize: 17,
-		marginTop: 3.5,
-		flex: 1,
-		...Platform.select({
-			ios: {
-				marginLeft: 5,
-			},
-		}),
-	},
-});
