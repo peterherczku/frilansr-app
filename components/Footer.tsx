@@ -1,5 +1,5 @@
-import {View} from "react-native";
+import { View } from "react-native";
 
 export function Footer() {
-    return <View style={{height: 70}} />
+	return <View className="h-[70]" />;
 }

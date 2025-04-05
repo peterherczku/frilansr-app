@@ -1,7 +1,12 @@
-import { Colors } from "@/constants/Colors";
 import { useListing } from "@/hooks/listing/useListing";
-import { Image } from "expo-image";
-import { StyleSheet, Text, View } from "react-native";
+import { Image as ExpoImage } from "expo-image";
+import { remapProps } from "nativewind";
+import { View } from "react-native";
+import { Text } from "../Text";
+
+const Image = remapProps(ExpoImage, {
+	className: "style",
+});
 
 export function ListingJobLister({ id }: { id: string }) {
 	const { listing, isLoading, error } = useListing(id as string);
@@ -21,43 +26,21 @@ export function ListingJobLister({ id }: { id: string }) {
 	}
 
 	return (
-		<View style={{ marginVertical: 20 }}>
-			<Text style={[styles.text, { fontFamily: "Zain-Bold", fontSize: 22 }]}>
-				About the Job Lister
-			</Text>
-			<Text style={[styles.text, { marginTop: -6, color: Colors.light.muted }]}>
+		<View className="my-[20]">
+			<Text className="zain-bold text-2xl">About the Job Lister</Text>
+			<Text className="mt-[-6] text-muted">
 				More information will be revealed after taking the job
 			</Text>
-			<View
-				style={{
-					marginTop: 10,
-					marginBottom: 70,
-					flexDirection: "row",
-					alignItems: "center",
-					gap: 15,
-				}}
-			>
+			<View className="mt-[10] mb-[70] flex-row items-center gap-[15]">
 				<Image
 					source={{ uri: listing.user.imageUrl }}
-					style={{
-						width: 100,
-						height: 100,
-						backgroundColor: "#d9d9d9",
-						borderRadius: 100,
-					}}
+					className="w-[100] h-[100] rounded-full bg-[#d9d9d9]"
 				/>
 				<View>
-					<Text
-						style={[styles.text, { fontFamily: "Zain-Bold", fontSize: 20 }]}
-					>
-						{listing.user.name}
-					</Text>
+					<Text className="zain-bold text-xl">{listing.user.name}</Text>
 					<Text
 						numberOfLines={2}
-						style={[
-							styles.text,
-							{ color: Colors.light.muted, lineHeight: 20, maxWidth: 200 },
-						]}
+						className="text-muted leading-[20] max-w-[200]"
 					>
 						Pellentesque tincidunt lectus et mi lacinia interdum. Nam sit amet
 						metus.
@@ -67,11 +50,3 @@ export function ListingJobLister({ id }: { id: string }) {
 		</View>
 	);
 }
-
-const styles = StyleSheet.create({
-	text: {
-		fontFamily: "Zain",
-		color: Colors.light.text,
-		fontSize: 16,
-	},
-});

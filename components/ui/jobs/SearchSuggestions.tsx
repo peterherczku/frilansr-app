@@ -1,13 +1,8 @@
-import {
-	FlatList,
-	StyleSheet,
-	Text,
-	TouchableOpacity,
-	View,
-} from "react-native";
-import { useMemo, useState } from "react";
-import { FontAwesome6, Ionicons } from "@expo/vector-icons";
+import { FlatList, TouchableOpacity, View } from "react-native";
+import { useMemo } from "react";
+import { Ionicons } from "@expo/vector-icons";
 import { Colors } from "@/constants/Colors";
+import { Text } from "../Text";
 
 export function SearchSuggestions({
 	searchInput,
@@ -18,9 +13,15 @@ export function SearchSuggestions({
 }) {
 	function renderItem({ item }: { item: string }) {
 		return (
-			<TouchableOpacity onPress={() => onSearch(item)} style={[styles.box]}>
+			<TouchableOpacity
+				onPress={() => onSearch(item)}
+				className="mx-[20] px-[5] py-[10] flex-row gap-[12] items-center border-b-[1] border-solid"
+				style={{
+					borderColor: "rgba(0,0,0,0.15)",
+				}}
+			>
 				<Ionicons name="search" size={24} color={Colors.light.text} />
-				<Text style={styles.text}>{item}</Text>
+				<Text className="font-zain-bold text-lg">{item}</Text>
 			</TouchableOpacity>
 		);
 	}
@@ -30,11 +31,18 @@ export function SearchSuggestions({
 	}, [searchInput]);
 
 	return (
-		<View style={styles.mainContainer}>
-			<View style={styles.row}>
-				<Text style={[styles.text]}>Suggestions ({suggestions.length})</Text>
+		<View className="flex-1">
+			<View className="flex-row items-center justify-between mx-[20] pb-[10] px-[5]">
+				<Text className="font-zain-bold text-lg">
+					Suggestions ({suggestions.length})
+				</Text>
 			</View>
-			<View style={styles.container}>
+			<View
+				className="flex-1 border-t-[1]"
+				style={{
+					borderColor: "rgba(0,0,0,0.15)",
+				}}
+			>
 				<FlatList
 					keyboardShouldPersistTaps={"handled"}
 					data={suggestions}
@@ -45,38 +53,3 @@ export function SearchSuggestions({
 		</View>
 	);
 }
-
-const styles = StyleSheet.create({
-	mainContainer: {
-		flex: 1,
-	},
-	container: {
-		flex: 1,
-		borderTopWidth: 1,
-		borderColor: "rgba(0,0,0,0.15)",
-	},
-	row: {
-		flexDirection: "row",
-		alignItems: "center",
-		justifyContent: "space-between",
-		marginHorizontal: 20,
-		paddingBottom: 10,
-		paddingHorizontal: 5,
-	},
-	box: {
-		marginHorizontal: 20,
-		paddingHorizontal: 5,
-		paddingVertical: 10,
-		flexDirection: "row",
-		gap: 12,
-		alignItems: "center",
-		borderBottomWidth: 1,
-		borderStyle: "solid",
-		borderColor: "rgba(0,0,0,0.15)",
-	},
-	text: {
-		fontFamily: "Zain-Bold",
-		fontSize: 18,
-		color: Colors.light.text,
-	},
-});

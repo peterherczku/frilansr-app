@@ -1,12 +1,9 @@
-import { Text, TouchableOpacity, View } from "react-native";
+import { TouchableOpacity, View } from "react-native";
 import { SettingsSection, SettingsSectionItemCard } from "../SettingsSection";
-import {
-	FontAwesome,
-	Fontisto,
-	MaterialCommunityIcons,
-} from "@expo/vector-icons";
+import { FontAwesome, MaterialCommunityIcons } from "@expo/vector-icons";
 import { Colors } from "@/constants/Colors";
 import { router } from "expo-router";
+import { Text } from "../../Text";
 
 const cardOptions = [
 	{
@@ -33,21 +30,9 @@ export function CardOptions() {
 	}) {
 		return (
 			<SettingsSectionItemCard key={id.toString()}>
-				<View
-					style={{
-						flexDirection: "row",
-						justifyContent: "space-between",
-						alignItems: "center",
-					}}
-				>
-					<View style={{ flexDirection: "row", alignItems: "center", gap: 12 }}>
-						<View
-							style={{
-								backgroundColor: "#D9D9D9",
-								padding: 5,
-								borderRadius: 8,
-							}}
-						>
+				<View className="flex-row justify-between items-center">
+					<View className="flex-row items-center gap-[12]">
+						<View className="bg-[#d9d9d9] rounded-lg p-[5]">
 							<MaterialCommunityIcons
 								name="bank"
 								size={24}
@@ -55,54 +40,22 @@ export function CardOptions() {
 							/>
 						</View>
 						<View>
-							<View style={{ flexDirection: "row", gap: 10 }}>
+							<View className="flex-row gap-[10]">
 								<FontAwesome
 									name="cc-mastercard"
 									size={21}
 									color={Colors.light.text}
 								/>
-								<Text
-									style={[
-										styles.text,
-										{ fontFamily: "Zain-Bold", fontSize: 16 },
-									]}
-								>
-									MASTER CARD
-								</Text>
+								<Text className="font-zain-bold">MASTER CARD</Text>
 							</View>
-							<Text
-								style={[
-									styles.text,
-									{
-										fontFamily: "Zain-Bold",
-										color: Colors.light.muted,
-										fontSize: 13,
-									},
-								]}
-							>
+							<Text className="text-muted font-zain-bold text-[13]">
 								{cardNumber}
 							</Text>
 						</View>
 					</View>
 					{isDefault && (
-						<View
-							style={{
-								backgroundColor: "#D9D9D9",
-								paddingVertical: 4,
-								paddingHorizontal: 10,
-								borderRadius: 6,
-							}}
-						>
-							<Text
-								style={[
-									styles.text,
-									{
-										fontFamily: "Zain-ExtraBold",
-									},
-								]}
-							>
-								Default
-							</Text>
+						<View className="bg-[#d9d9d9] py-[4] px-[10] rounded-md">
+							<Text className="font-zain-extrabold">Default</Text>
 						</View>
 					)}
 				</View>
@@ -114,31 +67,11 @@ export function CardOptions() {
 		<SettingsSection title="Attached cards">
 			{cardOptions.map((option) => renderCardOption(option))}
 			<TouchableOpacity
-				style={{
-					backgroundColor: Colors.light.themeColor,
-					marginHorizontal: 20,
-					marginTop: 10,
-					marginBottom: 20,
-					padding: 7,
-					flexDirection: "row",
-					justifyContent: "center",
-					borderRadius: 8,
-				}}
+				className="bg-theme mx-[20] mt-[10] mb-[20] py-[7] flex-row justify-center rounded-lg"
 				onPress={() => router.push("/(settings)/(payment)/attach-new-card")}
 			>
-				<Text
-					style={[styles.text, { color: "white", fontFamily: "Zain-Bold" }]}
-				>
-					Attach new card
-				</Text>
+				<Text className="text-white font-zain-bold">Attach new card</Text>
 			</TouchableOpacity>
 		</SettingsSection>
 	);
 }
-const styles = {
-	text: {
-		color: Colors.light.text,
-		fontSize: 16,
-		fontFamily: "Zain",
-	},
-};

@@ -1,8 +1,9 @@
-import { Text, TouchableOpacity, View } from "react-native";
+import { TouchableOpacity, View } from "react-native";
 import { SettingsSection, SettingsSectionItemCard } from "../SettingsSection";
-import { Fontisto, MaterialCommunityIcons } from "@expo/vector-icons";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Colors } from "@/constants/Colors";
 import { router } from "expo-router";
+import { Text } from "../../Text";
 
 const payoutOptions = [
 	{
@@ -29,21 +30,9 @@ export function PayoutOptions() {
 	}) {
 		return (
 			<SettingsSectionItemCard key={id.toString()}>
-				<View
-					style={{
-						flexDirection: "row",
-						justifyContent: "space-between",
-						alignItems: "center",
-					}}
-				>
-					<View style={{ flexDirection: "row", alignItems: "center", gap: 12 }}>
-						<View
-							style={{
-								backgroundColor: "#D9D9D9",
-								padding: 5,
-								borderRadius: 8,
-							}}
-						>
+				<View className="flex-row justify-between items-center">
+					<View className="flex-row items-center gap-[12]">
+						<View className="bg-[#d9d9d9] rounded-lg p-[5]">
 							<MaterialCommunityIcons
 								name="bank"
 								size={24}
@@ -51,45 +40,20 @@ export function PayoutOptions() {
 							/>
 						</View>
 						<View>
-							<Text
-								style={[styles.text, { fontFamily: "Zain-Bold", fontSize: 16 }]}
-							>
-								BANK ACCOUNT
-							</Text>
-							<Text
-								style={[
-									styles.text,
-									{
-										fontFamily: "Zain-Bold",
-										color: Colors.light.muted,
-										fontSize: 13,
-									},
-								]}
-							>
+							<Text className="font-zain-bold">BANK ACCOUNT</Text>
+							<Text className="text-muted font-zain-bold text-[13]">
 								{accountNumber}
 							</Text>
 						</View>
 					</View>
 					{active && (
 						<View
+							className="py-[4] px-[10] rounded-md"
 							style={{
 								backgroundColor: "rgba(85, 147, 62, 0.3)",
-								paddingVertical: 4,
-								paddingHorizontal: 10,
-								borderRadius: 6,
 							}}
 						>
-							<Text
-								style={[
-									styles.text,
-									{
-										color: Colors.light.themeColor,
-										fontFamily: "Zain-ExtraBold",
-									},
-								]}
-							>
-								Active
-							</Text>
+							<Text className="text-theme font-zain-extrabold">Active</Text>
 						</View>
 					)}
 				</View>
@@ -101,31 +65,11 @@ export function PayoutOptions() {
 		<SettingsSection title="Payout options">
 			{payoutOptions.map((option) => renderPayoutOption(option))}
 			<TouchableOpacity
-				style={{
-					backgroundColor: Colors.light.themeColor,
-					marginHorizontal: 20,
-					marginTop: 10,
-					marginBottom: 20,
-					padding: 7,
-					flexDirection: "row",
-					justifyContent: "center",
-					borderRadius: 8,
-				}}
+				className="mx-[20] mt-[10] mb-[20] p-[7] flex-row justify-center rounded-lg"
 				onPress={() => router.push("/(settings)/(payment)/add-payout-option")}
 			>
-				<Text
-					style={[styles.text, { color: "white", fontFamily: "Zain-Bold" }]}
-				>
-					Add payout option
-				</Text>
+				<Text className="text-white font-zain-bold">Add payout option</Text>
 			</TouchableOpacity>
 		</SettingsSection>
 	);
 }
-const styles = {
-	text: {
-		color: Colors.light.text,
-		fontSize: 16,
-		fontFamily: "Zain",
-	},
-};

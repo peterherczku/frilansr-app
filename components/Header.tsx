@@ -1,16 +1,17 @@
-import {
-	Pressable,
-	StyleSheet,
-	Text,
-	TouchableOpacity,
-	View,
-} from "react-native";
+import { TouchableOpacity, View } from "react-native";
 import { Feather, Ionicons } from "@expo/vector-icons";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { Colors } from "@/constants/Colors";
 import { useRouter } from "expo-router";
-import { Image } from "expo-image";
+import { Image as ExpoImage } from "expo-image";
 import { SignedIn, SignedOut, useAuth, useUser } from "@clerk/clerk-expo";
+import { remapProps } from "nativewind";
+import { Text } from "./ui/Text";
+import { cn } from "@/utils/cn";
+
+const Image = remapProps(ExpoImage, {
+	className: "style",
+});
 
 export function Header() {
 	const { isSignedIn, user } = useUser();
@@ -30,41 +31,30 @@ export function Header() {
 	}
 
 	return (
-		<View
-			style={[
-				styles.row,
-				styles.container,
-				styles.itemsCenter,
-				styles.justifyBetween,
-			]}
-		>
-			<TouchableOpacity onPress={handleLogoPressed} style={[styles.row]}>
-				<Text style={[styles.text, styles.title]}>fri</Text>
-				<Text style={[styles.text, styles.title, styles.titleGreen]}>
-					lansr.
-				</Text>
+		<View className="flex-row pb-[20] px-[20] items-center justify-between">
+			<TouchableOpacity onPress={handleLogoPressed} className="flex-row">
+				<Text className="text-[28] font-zain-extrabold">fri</Text>
+				<Text className="text-[28] font-zain-extrabold text-theme">lansr.</Text>
 			</TouchableOpacity>
-			<View style={[styles.row, styles.itemsCenter, styles.headerRight]}>
-				<TouchableOpacity style={[styles.row, styles.itemsCenter]}>
-					<Text style={[styles.text]}>Current location</Text>
+			<View className="flex-row items-center gap-[10]">
+				<TouchableOpacity className="flex-row items-center">
+					<Text>Current location</Text>
 					<Feather
 						name="chevron-down"
 						size={22}
 						color={Colors[color ?? "light"].text}
 					/>
 				</TouchableOpacity>
-				<TouchableOpacity
-					style={styles.messagesView}
-					onPress={handleMessagesPressed}
-				>
+				<TouchableOpacity className="relative" onPress={handleMessagesPressed}>
 					<View
-						style={
-							isSignedIn
-								? [styles.notificationsView]
-								: [styles.notificationsView, styles.notificationsViewZero]
-						}
+						className={cn(
+							"absolute right-[-3] top-[-3] bg-theme rounded-full w-[18] h-[18] z-[100] items-center justify-center",
+							!isSignedIn && "bg-muted"
+						)}
 					>
-						<Text style={styles.notificationsText}>{isSignedIn ? 3 : 0}</Text>
+						<Text className="text-white font-zain-bold text-[13]">
+							{isSignedIn ? 3 : 0}
+						</Text>
 					</View>
 					<Ionicons
 						name={"chatbox-ellipses-outline"}
@@ -75,14 +65,14 @@ export function Header() {
 				<SignedOut>
 					<TouchableOpacity
 						onPress={handleProfilePressOnSignedOut}
-						style={styles.profilePicture}
+						className="w-[35] h-[35] rounded-full bg-[#d9d9d9]"
 					></TouchableOpacity>
 				</SignedOut>
 				<SignedIn>
 					<TouchableOpacity onPress={() => router.push("/profile")}>
 						<Image
 							source={{ uri: user?.imageUrl }}
-							style={styles.profilePicture}
+							className="w-[35] h-[35] rounded-full bg-[#d9d9d9]"
 						/>
 					</TouchableOpacity>
 				</SignedIn>
@@ -90,64 +80,3 @@ export function Header() {
 		</View>
 	);
 }
-
-const styles = StyleSheet.create({
-	text: {
-		fontFamily: "Zain",
-		fontSize: 16,
-	},
-	title: {
-		fontSize: 28,
-		fontFamily: "Zain-ExtraBold",
-	},
-	titleGreen: {
-		color: Colors.light.themeColor,
-	},
-	row: {
-		display: "flex",
-		flexDirection: "row",
-	},
-	justifyBetween: {
-		justifyContent: "space-between",
-	},
-	itemsCenter: {
-		alignItems: "center",
-	},
-	container: {
-		paddingBottom: 20,
-		paddingHorizontal: 20,
-	},
-	messagesView: {
-		position: "relative",
-	},
-	headerRight: {
-		gap: 10,
-	},
-	notificationsView: {
-		position: "absolute",
-		right: -3,
-		top: -3,
-		backgroundColor: Colors.light.themeColor,
-		borderRadius: 50,
-		width: 18,
-		height: 18,
-		zIndex: 100,
-		display: "flex",
-		alignItems: "center",
-		justifyContent: "center",
-	},
-	notificationsViewZero: {
-		backgroundColor: Colors.light.muted,
-	},
-	notificationsText: {
-		color: "#fff",
-		fontFamily: "Zain-Bold",
-		fontSize: 13,
-	},
-	profilePicture: {
-		width: 35,
-		height: 35,
-		borderRadius: 50,
-		backgroundColor: "#D9D9D9",
-	},
-});

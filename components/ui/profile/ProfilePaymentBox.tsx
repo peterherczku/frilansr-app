@@ -1,7 +1,8 @@
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { TouchableOpacity, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { Colors } from "@/constants/Colors";
 import { ReactNode } from "react";
+import { Text } from "../Text";
 
 export function ProfilePaymentBoxItem({
 	title,
@@ -13,12 +14,13 @@ export function ProfilePaymentBoxItem({
 	onPress?: () => void;
 }) {
 	return (
-		<TouchableOpacity onPress={onPress} style={styles.box}>
+		<TouchableOpacity
+			onPress={onPress}
+			className="flex-row justify-between items-center py-[12]"
+		>
 			<View>
-				<Text style={styles.text}>{title}</Text>
-				{subtitle && (
-					<Text style={[styles.text, styles.subtitle]}>{subtitle}</Text>
-				)}
+				<Text className="text-lg">{title}</Text>
+				{subtitle && <Text className="text-muted mt-[-5]">{subtitle}</Text>}
 			</View>
 			<Ionicons name="chevron-forward" size={24} color={Colors.light.text} />
 		</TouchableOpacity>
@@ -26,37 +28,9 @@ export function ProfilePaymentBoxItem({
 }
 
 export function ProfilePaymentBox({ children }: { children: ReactNode }) {
-	return <View style={styles.container}>{children}</View>;
+	return (
+		<View className="m-[20] bg-white shadow-md px-[12] rounded-lg">
+			{children}
+		</View>
+	);
 }
-
-const styles = StyleSheet.create({
-	container: {
-		margin: 20,
-		backgroundColor: "white",
-		elevation: 2,
-		shadowOffset: {
-			width: 0,
-			height: 0,
-		},
-		shadowRadius: 2,
-		shadowOpacity: 0.25,
-		borderRadius: 8,
-		paddingHorizontal: 12,
-	},
-	box: {
-		flexDirection: "row",
-		justifyContent: "space-between",
-		alignItems: "center",
-		paddingVertical: 12,
-	},
-	text: {
-		fontFamily: "Zain",
-		fontSize: 18,
-		color: Colors.light.text,
-	},
-	subtitle: {
-		fontSize: 16,
-		color: Colors.light.muted,
-		marginTop: -5,
-	},
-});

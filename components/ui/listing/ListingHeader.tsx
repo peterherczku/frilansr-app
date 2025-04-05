@@ -1,11 +1,16 @@
 import ParallaxScrollView from "@/components/ParallaxScrollView";
 import { Colors } from "@/constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
-import { Image } from "expo-image";
+import { Image as ExpoImage } from "expo-image";
 import { router, useFocusEffect } from "expo-router";
 import { setStatusBarStyle } from "expo-status-bar";
-import { ReactNode, useCallback, useEffect } from "react";
-import { StatusBar, StyleSheet, TouchableOpacity, View } from "react-native";
+import { remapProps } from "nativewind";
+import { ReactNode, useCallback } from "react";
+import { StatusBar, TouchableOpacity, View } from "react-native";
+
+const Image = remapProps(ExpoImage, {
+	className: "style",
+});
 
 export function ListingHeader({ children }: { children: ReactNode }) {
 	useFocusEffect(
@@ -26,14 +31,19 @@ export function ListingHeader({ children }: { children: ReactNode }) {
 			<ParallaxScrollView
 				headerBackgroundColor={{ light: "#D0D0D0", dark: "#353636" }}
 				headerImage={
-					<View style={styles.imageContainer}>
+					<View className="w-full h-full relative z-[50]">
 						<Image
 							source={{
 								uri: "https://i.ytimg.com/vi/fa3Slv2i0Uw/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLAWGk8rcsk5pPehDJ-uhCLmw0q9EA",
 							}}
-							style={styles.image}
+							className={"w-full h-full z-[50]"}
 						/>
-						<View style={styles.imageOverlay} />
+						<View
+							className="w-full h-full absolute top-0 left-0 z-[51]"
+							style={{
+								backgroundColor: "rgba(0,0,0,0.4)",
+							}}
+						/>
 					</View>
 				}
 			>
@@ -41,7 +51,10 @@ export function ListingHeader({ children }: { children: ReactNode }) {
 			</ParallaxScrollView>
 			<TouchableOpacity
 				onPress={back}
-				style={[styles.button, styles.backButton]}
+				className="z-[10] bg-white rounded-[50] p-[8] w-[40] h-[40] shadow-md absolute left-[25]"
+				style={{
+					top: (StatusBar.currentHeight || 50) + 10, // Ensure it is below the notch
+				}}
 			>
 				<Ionicons
 					name="chevron-back"
@@ -50,7 +63,12 @@ export function ListingHeader({ children }: { children: ReactNode }) {
 					color={Colors.light.text}
 				/>
 			</TouchableOpacity>
-			<TouchableOpacity style={[styles.button, styles.heartButton]}>
+			<TouchableOpacity
+				className="z-[10] bg-white rounded-[50] p-[8] w-[40] h-[40] shadow-md absolute right-[25]"
+				style={{
+					top: (StatusBar.currentHeight || 50) + 10, // Ensure it is below the notch
+				}}
+			>
 				<Ionicons
 					name="heart-outline"
 					size={25}
@@ -61,51 +79,3 @@ export function ListingHeader({ children }: { children: ReactNode }) {
 		</>
 	);
 }
-
-const styles = StyleSheet.create({
-	imageContainer: {
-		width: "100%",
-		height: "100%",
-		position: "relative",
-		zIndex: 50,
-	},
-	imageOverlay: {
-		width: "100%",
-		height: "100%",
-		position: "absolute",
-		top: 0,
-		left: 0,
-		backgroundColor: "rgba(0,0,0,0.4)",
-		zIndex: 51,
-	},
-	image: {
-		width: "100%",
-		height: "100%",
-		zIndex: 50,
-	},
-	button: {
-		zIndex: 10,
-		backgroundColor: "white",
-		borderRadius: 50,
-		padding: 8,
-		width: 40,
-		height: 40,
-		elevation: 2,
-		shadowOffset: {
-			width: 0,
-			height: 0,
-		},
-		shadowRadius: 2,
-		shadowOpacity: 0.25,
-	},
-	backButton: {
-		position: "absolute",
-		top: (StatusBar.currentHeight || 50) + 10, // Ensure it is below the notch
-		left: 25,
-	},
-	heartButton: {
-		position: "absolute",
-		top: (StatusBar.currentHeight || 50) + 10, // Ensure it is below the notch
-		right: 25,
-	},
-});

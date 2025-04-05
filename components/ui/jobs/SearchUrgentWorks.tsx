@@ -1,15 +1,10 @@
-import { Footer } from "@/components/Footer";
 import { Colors } from "@/constants/Colors";
 import { FontAwesome6 } from "@expo/vector-icons";
-import { Image } from "expo-image";
+import { Image as ExpoImage } from "expo-image";
 import { router } from "expo-router";
-import {
-	FlatList,
-	StyleSheet,
-	Text,
-	TouchableOpacity,
-	View,
-} from "react-native";
+import { remapProps } from "nativewind";
+import { FlatList, TouchableOpacity, View } from "react-native";
+import { Text } from "../Text";
 
 const urgentWorkData = [
 	{
@@ -34,6 +29,10 @@ const urgentWorkData = [
 	},
 ];
 
+const Image = remapProps(ExpoImage, {
+	className: "style",
+});
+
 export function SearchUrgentWorks() {
 	function renderItem({
 		item,
@@ -50,59 +49,55 @@ export function SearchUrgentWorks() {
 	}) {
 		return (
 			<TouchableOpacity
-				style={styles.card}
+				className="bg-white shadow-md mb-[20] mx-[2] rounded-lg"
 				onPress={() => router.push(`/(listing)/${item.id}`)}
 			>
-				<View style={styles.imageContainer}>
-					<Image source={{ uri: item.image }} style={styles.image} />
-					<View style={styles.imageOverlay} />
-					<View style={styles.label}>
-						<Text
-							style={[styles.text, { fontFamily: "Zain-Bold", fontSize: 18 }]}
-						>
-							Urgent work
-						</Text>
+				<View className="relative">
+					<Image
+						source={{ uri: item.image }}
+						className="flex-1 h-[200] rounded-t-lg"
+					/>
+					<View
+						className="absolute top-0 left-0 w-full h-[200] rounded-t-lg z-[10]"
+						style={{
+							backgroundColor: "rgba(0,0,0,0.4)",
+						}}
+					/>
+					<View
+						className="absoltue z-[15] bottom-[10] left-[10] py-[5] px-[15] rounded-md"
+						style={{
+							backgroundColor: "rgba(255, 255, 255, 0.7)",
+						}}
+					>
+						<Text className="zain-bold text-lg">Urgent work</Text>
 					</View>
 				</View>
 				<View style={{ padding: 8 }}>
-					<Text
-						style={[styles.text, { fontSize: 20, fontFamily: "Zain-Bold" }]}
-					>
-						{item.title}
-					</Text>
-					<Text
-						style={[styles.text, { marginTop: -8, color: Colors.light.muted }]}
-					>
-						{item.category}
-					</Text>
-					<View style={[styles.row]}>
-						<View style={[styles.row]}>
+					<Text className="zain-bold text-xl">{item.title}</Text>
+					<Text className="mt-[-8] text-muted">{item.category}</Text>
+					<View className="flex-row items-center gap-[5]">
+						<View className="flex-row items-center gap-[5]">
 							<FontAwesome6
 								name="sack-dollar"
 								size={12}
 								color={Colors.light.muted}
 							/>
-							<Text style={[styles.text, styles.detailText]}>
-								{item.salary}
-							</Text>
+
+							<Text className="text-muted">{item.salary}</Text>
 						</View>
-						<View style={styles.separator} />
-						<View style={[styles.row]}>
+						<View className="w-[4] h-[4] rounded-full bg-muted" />
+						<View className="flex-row items-center gap-[5]">
 							<FontAwesome6 name="clock" size={12} color={Colors.light.muted} />
-							<Text style={[styles.text, styles.detailText]}>
-								{item.duration}
-							</Text>
+							<Text className="text-muted">{item.duration}</Text>
 						</View>
-						<View style={styles.separator} />
-						<View style={[styles.row]}>
+						<View className="w-[4] h-[4] rounded-full bg-muted" />
+						<View className="flex-row items-center gap-[5]">
 							<FontAwesome6
 								name="map-location-dot"
 								size={12}
 								color={Colors.light.muted}
 							/>
-							<Text style={[styles.text, styles.detailText]}>
-								{item.location}
-							</Text>
+							<Text className="text-muted">{item.location}</Text>
 						</View>
 					</View>
 				</View>
@@ -123,68 +118,3 @@ export function SearchUrgentWorks() {
 		</View>
 	);
 }
-
-const styles = StyleSheet.create({
-	card: {
-		backgroundColor: "white",
-		elevation: 2,
-		shadowOffset: {
-			width: 1,
-			height: 2,
-		},
-		shadowRadius: 2,
-		shadowOpacity: 0.2,
-		marginBottom: 20,
-		marginHorizontal: 2,
-		borderRadius: 8,
-	},
-	imageContainer: {
-		position: "relative",
-	},
-	image: {
-		flex: 1,
-		height: 200,
-		borderTopLeftRadius: 8,
-		borderTopRightRadius: 8,
-	},
-	imageOverlay: {
-		position: "absolute",
-		top: 0,
-		left: 0,
-		width: "100%",
-		height: 200,
-		backgroundColor: "rgba(0,0,0,0.4)",
-		zIndex: 10,
-		borderTopLeftRadius: 8,
-		borderTopRightRadius: 8,
-	},
-	label: {
-		position: "absolute",
-		zIndex: 15,
-		bottom: 10,
-		left: 10,
-		backgroundColor: "rgba(255, 255, 255, 0.7)",
-		paddingVertical: 5,
-		paddingHorizontal: 15,
-		borderRadius: 6,
-	},
-	text: {
-		color: Colors.light.text,
-		fontFamily: "Zain",
-		fontSize: 16,
-	},
-	row: {
-		flexDirection: "row",
-		alignItems: "center",
-		gap: 5,
-	},
-	detailText: {
-		color: Colors.light.muted,
-	},
-	separator: {
-		width: 4,
-		height: 4,
-		borderRadius: 80,
-		backgroundColor: Colors.light.muted,
-	},
-});

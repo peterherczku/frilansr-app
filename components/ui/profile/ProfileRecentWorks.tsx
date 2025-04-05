@@ -1,14 +1,14 @@
-import {
-	FlatList,
-	StyleSheet,
-	Text,
-	TouchableOpacity,
-	View,
-} from "react-native";
+import { TouchableOpacity, View } from "react-native";
 import { Colors } from "@/constants/Colors";
 import { FontAwesome6, Ionicons } from "@expo/vector-icons";
-import { Image } from "expo-image";
+import { Image as ExpoImage } from "expo-image";
 import { router } from "expo-router";
+import { remapProps } from "nativewind";
+import { Text } from "../Text";
+
+const Image = remapProps(ExpoImage, {
+	className: "style",
+});
 
 export function ProfileRecentWorks({
 	data,
@@ -31,35 +31,40 @@ export function ProfileRecentWorks({
 		duration: string;
 	}) {
 		return (
-			<TouchableOpacity key={item.id} style={styles.box}>
-				<View style={styles.imageContainer}>
-					<Image source={{ uri: item.image }} style={styles.image} />
-					<View style={styles.imageOverlay} />
+			<TouchableOpacity
+				key={item.id}
+				className="flex-row items-center gap-[12] my-[5]"
+			>
+				<View className="relative">
+					<Image
+						source={{ uri: item.image }}
+						className="w-[70] bg-[#d9d9d9] h-[70] rounded-lg"
+					/>
+					<View
+						className="absolute w-[70] h-[70] rounded-lg z-[100]"
+						style={{
+							backgroundColor: "rgba(0,0,0,0.25)",
+						}}
+					/>
 				</View>
-				<View style={styles.detailsContainer}>
+				<View className="flex-col">
 					<View>
-						<Text style={[styles.text]}>{item.title}</Text>
-						<Text style={[styles.text, styles.workTypeText]}>
-							{item.workType}
-						</Text>
+						<Text>{item.title}</Text>
+						<Text className="text-sm mt-[-5] text-muted">{item.workType}</Text>
 					</View>
-					<View style={styles.jobDetailsRow}>
-						<View style={styles.detailRow}>
+					<View className="flex-row gap-[10] items-center">
+						<View className="flex-row items-center gap-[6]">
 							<FontAwesome6
 								name="sack-dollar"
 								size={14}
 								color={Colors.light.muted}
 							/>
-							<Text style={[styles.text, styles.detailText]}>
-								{item.earnedMoney}
-							</Text>
+							<Text className="mt-[2] text-muted">{item.earnedMoney}</Text>
 						</View>
-						<View style={styles.separator} />
-						<View style={styles.detailRow}>
+						<View className="w-[6] h-[6] rounded-full bg-muted" />
+						<View className="flex-row items-center gap-[6]">
 							<FontAwesome6 name="clock" size={14} color={Colors.light.muted} />
-							<Text style={[styles.text, styles.detailText]}>
-								{item.duration}
-							</Text>
+							<Text className="mt-[2] text-muted">{item.duration}</Text>
 						</View>
 					</View>
 				</View>
@@ -68,16 +73,14 @@ export function ProfileRecentWorks({
 	}
 
 	return (
-		<View style={styles.container}>
-			<View style={[styles.headerRow]}>
-				<Text style={[styles.text, styles.header]}>Recent works</Text>
+		<View className="m-[20] flex-col gap-[10]">
+			<View className="flex-row justify-between items-center gap-[5]">
+				<Text className="text-[25] font-zain-bold">Recent works</Text>
 				<TouchableOpacity
-					style={styles.headerRow}
+					className="flex-row items-center justify-between gap-[5]"
 					onPress={() => router.navigate("/(tabs)/past-jobs")}
 				>
-					<Text style={[styles.text, styles.header, styles.headerLink]}>
-						See all
-					</Text>
+					<Text className="font-zain-bold text-2xl text-theme">See all</Text>
 					<Ionicons
 						name="chevron-forward"
 						size={24}
@@ -89,81 +92,3 @@ export function ProfileRecentWorks({
 		</View>
 	);
 }
-
-const styles = StyleSheet.create({
-	container: {
-		margin: 20,
-		flexDirection: "column",
-		gap: 10,
-	},
-	headerRow: {
-		flexDirection: "row",
-		justifyContent: "space-between",
-		alignItems: "center",
-		gap: 5,
-	},
-	header: {
-		fontSize: 25,
-		fontFamily: "Zain-Bold",
-	},
-	headerLink: {
-		fontSize: 22,
-		color: Colors.light.themeColor,
-	},
-	text: {
-		fontFamily: "Zain",
-		fontSize: 16,
-		color: Colors.light.text,
-	},
-	box: {
-		flexDirection: "row",
-		alignItems: "center",
-		gap: 12,
-		marginVertical: 5,
-	},
-	imageContainer: {
-		position: "relative",
-	},
-	image: {
-		width: 70,
-		height: 70,
-		backgroundColor: "#D9D9D9",
-		borderRadius: 8,
-	},
-	imageOverlay: {
-		position: "absolute",
-		width: 70,
-		height: 70,
-		backgroundColor: "rgba(0,0,0,0.25)",
-		borderRadius: 8,
-		zIndex: 100,
-	},
-	detailsContainer: {
-		flexDirection: "column",
-	},
-	workTypeText: {
-		color: Colors.light.muted,
-		marginTop: -5,
-		fontSize: 14,
-	},
-	jobDetailsRow: {
-		flexDirection: "row",
-		gap: 10,
-		alignItems: "center",
-	},
-	detailRow: {
-		flexDirection: "row",
-		alignItems: "center",
-		gap: 6,
-	},
-	detailText: {
-		marginTop: 2,
-		color: Colors.light.muted,
-	},
-	separator: {
-		width: 6,
-		height: 6,
-		backgroundColor: Colors.light.muted,
-		borderRadius: 50,
-	},
-});

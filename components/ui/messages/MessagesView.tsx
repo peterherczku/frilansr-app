@@ -1,7 +1,8 @@
-import { Colors } from "@/constants/Colors";
+import { cn } from "@/utils/cn";
 import { useUser } from "@clerk/clerk-expo";
-import { Image } from "expo-image";
-import { Dimensions, FlatList, StyleSheet, Text, View } from "react-native";
+import { Image as ExpoImage } from "expo-image";
+import { remapProps } from "nativewind";
+import { FlatList as RNFlatList, Text, View } from "react-native";
 
 type Message = {
 	text: string;
@@ -13,6 +14,14 @@ type Message = {
 	date: number;
 };
 
+const Image = remapProps(ExpoImage, {
+	className: "style",
+});
+
+const FlatList = remapProps(RNFlatList, {
+	contentContainerClassName: "contentContainerStyle",
+}) as <T>(props: React.ComponentProps<typeof RNFlatList<T>>) => JSX.Element;
+
 export function MessagesView({ messages }: { messages: Message[] }) {
 	const { user } = useUser();
 
@@ -23,88 +32,36 @@ export function MessagesView({ messages }: { messages: Message[] }) {
 		const isOwn = item.user.id === user?.id;
 
 		return (
-			<View
-				style={{
-					flexDirection: "row",
-					alignItems: "flex-end",
-					marginVertical: 5,
-				}}
-			>
+			<View className="flex-row items-end my-[5]">
 				{isLastInBlock && !isOwn && (
 					<Image
 						source={{ uri: item.user.imageUrl }}
-						style={{
-							width: 40,
-							height: 40,
-							borderRadius: 40,
-							backgroundColor: "#D9D9D9",
-						}}
+						className="w-[40] h-[40] rounded-full bg-[#d9d9d9]"
 					/>
 				)}
 
 				<View
-					style={[
-						styles.bubble,
-						isOwn && {
-							backgroundColor: Colors.light.themeColor,
-							marginLeft: "auto",
-						},
-						!isLastInBlock &&
-							!isOwn && {
-								marginLeft: 50,
-							},
-					]}
+					className={cn(
+						"bg-[#efefef] px-[10] rounded-lg ml-[10] flex-row",
+						isOwn && "bg-theme ml-auto",
+						!isLastInBlock && !isOwn && "ml-[50]"
+					)}
 				>
-					<Text
-						style={[
-							styles.text,
-							isOwn && {
-								color: "white",
-							},
-						]}
-					>
-						{item.text}
-					</Text>
+					<Text className={cn(isOwn && "text-white")}>{item.text}</Text>
 				</View>
 			</View>
 		);
 	}
 
 	return (
-		<View
-			style={{
-				flex: 1,
-				backgroundColor: "white",
-				flexDirection: "column",
-				justifyContent: "flex-end",
-				margin: 20,
-			}}
-		>
+		<View className="flex-1 bg-white flex-col justify-end m-[20]">
 			<FlatList
-				contentContainerStyle={{
-					flex: 1,
-					justifyContent: "flex-end",
-					flexDirection: "column",
-				}}
+				contentContainerClassName="flex-1 justify-end flex-col"
 				data={messages}
-				renderItem={MessageBubble}
+				renderItem={({ item, index }) => (
+					<MessageBubble item={item} index={index} />
+				)}
 			/>
 		</View>
 	);
 }
-
-const styles = StyleSheet.create({
-	text: {
-		fontFamily: "Zain",
-		fontSize: 16,
-		color: Colors.light.text,
-	},
-	bubble: {
-		backgroundColor: "#EFEFEF",
-		padding: 10,
-		maxWidth: Dimensions.get("window").width * 0.65,
-		borderRadius: 8,
-		marginLeft: 10,
-		flexDirection: "row",
-	},
-});

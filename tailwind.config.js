@@ -28,6 +28,7 @@ module.exports = {
 				lg: 18,
 				xl: 20,
 				"2xl": 22,
+				"3xl": 24,
 			},
 		},
 	},

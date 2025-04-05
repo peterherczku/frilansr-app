@@ -1,8 +1,13 @@
-import { Colors } from "@/constants/Colors";
 import { timeAgo } from "@/utils/dateUtil";
-import { Image } from "expo-image";
+import { Image as ExpoImage } from "expo-image";
 import { router } from "expo-router";
-import { FlatList, Pressable, StyleSheet, Text, View } from "react-native";
+import { remapProps } from "nativewind";
+import { FlatList, Pressable, View } from "react-native";
+import { Text } from "../Text";
+
+const Image = remapProps(ExpoImage, {
+	className: "style",
+});
 
 export function MessagesList({
 	data,
@@ -35,50 +40,22 @@ export function MessagesList({
 		}
 
 		return (
-			<Pressable onPress={selectMessageChannel} style={styles.box}>
-				<Image style={styles.image} source={{ uri: item.profilePicture }} />
+			<Pressable
+				onPress={selectMessageChannel}
+				className="flex-row gap-[15] items-center"
+			>
+				<Image
+					className={"w-[60] h-[60] rounded-full bg-[#d9d9d9]"}
+					source={{ uri: item.profilePicture }}
+				/>
 				<View>
-					<Text
-						style={[styles.text, { fontFamily: "Zain-Bold", fontSize: 20 }]}
-					>
-						{item.name}
-					</Text>
-					<View
-						style={{
-							marginTop: -7,
-							flexDirection: "row",
-							gap: 5,
-							alignItems: "center",
-						}}
-					>
-						<Text
-							numberOfLines={1}
-							style={[
-								styles.text,
-								{
-									width: 200,
-									color: Colors.light.muted,
-								},
-							]}
-						>
+					<Text className="fotn-zain-bold text-xl">{item.name}</Text>
+					<View className="mt-[-7] flex-row gap-[5] items-center">
+						<Text numberOfLines={1} className="text-muted text-lg w-[200]">
 							{item.lastMessage.text}
 						</Text>
-						<View
-							style={{
-								backgroundColor: Colors.light.muted,
-								width: 4,
-								height: 4,
-								borderRadius: 10,
-							}}
-						/>
-						<Text
-							style={[
-								styles.text,
-								{
-									color: Colors.light.muted,
-								},
-							]}
-						>
+						<View className="w-[4] h-[4] rounded-full bg-muted" />
+						<Text className="text-muted text-lg">
 							{timeAgo(item.lastMessage.date)}
 						</Text>
 					</View>
@@ -88,27 +65,8 @@ export function MessagesList({
 	}
 
 	return (
-		<View style={{ flex: 1, marginHorizontal: 20 }}>
+		<View className="flex-1 mx-[20]">
 			<FlatList data={data} renderItem={renderItem} />
 		</View>
 	);
 }
-
-const styles = StyleSheet.create({
-	text: {
-		color: Colors.light.text,
-		fontSize: 18,
-		fontFamily: "Zain",
-	},
-	box: {
-		flexDirection: "row",
-		gap: 15,
-		alignItems: "center",
-	},
-	image: {
-		width: 60,
-		height: 60,
-		borderRadius: 60,
-		backgroundColor: "#D9D9D9",
-	},
-});
