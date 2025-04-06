@@ -1,49 +1,25 @@
-import { CardOptions } from "@/components/ui/settings/payment/CardOptions";
-import { PayoutOptions } from "@/components/ui/settings/payment/PayoutOptions";
-import {
-	SettingsSection,
-	SettingsSectionItem,
-	SettingsSectionItemCard,
-} from "@/components/ui/settings/SettingsSection";
+import { Text } from "@/components/ui/Text";
 import { Colors } from "@/constants/Colors";
-import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
-import {
-	ScrollView,
-	StyleSheet,
-	Text,
-	TouchableOpacity,
-	View,
-} from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { cssInterop } from "nativewind";
+import { ScrollView, TouchableOpacity, View } from "react-native";
+import { SafeAreaView as RNSafeAreaView } from "react-native-safe-area-context";
+
+const SafeAreaView = cssInterop(RNSafeAreaView, {
+	className: "style",
+});
 
 export default function AddCardOptionPage() {
 	return (
-		<SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
-			<View
-				style={{
-					marginHorizontal: 20,
-					flexDirection: "row",
-					gap: 6,
-					alignItems: "center",
-				}}
-			>
+		<SafeAreaView className="flex-1 bg-white">
+			<View className="mx-[20] flex-row gap-[6] items-center">
 				<TouchableOpacity onPress={() => router.back()}>
 					<Ionicons name="chevron-back" size={30} color={Colors.light.text} />
 				</TouchableOpacity>
-				<Text style={[styles.text, { fontSize: 22, fontFamily: "Zain-Bold" }]}>
-					Attach new card
-				</Text>
+				<Text className="text-2xl font-zain-bold">Attach new card</Text>
 			</View>
 			<ScrollView></ScrollView>
 		</SafeAreaView>
 	);
 }
-
-const styles = StyleSheet.create({
-	text: {
-		color: Colors.light.text,
-		fontFamily: "Zain",
-		fontSize: 18,
-	},
-});

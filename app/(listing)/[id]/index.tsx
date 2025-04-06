@@ -1,20 +1,21 @@
-import { StatusBar } from "react-native";
-import ParallaxScrollView from "@/components/ParallaxScrollView";
-import { Feather, FontAwesome6, Ionicons } from "@expo/vector-icons";
-import { Image } from "expo-image";
+import { Feather, FontAwesome6 } from "@expo/vector-icons";
+import { Image as ExpoImage } from "expo-image";
 import { router, useLocalSearchParams } from "expo-router";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { TouchableOpacity, View } from "react-native";
 import { Colors } from "@/constants/Colors";
-import { ListingHeader } from "@/components/ui/listing/ListingHeader";
+import { ListingHeader } from "@/components/listing/ListingHeader";
 import { useUser } from "@clerk/clerk-expo";
-import {
-	LocationBox,
-	LocationMapView,
-} from "@/components/ui/listing/LocationBox";
-import { ListingJobLister } from "@/components/ui/listing/ListingJobLister";
+import { LocationBox, LocationMapView } from "@/components/listing/LocationBox";
+import { ListingJobLister } from "@/components/listing/ListingJobLister";
 import { Dimensions } from "react-native";
 import { useListing } from "@/hooks/listing/useListing";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { Text } from "@/components/ui/Text";
+import { cssInterop } from "nativewind";
+
+const Image = cssInterop(ExpoImage, {
+	className: "style",
+});
 
 export default function ListingIndexPage() {
 	const { id } = useLocalSearchParams();
@@ -39,97 +40,47 @@ export default function ListingIndexPage() {
 	return (
 		<>
 			<ListingHeader>
-				<View style={{ margin: 20, zIndex: 0 }}>
-					<View
-						style={{
-							flexDirection: "row",
-							alignItems: "center",
-							justifyContent: "space-between",
-						}}
-					>
+				<View className="m-[20] z-0">
+					<View className="flex-row items-center justify-between">
 						<View>
-							<Text
-								style={[styles.text, { fontFamily: "Zain-Bold", fontSize: 22 }]}
-							>
-								{listing.title}
-							</Text>
-							<Text
-								style={[
-									styles.text,
-									{ fontSize: 17, color: Colors.light.muted, marginTop: -8 },
-								]}
-							>
+							<Text className="text-2xl font-zain-bold">{listing.title}</Text>
+							<Text className="text-[17px] text-muted mt-[-8]">
 								{listing.type}
 							</Text>
 						</View>
-						<View
-							style={{
-								flexDirection: "row",
-								alignItems: "center",
-								justifyContent: "space-between",
-							}}
-						>
+						<View className="flex-row items-center justify-between">
 							<Image
 								source={{ uri: user?.imageUrl }}
-								style={{ width: 50, height: 50, borderRadius: 100 }}
+								className="w-[50] h-[50] rounded-full"
 							/>
 						</View>
 					</View>
-					<View style={{ flexDirection: "row", gap: 10, marginVertical: 20 }}>
+					<View className="flex-row gap-[10] my-[20]">
 						<View
-							style={[
-								styles.box,
-								{
-									flex: 1,
-									flexDirection: "row",
-									alignItems: "center",
-									justifyContent: "space-between",
-									paddingHorizontal: 12,
-								},
-							]}
+							className="rounded-lg h-[45] flex-1 flex-row justify-between items-center px-[12]"
+							style={{
+								backgroundColor: "rgba(85,147,62,0.4)",
+							}}
 						>
-							<View
-								style={{ flexDirection: "row", alignItems: "center", gap: 10 }}
-							>
+							<View className="flex-row items-center gap-[10]">
 								<FontAwesome6
 									name="clock"
 									size={25}
 									color={Colors.light.themeColor}
 								/>
-								<Text
-									style={[
-										styles.text,
-										{ color: Colors.light.themeColor, fontSize: 18 },
-									]}
-								>
-									Job length
-								</Text>
+								<Text className="text-theme text-lg">Job length</Text>
 							</View>
 							<View>
-								<Text
-									style={[
-										styles.text,
-										{
-											color: Colors.light.themeColor,
-											fontSize: 17,
-											fontFamily: "Zain-Bold",
-										},
-									]}
-								>
+								<Text className="text-[17px] font-zain-bold text-theme">
 									40 - 50 mins
 								</Text>
 							</View>
 						</View>
 						<TouchableOpacity
-							style={[
-								styles.box,
-								{
-									width: 45,
-									flexDirection: "row",
-									alignItems: "center",
-									justifyContent: "center",
-								},
-							]}
+							className="rounded-lg h-[45] w-[45] flex-row items-center justify-center"
+							style={{
+								backgroundColor: "rgba(85,147,62,0.4)",
+							}}
 						>
 							<FontAwesome6
 								name="heart-circle-plus"
@@ -138,137 +89,46 @@ export default function ListingIndexPage() {
 							/>
 						</TouchableOpacity>
 						<TouchableOpacity
-							style={[
-								styles.box,
-								{
-									width: 45,
-									flexDirection: "row",
-									alignItems: "center",
-									justifyContent: "center",
-								},
-							]}
+							className="h-[45] w-[45] rounded-lg flex-row items-center justify-center"
+							style={{
+								backgroundColor: "rgba(85,147,62,0.4)",
+							}}
 						>
 							<Feather name="share" size={20} color={Colors.light.themeColor} />
 						</TouchableOpacity>
 					</View>
-					<View
-						style={{
-							flexDirection: "row",
-							justifyContent: "space-between",
-							alignItems: "center",
-							marginVertical: 5,
-						}}
-					>
-						<Text
-							style={[styles.text, { fontSize: 20, fontFamily: "Zain-Bold" }]}
-						>
-							Date
-						</Text>
+					<View className="flex-row justify-between items-center my-[5]">
+						<Text className="text-xl font-zain-bold">Date</Text>
 						<View>
-							<Text
-								style={[
-									styles.text,
-									{
-										fontSize: 18,
-										fontFamily: "Zain-Bold",
-										color: Colors.light.themeColor,
-									},
-								]}
-							>
+							<Text className="text-lg font-zain-bold text-theme">
 								Monday at 13:00 - 14:00
 							</Text>
 						</View>
 					</View>
-					<View
-						style={{
-							flexDirection: "row",
-							justifyContent: "space-between",
-							alignItems: "center",
-							marginVertical: 5,
-						}}
-					>
-						<Text
-							style={[styles.text, { fontSize: 20, fontFamily: "Zain-Bold" }]}
-						>
-							Salary
-						</Text>
-						<Text
-							style={[
-								styles.text,
-								{
-									fontSize: 18,
-									fontFamily: "Zain-Bold",
-									color: Colors.light.themeColor,
-								},
-							]}
-						>
+					<View className="flex-row justify-between items-center my-[5]">
+						<Text className="text-xl font-zain-bold">Salary</Text>
+						<Text className="text-lg font-zain-bold text-theme">
 							120,00 kr / hour
 						</Text>
 					</View>
 					<LocationBox>
-						<LocationMapView style={{ marginVertical: 10 }} />
+						<LocationMapView className="my-[10]" />
 					</LocationBox>
 					<ListingJobLister id={id as string} />
 				</View>
 			</ListingHeader>
 			<TouchableOpacity
-				style={styles.button}
+				className="absolute bottom-[40] left-[20] h-[50] m-auto bg-theme rounded-lg shadow-custom flex-row justify-between items-center px-[25]"
+				style={{
+					width: Dimensions.get("window").width - 40,
+				}}
 				onPress={() => router.push(`/(listing)/${id}/apply`)}
 			>
-				<Text
-					style={[
-						styles.text,
-						{ color: "white", fontFamily: "Zain-Bold", fontSize: 20 },
-					]}
-				>
+				<Text className="font-zain-bold text-white text-xl">
 					Apply for the job
 				</Text>
-				<Text
-					style={[
-						styles.text,
-						{ color: "white", fontFamily: "Zain-Bold", fontSize: 20 },
-					]}
-				>
-					180,00 kr
-				</Text>
+				<Text className="text-white font-zain-bold text-xl">180,00 kr</Text>
 			</TouchableOpacity>
 		</>
 	);
 }
-
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-	},
-	text: {
-		fontSize: 18,
-		fontFamily: "Zain",
-		color: Colors.light.text,
-	},
-	box: {
-		backgroundColor: "rgba(85,147,62,0.4)",
-		borderRadius: 8,
-		height: 45,
-	},
-	button: {
-		position: "absolute",
-		bottom: 40,
-		left: 20,
-		width: Dimensions.get("window").width - 40,
-		height: 50,
-		margin: "auto",
-		backgroundColor: Colors.light.themeColor,
-		borderRadius: 8,
-		shadowOffset: {
-			width: 0,
-			height: 0,
-		},
-		elevation: 3,
-		shadowRadius: 4,
-		shadowOpacity: 0.35,
-		flexDirection: "row",
-		alignItems: "center",
-		justifyContent: "space-between",
-		paddingHorizontal: 25,
-	},
-});
