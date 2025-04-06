@@ -15,6 +15,8 @@ import {
 } from "@/components/profile/ProfileSettingsBox";
 import { Footer } from "@/components/ui/Footer";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { showConfirmModal } from "@/utils/modalCallbacks";
+import { useUserRoleUpdate } from "@/hooks/user/useUserRoleUpdate";
 
 const data = [
 	{
@@ -46,7 +48,8 @@ const data = [
 ];
 
 export default function ProfileScreen() {
-	const { signOut } = useClerk();
+	const { updateRole } = useUserRoleUpdate();
+
 	return (
 		<SafeAreaView className="flex-1 bg-white">
 			<Header />
@@ -84,11 +87,16 @@ export default function ProfileScreen() {
 
 					<ProfileSettingsBoxItem
 						onPress={() => {
-							router.push({
-								pathname: "/confirm-modal",
-								params: {
-									message: "Are you sure you want to switch to lister mode?",
-									redirectUrl: "/(lister)/(tabs)/",
+							showConfirmModal({
+								message:
+									"Are you sure you want to change to job lister mode? This means that all your current and upcoming jobs will be revoked. Are you sure you want to proceed?",
+								onConfirm: async () => {
+									try {
+										await updateRole("LISTER");
+										router.replace("/(lister)/(tabs)/");
+									} catch (err) {
+										console.error("Failed to update role:", err);
+									}
 								},
 							});
 						}}

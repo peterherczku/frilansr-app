@@ -13,7 +13,7 @@ export default function IndexPage() {
 
 		const role = user?.publicMetadata?.role;
 
-		if (role === "lister") {
+		if (role === "LISTER") {
 			router.replace("/(lister)/(tabs)/");
 		} else {
 			router.replace("/(worker)/(tabs)/");
