@@ -51,7 +51,9 @@ export default function ApplyForJobPage() {
 				<View className="my-[10] gap-[10]">
 					<Text className="text-2xl font-zain-bold mx-[20]">Payout</Text>
 					<TouchableOpacity
-						onPress={() => router.push("/(settings)/(payment)/payment")}
+						onPress={() =>
+							router.push("/(worker)/(settings)/(payment)/payment")
+						}
 						className="mx-[20] px-[16] py-[12] rounded-lg shadow-custom bg-white flex-row items-center justify-between"
 					>
 						<View className="flex-row items-center gap-[15]">

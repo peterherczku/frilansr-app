@@ -56,29 +56,36 @@ export default function ProfileScreen() {
 					<ProfilePaymentBoxItem
 						title={"Payment history"}
 						subtitle={"15 payments"}
-						onPress={() => router.push("/(settings)/(payment)/history")}
+						onPress={() =>
+							router.push("/(worker)/(settings)/(payment)/history")
+						}
 					/>
 					<View className="h-[2] bg-[#ECECEC] rounded-lg" />
 					<ProfilePaymentBoxItem
 						title={"Go to Payment settings"}
-						onPress={() => router.push("/(settings)/(payment)/payment")}
+						onPress={() =>
+							router.push("/(worker)/(settings)/(payment)/payment")
+						}
 					/>
 				</ProfilePaymentBox>
 				<ProfileAffiliateProgram />
 				<ProfileRecentWorks data={data} />
 				<ProfileSettingsBox>
 					<ProfileSettingsBoxItem
-						onPress={() => router.push("/(settings)/account")}
+						onPress={() => router.push("/(worker)/(settings)/account")}
 						title={"Account"}
 					/>
 					<View className="h-[2] bg-[#ECECEC] rounded-lg" />
 					<ProfileSettingsBoxItem
-						onPress={() => router.push("/(settings)/payment")}
+						onPress={() => router.push("/(worker)/(settings)/payment")}
 						title={"Payment"}
 					/>
 					<View className="h-[2] bg-[#ECECEC] rounded-lg" />
 
-					<ProfileSettingsBoxItem title={"Change to Job Lister mode"} />
+					<ProfileSettingsBoxItem
+						onPress={() => router.replace("/(lister)/(tabs)/")}
+						title={"Change to Job Lister mode"}
+					/>
 					<View className="h-[2] bg-[#ECECEC] rounded-lg" />
 					<ProfileSettingsBoxItem title={"Delete account"} destructive={true} />
 				</ProfileSettingsBox>

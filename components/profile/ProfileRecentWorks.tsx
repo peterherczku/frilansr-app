@@ -78,7 +78,7 @@ export function ProfileRecentWorks({
 				<Text className="text-[25px] font-zain-bold">Recent works</Text>
 				<TouchableOpacity
 					className="flex-row items-center justify-between gap-[5]"
-					onPress={() => router.navigate("/(tabs)/past-jobs")}
+					onPress={() => router.navigate("/(worker)/(tabs)/past-jobs")}
 				>
 					<Text className="font-zain-bold text-2xl text-theme">See all</Text>
 					<Ionicons

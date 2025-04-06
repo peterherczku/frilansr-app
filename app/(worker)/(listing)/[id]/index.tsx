@@ -122,7 +122,7 @@ export default function ListingIndexPage() {
 				style={{
 					width: Dimensions.get("window").width - 40,
 				}}
-				onPress={() => router.push(`/(listing)/${id}/apply`)}
+				onPress={() => router.push(`/(worker)/(listing)/${id}/apply`)}
 			>
 				<Text className="font-zain-bold text-white text-xl">
 					Apply for the job

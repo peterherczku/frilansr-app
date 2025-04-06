@@ -16,7 +16,7 @@ export function ProfileHeader() {
 
 	async function pressChangeAccount() {
 		await signOut();
-		router.replace("/(tabs)/");
+		router.replace("/(worker)/(tabs)/");
 	}
 
 	return (

@@ -39,7 +39,7 @@ export function SearchResults({
 		return (
 			<Pressable
 				className="px-[20] py-[8] flex-row gap-[12] items-cente"
-				onPress={() => router.push(`/(listing)/${item.id}`)}
+				onPress={() => router.push(`/(worker)/(listing)/${item.id}`)}
 			>
 				<View className="relative">
 					<Image

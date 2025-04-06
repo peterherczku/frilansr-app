@@ -27,7 +27,7 @@ export function Header() {
 	}
 
 	function handleLogoPressed() {
-		router.push("/(tabs)");
+		router.push("/(worker)/(tabs)");
 	}
 
 	return (
@@ -71,7 +71,9 @@ export function Header() {
 					></TouchableOpacity>
 				</SignedOut>
 				<SignedIn>
-					<TouchableOpacity onPress={() => router.push("/profile")}>
+					<TouchableOpacity
+						onPress={() => router.push("/(worker)/(tabs)/profile")}
+					>
 						<Image
 							source={{ uri: user?.imageUrl }}
 							className="w-[35] h-[35] rounded-full bg-[#d9d9d9]"

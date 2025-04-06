@@ -50,7 +50,7 @@ export function SearchUrgentWorks() {
 		return (
 			<TouchableOpacity
 				className="bg-white shadow-custom mb-[20] mx-[2] rounded-lg"
-				onPress={() => router.push(`/(listing)/${item.id}`)}
+				onPress={() => router.push(`/(worker)/(listing)/${item.id}`)}
 			>
 				<View className="relative">
 					<Image

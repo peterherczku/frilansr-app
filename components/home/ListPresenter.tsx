@@ -46,7 +46,7 @@ export function ListingPresenterTitle({ children }: { children: ReactNode }) {
 		<View className="flex-row justify-between items-center mx-[20]">
 			{children}
 			<TouchableOpacity
-				onPress={() => router.navigate("/(tabs)/jobs")}
+				onPress={() => router.navigate("/(worker)/(tabs)/jobs")}
 				className="flex-row justify-between items-center mx-[20]"
 			>
 				<Text className="text-xl text-theme underline">Show all</Text>
@@ -70,7 +70,7 @@ export function ListingPresenterElements({ data }: { data: Listing[] }) {
 					index === 0 && "ml-[20]",
 					index === data.length - 1 && "mr-[20]"
 				)}
-				onPress={() => router.push(`/(listing)/${item.id}`)}
+				onPress={() => router.push(`/(worker)/(listing)/${item.id}`)}
 			>
 				<Image
 					className="rounded-t-lg"

@@ -67,7 +67,7 @@ export default function TabLayout() {
 					tabPress: (e) => {
 						if (!isSignedIn) {
 							e.preventDefault();
-							router.push("/sign-in");
+							router.push("/(auth)/sign-in");
 						}
 					},
 				}}
@@ -84,7 +84,7 @@ export default function TabLayout() {
 					tabPress: (e) => {
 						if (!isSignedIn) {
 							e.preventDefault();
-							router.push("/sign-in");
+							router.push("/(auth)/sign-in");
 						}
 					},
 				}}
@@ -101,7 +101,7 @@ export default function TabLayout() {
 					tabPress: (e) => {
 						if (!isSignedIn) {
 							e.preventDefault();
-							router.push("/sign-in");
+							router.push("/(auth)/sign-in");
 						}
 					},
 				}}

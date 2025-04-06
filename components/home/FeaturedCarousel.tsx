@@ -39,7 +39,7 @@ export function FeaturedCarousel() {
 	function renderItem({ item }: { item: Listing }) {
 		return (
 			<Pressable
-				onPress={() => router.push(`/(listing)/${item.id}`)}
+				onPress={() => router.push(`/(worker)/(listing)/${item.id}`)}
 				className="mx-[20] relative"
 				style={{
 					width: width - 40,

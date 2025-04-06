@@ -71,7 +71,9 @@ export function CardOptions() {
 			{cardOptions.map((option) => renderCardOption(option))}
 			<TouchableOpacity
 				className="bg-theme mx-[20] mt-[10] mb-[20] py-[7] flex-row justify-center rounded-lg"
-				onPress={() => router.push("/(settings)/(payment)/attach-new-card")}
+				onPress={() =>
+					router.push("/(worker)/(settings)/(payment)/attach-new-card")
+				}
 			>
 				<Text className="text-white font-zain-bold">Attach new card</Text>
 			</TouchableOpacity>
