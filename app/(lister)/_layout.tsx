@@ -10,7 +10,10 @@ export default function ListerRoutesLayout() {
 
 	return (
 		<Stack>
-			<Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+			<Stack.Screen
+				name="(tabs)"
+				options={{ gestureEnabled: false, headerShown: false }}
+			/>
 		</Stack>
 	);
 }

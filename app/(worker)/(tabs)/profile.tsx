@@ -83,7 +83,15 @@ export default function ProfileScreen() {
 					<View className="h-[2] bg-[#ECECEC] rounded-lg" />
 
 					<ProfileSettingsBoxItem
-						onPress={() => router.replace("/(lister)/(tabs)/")}
+						onPress={() => {
+							router.push({
+								pathname: "/confirm-modal",
+								params: {
+									message: "Are you sure you want to switch to lister mode?",
+									redirectUrl: "/(lister)/(tabs)/",
+								},
+							});
+						}}
 						title={"Change to Job Lister mode"}
 					/>
 					<View className="h-[2] bg-[#ECECEC] rounded-lg" />
