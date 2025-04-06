@@ -1,5 +1,5 @@
-import { Header } from "@/components/Header";
-import { CalendarList } from "@/components/ui/calendar/CalendarList";
+import { Header } from "@/components/ui/Header";
+import { CalendarList } from "@/components/calendar/CalendarList";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function CalendarScreen() {

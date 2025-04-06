@@ -1,5 +1,5 @@
-import { Header } from "@/components/Header";
-import { SearchBar } from "@/components/ui/jobs/SearchBar";
+import { Header } from "@/components/ui/Header";
+import { SearchBar } from "@/components/jobs/SearchBar";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function JobsScreen() {

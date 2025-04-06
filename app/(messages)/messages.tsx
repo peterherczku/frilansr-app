@@ -1,9 +1,15 @@
-import { MessagesList } from "@/components/ui/messages/MessagesList";
+import { MessagesList } from "@/components/messages/MessagesList";
+import { Text } from "@/components/ui/Text";
 import { Colors } from "@/constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { cssInterop } from "nativewind";
+import { TouchableOpacity, View } from "react-native";
+import { SafeAreaView as RNSafeAreaView } from "react-native-safe-area-context";
+
+const SafeAreaView = cssInterop(RNSafeAreaView, {
+	className: "style",
+});
 
 const messagesData = [
 	{
@@ -24,93 +30,25 @@ export default function MessagesPage() {
 	}
 
 	return (
-		<SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
-			<View
-				style={{
-					marginHorizontal: 20,
-					flexDirection: "row",
-					gap: 6,
-					alignItems: "center",
-				}}
-			>
+		<SafeAreaView className="flex-1 bg-white">
+			<View className="mx-[20] flex-row gap-[6] items-center">
 				<TouchableOpacity onPress={back}>
 					<Ionicons name="chevron-back" size={30} color={Colors.light.text} />
 				</TouchableOpacity>
-				<Text style={[styles.text, { fontSize: 22, fontFamily: "Zain-Bold" }]}>
-					Messages
-				</Text>
+				<Text className="text-2xl font-zain-bold">Messages</Text>
 			</View>
-			<View style={styles.mainBox}>
-				<TouchableOpacity style={styles.box}>
-					<Text
-						style={[
-							styles.text,
-							{
-								fontSize: 20,
-								fontFamily: "Zain-Bold",
-								color: Colors.light.themeColor,
-							},
-						]}
-					>
-						Active (1)
-					</Text>
+			<View className="m-[20] bg-white shadow-custom flex-row rounded-lg">
+				<TouchableOpacity className="flex-1 py-[10] items-center">
+					<Text className="font-zain-bold text-xl text-theme">Active (1)</Text>
 				</TouchableOpacity>
-				<TouchableOpacity style={styles.box}>
-					<Text
-						style={[
-							styles.text,
-							{
-								fontSize: 20,
-								fontFamily: "Zain-Bold",
-								color: Colors.light.muted,
-							},
-						]}
-					>
-						Recent (10)
-					</Text>
+				<TouchableOpacity className="flex-1 py-[10] items-center">
+					<Text className="font-zain-bold text-xl text-muted">Recent (10)</Text>
 				</TouchableOpacity>
-				<TouchableOpacity style={styles.box}>
-					<Text
-						style={[
-							styles.text,
-							{
-								fontSize: 20,
-								fontFamily: "Zain-Bold",
-								color: Colors.light.muted,
-							},
-						]}
-					>
-						Archived
-					</Text>
+				<TouchableOpacity className="flex-1 py-[10] items-center">
+					<Text className="text-xl font-zain-bold text-muted">Archived</Text>
 				</TouchableOpacity>
 			</View>
 			<MessagesList data={messagesData} />
 		</SafeAreaView>
 	);
 }
-
-const styles = StyleSheet.create({
-	text: {
-		fontFamily: "Zain",
-		fontSize: 18,
-		color: Colors.light.text,
-	},
-	mainBox: {
-		margin: 20,
-		backgroundColor: "white",
-		shadowOffset: {
-			width: 0,
-			height: 0,
-		},
-		shadowRadius: 3,
-		shadowOpacity: 0.25,
-		elevation: 3,
-		flexDirection: "row",
-		borderRadius: 8,
-	},
-	box: {
-		flex: 1,
-		paddingVertical: 10,
-		alignItems: "center",
-	},
-});

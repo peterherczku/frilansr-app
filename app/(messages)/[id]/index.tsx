@@ -1,19 +1,24 @@
-import { MessagesList } from "@/components/ui/messages/MessagesList";
-import { MessagesView } from "@/components/ui/messages/MessagesView";
+import { MessagesView } from "@/components/messages/MessagesView";
+import { Text } from "@/components/ui/Text";
 import { Colors } from "@/constants/Colors";
 import { useKeyboardHeight } from "@/hooks/useKeyboardHeight";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
-import { Image } from "expo-image";
+import { Image as ExpoImage } from "expo-image";
 import { router } from "expo-router";
+import { cssInterop } from "nativewind";
+import { TextInput, TouchableOpacity, View, Animated } from "react-native";
 import {
-	StyleSheet,
-	Text,
-	TextInput,
-	TouchableOpacity,
-	View,
-	Animated,
-} from "react-native";
-import { Edge, SafeAreaView } from "react-native-safe-area-context";
+	Edge,
+	SafeAreaView as RNSafeAreaView,
+} from "react-native-safe-area-context";
+
+const Image = cssInterop(ExpoImage, {
+	className: "style",
+});
+
+const SafeAreaView = cssInterop(RNSafeAreaView, {
+	className: "style",
+});
 
 const messageData = [
 	{
@@ -60,44 +65,39 @@ export default function MessagesPage() {
 	}
 
 	return (
-		<SafeAreaView
-			style={{
-				flex: 1,
-				backgroundColor: "white",
-			}}
-			edges={safeEdges as Edge[]}
-		>
-			<View
-				style={{
-					marginHorizontal: 20,
-					flexDirection: "row",
-					gap: 6,
-					alignItems: "center",
-				}}
-			>
+		<SafeAreaView className="flex-1 bg-white" edges={safeEdges as Edge[]}>
+			<View className="mx-[20] flex-row gap-[6] items-center">
 				<TouchableOpacity onPress={back}>
 					<Ionicons name="chevron-back" size={30} color={Colors.light.text} />
 				</TouchableOpacity>
-				<View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
+				<View className="flex-row items-center gap-[10]">
 					<Image
 						source={{ uri: messageData[0].profilePicture }}
-						style={{
-							width: 50,
-							height: 50,
-							borderRadius: 50,
-							backgroundColor: "#D9D9D9",
-						}}
+						className="w-[50] h-[50] rounded-full bg-[#d9d9d9]"
 					/>
-					<Text
-						style={[styles.text, { fontSize: 22, fontFamily: "Zain-Bold" }]}
-					>
-						{messageData[0].name}
-					</Text>
+					<Text className="text-2xl font-zain-bold">{messageData[0].name}</Text>
 				</View>
 			</View>
 			<MessagesView messages={messageData[0].messages} />
-			<Animated.View style={[styles.footer, { paddingBottom: footerPadding }]}>
-				<View style={{ flexDirection: "row", gap: 15 }}>
+			<Animated.View
+				style={{
+					backgroundColor: "white",
+					flexDirection: "row",
+					paddingVertical: 12,
+					paddingHorizontal: 20,
+					shadowOffset: {
+						width: 0,
+						height: -2,
+					},
+					shadowOpacity: 0.6,
+					shadowColor: "#D9D9D9",
+					shadowRadius: 2,
+					gap: 15,
+					alignItems: "center",
+					paddingBottom: footerPadding,
+				}}
+			>
+				<View className="flex-row gap-[15]">
 					<AntDesign
 						name="pluscircle"
 						size={24}
@@ -105,44 +105,13 @@ export default function MessagesPage() {
 					/>
 					<AntDesign name="camera" size={24} color={Colors.light.themeColor} />
 				</View>
-				<View style={styles.inputContainer}>
+				<View className="flex-1 bg-[#efefef] rounded-lg justify-center px-[15] py-[8]">
 					<TextInput
 						placeholder="Aa"
-						style={[styles.text, { color: Colors.light.muted }]}
+						className="font-zain text-lg text-muted"
 					/>
 				</View>
 			</Animated.View>
 		</SafeAreaView>
 	);
 }
-
-const styles = StyleSheet.create({
-	text: {
-		fontFamily: "Zain",
-		fontSize: 18,
-		color: Colors.light.text,
-	},
-	footer: {
-		backgroundColor: "white",
-		flexDirection: "row",
-		paddingVertical: 12,
-		paddingHorizontal: 20,
-		shadowOffset: {
-			width: 0,
-			height: -2,
-		},
-		shadowOpacity: 0.6,
-		shadowColor: "#D9D9D9",
-		shadowRadius: 2,
-		gap: 15,
-		alignItems: "center",
-	},
-	inputContainer: {
-		flex: 1,
-		backgroundColor: "#EFEFEF",
-		borderRadius: 8,
-		justifyContent: "center",
-		paddingHorizontal: 15,
-		paddingVertical: 8,
-	},
-});

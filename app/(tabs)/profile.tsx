@@ -1,19 +1,19 @@
 import { ScrollView, View } from "react-native";
 import { useClerk } from "@clerk/clerk-expo";
 import { router } from "expo-router";
-import { Header } from "@/components/Header";
-import { ProfileHeader } from "@/components/ui/profile/ProfileHeader";
+import { Header } from "@/components/ui/Header";
+import { ProfileHeader } from "@/components/profile/ProfileHeader";
 import {
 	ProfilePaymentBox,
 	ProfilePaymentBoxItem,
-} from "@/components/ui/profile/ProfilePaymentBox";
-import { ProfileAffiliateProgram } from "@/components/ui/profile/ProfileAffiliateProgram";
-import { ProfileRecentWorks } from "@/components/ui/profile/ProfileRecentWorks";
+} from "@/components/profile/ProfilePaymentBox";
+import { ProfileAffiliateProgram } from "@/components/profile/ProfileAffiliateProgram";
+import { ProfileRecentWorks } from "@/components/profile/ProfileRecentWorks";
 import {
 	ProfileSettingsBox,
 	ProfileSettingsBoxItem,
-} from "@/components/ui/profile/ProfileSettingsBox";
-import { Footer } from "@/components/Footer";
+} from "@/components/profile/ProfileSettingsBox";
+import { Footer } from "@/components/ui/Footer";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const data = [

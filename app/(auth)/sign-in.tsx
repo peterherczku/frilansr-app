@@ -1,27 +1,18 @@
-import { StartSSOFlowParams, useSignIn, useSSO } from "@clerk/clerk-expo";
-import { Link, useRouter } from "expo-router";
-import {
-	Text,
-	TextInput,
-	Button,
-	View,
-	StyleSheet,
-	TouchableOpacity,
-} from "react-native";
-import React, { useState, useEffect, useCallback } from "react";
+import { useSignIn, useSSO } from "@clerk/clerk-expo";
+import { useRouter } from "expo-router";
+import { TextInput, View, TouchableOpacity } from "react-native";
+import { useState, useEffect, useCallback } from "react";
 import { Colors } from "@/constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
 import * as WebBrowser from "expo-web-browser";
 import * as AuthSession from "expo-auth-session";
 import { OAuthStrategy } from "@clerk/types";
+import { Text } from "@/components/ui/Text";
 
 export const useWarmUpBrowser = () => {
 	useEffect(() => {
-		// Preloads the browser for Android devices to reduce authentication load time
-		// See: https://docs.expo.dev/guides/authentication/#improving-user-experience
 		void WebBrowser.warmUpAsync();
 		return () => {
-			// Cleanup: closes browser when component unmounts
 			void WebBrowser.coolDownAsync();
 		};
 	}, []);
@@ -39,32 +30,22 @@ export default function Page() {
 	const [emailAddress, setEmailAddress] = useState("");
 	const [password, setPassword] = useState("");
 
-	// Handle the submission of the sign-in form
-	const onSignInPress = React.useCallback(async () => {
+	const onSignInPress = useCallback(async () => {
 		if (!isLoaded) return;
-
-		// Start the sign-in process using the email and password provided
 		try {
 			const signInAttempt = await signIn!.create({
 				identifier: emailAddress,
 				password,
 			});
-
-			// If sign-in process is complete, set the created session as active
-			// and redirect the user
 			if (signInAttempt.status === "complete") {
 				if (setActive) {
 					await setActive({ session: signInAttempt.createdSessionId });
 				}
 				router.replace("/");
 			} else {
-				// If the status isn't complete, check why. User might need to
-				// complete further steps.
 				console.error(JSON.stringify(signInAttempt, null, 2));
 			}
 		} catch (err) {
-			// See https://clerk.com/docs/custom-flows/error-handling
-			// for more info on error handling
 			if (!err?.errors[0]?.message) {
 				setError("An error occurred. Please try again later.");
 			} else {
@@ -75,7 +56,6 @@ export default function Page() {
 
 	const onPressWithSocial = useCallback(async (social: OAuthStrategy) => {
 		try {
-			// Start the authentication process by calling `startSSOFlow()`
 			const { createdSessionId, setActive, signIn, signUp } =
 				await startSSOFlow({
 					strategy: social,
@@ -83,18 +63,10 @@ export default function Page() {
 					redirectUrl: AuthSession.makeRedirectUri(),
 				});
 
-			// If sign in was successful, set the active session
 			if (createdSessionId) {
 				setActive!({ session: createdSessionId });
-			} else {
-				// If there is no `createdSessionId`,
-				// there are missing requirements, such as MFA
-				// Use the `signIn` or `signUp` returned from `startSSOFlow`
-				// to handle next steps
 			}
 		} catch (err) {
-			// See https://clerk.com/docs/custom-flows/error-handling
-			// for more info on error handling
 			if (!err?.errors[0]?.message) {
 				setError("An error occurred. Please try again later.");
 			} else {
@@ -112,60 +84,65 @@ export default function Page() {
 	};
 
 	return (
-		<View style={styles.page}>
-			<View style={styles.container}>
+		<View className="flex-1 bg-white p-[20] flex-col justify-center">
+			<View className="flex-col w-full gap-[30]">
 				<TouchableOpacity onPress={onBackPress}>
-					<Text style={[styles.text, styles.back]}>Back</Text>
+					<Text className="text-lg text-theme underline">Back</Text>
 				</TouchableOpacity>
-				<View style={styles.textContainer}>
-					<Text style={[styles.text, styles.title]}>Login</Text>
-					<Text style={[styles.text, styles.subtitle]}>
+				<View className="flex-col">
+					<Text className="text-[30px] font-zain-extrabold">Login</Text>
+					<Text className="text-xl text-muted mt-[-10]">
 						Please sign in to continue.
 					</Text>
 				</View>
-				<View style={styles.inputsContainer}>
-					<Text style={[styles.text, styles.errorText]}>{error}</Text>
+				<View className="flex-col gap-[10]">
+					<Text className="text-lg text-red-500">{error}</Text>
 					<TextInput
 						value={emailAddress}
 						onChangeText={(emailAddress) => setEmailAddress(emailAddress)}
-						style={[styles.input, styles.text]}
+						className="bg-white p-[10] shadow-custom rounded-xl text-lg font-zain"
 						autoCapitalize={"none"}
 						placeholder={"Enter email address"}
 					/>
-					<View style={styles.inputContainer}>
+					<View className="relative">
 						<TextInput
 							value={password}
 							onChangeText={(password) => setPassword(password)}
-							style={[styles.input, styles.text]}
+							className="bg-white p-[10] shadow-custom rounded-xl text-lg font-zain"
 							secureTextEntry={true}
 							placeholder={"Enter password"}
 						/>
-						<TouchableOpacity style={styles.forgotContainer}>
-							<Text style={[styles.text, styles.forgot]}>Forgot</Text>
+						<TouchableOpacity
+							className="absolute top-1/2 right-[10]"
+							style={{
+								transform: [{ translateY: -0.5 * 20 }],
+							}}
+						>
+							<Text className="underline text-theme">Forgot</Text>
 						</TouchableOpacity>
 					</View>
 				</View>
 				<TouchableOpacity
-					style={[styles.button, styles.buttonTheme]}
+					className="flex-row rounded-[50] py-[10] px-[20] w-auto justify-center items-center gap-[6] bg-theme"
 					onPress={onSignInPress}
 				>
-					<Text style={[styles.text, styles.buttonText]}>Login</Text>
+					<Text className="text-white text-lg font-zain-bold">Login</Text>
 					<Ionicons
 						name={"arrow-forward-circle-outline"}
 						color={"white"}
 						size={24}
 					/>
 				</TouchableOpacity>
-				<View style={styles.separatorContainer}>
-					<View style={styles.separator} />
-					<Text style={[styles.text, styles.separatorText]}>
+				<View className="flex-row items-center">
+					<View className="h-[3] bg-[#e9e9e9] rounded-sm flex-1" />
+					<Text className="font-zain-bold text-muted uppercase my-[10]">
 						Or continue with
 					</Text>
-					<View style={styles.separator} />
+					<View className="h-[3] bg-[#e9e9e9] rounded-sm flex-1" />
 				</View>
-				<View style={styles.socialButtons}>
+				<View className="flex-col gap-[6]">
 					<TouchableOpacity
-						style={[styles.button, styles.buttonOutline]}
+						className="flex-row rounded-[50] py-[10] px-[20] w-auto justify-center items-center gap-[6] border-[#e9e9e9] border-2 border-solid"
 						onPress={() => onPressWithSocial("oauth_facebook")}
 					>
 						<Ionicons
@@ -173,12 +150,10 @@ export default function Page() {
 							size={18}
 							color={Colors.light.muted}
 						/>
-						<Text style={[styles.text, styles.buttonOutlineText]}>
-							Facebook
-						</Text>
+						<Text className="text-lg text-muted">Facebook</Text>
 					</TouchableOpacity>
 					<TouchableOpacity
-						style={[styles.button, styles.buttonOutline]}
+						className="flex-row rounded-[50] py-[10] px-[20] w-auto justify-center items-center gap-[6] border-[#e9e9e9] border-2 border-solid"
 						onPress={() => onPressWithSocial("oauth_google")}
 					>
 						<Ionicons
@@ -186,10 +161,10 @@ export default function Page() {
 							size={18}
 							color={Colors.light.muted}
 						/>
-						<Text style={[styles.text, styles.buttonOutlineText]}>Google</Text>
+						<Text className="text-lg text-muted">Google</Text>
 					</TouchableOpacity>
 					<TouchableOpacity
-						style={[styles.button, styles.buttonOutline]}
+						className="flex-row rounded-[50] py-[10] px-[20] w-auto justify-center items-center gap-[6] border-[#e9e9e9] border-2 border-solid"
 						onPress={() => onPressWithSocial("oauth_apple")}
 					>
 						<Ionicons
@@ -197,11 +172,11 @@ export default function Page() {
 							size={18}
 							color={Colors.light.muted}
 						/>
-						<Text style={[styles.text, styles.buttonOutlineText]}>Apple</Text>
+						<Text className="text-lg text-muted">Apple</Text>
 					</TouchableOpacity>
 				</View>
 				<TouchableOpacity onPress={onSignUpPress}>
-					<Text style={[styles.text, styles.registerLink]}>
+					<Text className="text-lg text-center text-theme underline">
 						You don't have an account yet?
 					</Text>
 				</TouchableOpacity>
@@ -209,123 +184,3 @@ export default function Page() {
 		</View>
 	);
 }
-
-const styles = StyleSheet.create({
-	page: {
-		flex: 1,
-		backgroundColor: "white",
-		padding: 20,
-		flexDirection: "column",
-		justifyContent: "center",
-	},
-	container: {
-		flexDirection: "column",
-		width: "100%",
-		gap: 30,
-	},
-	back: {
-		color: Colors.light.themeColor,
-		textDecorationLine: "underline",
-	},
-	textContainer: {
-		flexDirection: "column",
-	},
-	text: {
-		fontFamily: "Zain",
-		fontSize: 18,
-	},
-	errorText: {
-		color: "red",
-	},
-	title: {
-		fontSize: 30,
-		fontFamily: "Zain-ExtraBold",
-		color: Colors.light.text,
-	},
-	subtitle: {
-		fontSize: 20,
-		color: Colors.light.muted,
-		marginTop: -10,
-	},
-	inputsContainer: {
-		flexDirection: "column",
-		gap: 10,
-	},
-	inputContainer: {
-		position: "relative",
-	},
-	input: {
-		backgroundColor: "white",
-		padding: 10,
-		borderRadius: 12,
-		shadowOffset: {
-			width: 0,
-			height: 0,
-		},
-		shadowOpacity: 0.2,
-		shadowRadius: 2,
-		elevation: 2,
-	},
-	forgotContainer: {
-		position: "absolute",
-		top: "50%",
-		right: 10,
-		transform: [{ translateY: -0.5 * 20 }],
-	},
-	forgot: {
-		color: Colors.light.themeColor,
-		textDecorationLine: "underline",
-		fontSize: 16,
-	},
-	button: {
-		flexDirection: "row",
-		borderRadius: 50,
-		paddingVertical: 10,
-		paddingHorizontal: 20,
-		width: "auto",
-		justifyContent: "center",
-		alignItems: "center",
-		gap: 6,
-	},
-	buttonTheme: {
-		backgroundColor: Colors.light.themeColor,
-	},
-	buttonOutline: {
-		borderStyle: "solid",
-		borderWidth: 2,
-		borderColor: "#e9e9e9",
-	},
-	buttonText: {
-		color: "white",
-		fontFamily: "Zain-Bold",
-	},
-	buttonOutlineText: {
-		color: Colors.light.muted,
-	},
-	separatorContainer: {
-		flexDirection: "row",
-		alignItems: "center",
-	},
-	separator: {
-		height: 3,
-		backgroundColor: "#e9e9e9",
-		borderRadius: 2,
-		flex: 1,
-	},
-	separatorText: {
-		fontFamily: "Zain-Bold",
-		marginHorizontal: 10,
-		fontSize: 16,
-		color: Colors.light.muted,
-		textTransform: "uppercase",
-	},
-	socialButtons: {
-		flexDirection: "column",
-		gap: 6,
-	},
-	registerLink: {
-		textAlign: "center",
-		color: Colors.light.themeColor,
-		textDecorationLine: "underline",
-	},
-});
