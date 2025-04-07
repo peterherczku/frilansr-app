@@ -1,6 +1,6 @@
 import { ScrollView, View } from "react-native";
 import { useClerk } from "@clerk/clerk-expo";
-import { router } from "expo-router";
+import { router, useNavigation } from "expo-router";
 import { Header } from "@/components/ui/Header";
 import { ProfileHeader } from "@/components/profile/ProfileHeader";
 import {
@@ -17,6 +17,7 @@ import { Footer } from "@/components/ui/Footer";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { showConfirmModal } from "@/utils/modalCallbacks";
 import { useUserRoleUpdate } from "@/hooks/user/useUserRoleUpdate";
+import { CommonActions } from "@react-navigation/native";
 
 const data = [
 	{
@@ -49,6 +50,28 @@ const data = [
 
 export default function ProfileScreen() {
 	const { updateRole } = useUserRoleUpdate();
+	const navigation = useNavigation();
+
+	function handleConfirmModal() {
+		showConfirmModal({
+			message:
+				"Are you sure you want to change to job lister mode? This means that all your current and upcoming jobs will be revoked. Are you sure you want to proceed?",
+			onConfirm: async () => {
+				try {
+					await updateRole("LISTER");
+					router.replace("/(lister)/(tabs)/");
+					navigation.dispatch(
+						CommonActions.reset({
+							index: 0,
+							routes: [{ name: "(lister)", params: { screen: "(tabs)" } }],
+						})
+					);
+				} catch (err) {
+					console.error("Failed to update role:", err);
+				}
+			},
+		});
+	}
 
 	return (
 		<SafeAreaView className="flex-1 bg-white">
@@ -86,20 +109,7 @@ export default function ProfileScreen() {
 					<View className="h-[2] bg-[#ECECEC] rounded-lg" />
 
 					<ProfileSettingsBoxItem
-						onPress={() => {
-							showConfirmModal({
-								message:
-									"Are you sure you want to change to job lister mode? This means that all your current and upcoming jobs will be revoked. Are you sure you want to proceed?",
-								onConfirm: async () => {
-									try {
-										await updateRole("LISTER");
-										router.replace("/(lister)/(tabs)/");
-									} catch (err) {
-										console.error("Failed to update role:", err);
-									}
-								},
-							});
-						}}
+						onPress={handleConfirmModal}
 						title={"Change to Job Lister mode"}
 					/>
 					<View className="h-[2] bg-[#ECECEC] rounded-lg" />

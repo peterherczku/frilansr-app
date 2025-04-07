@@ -12,9 +12,11 @@ const MapView = cssInterop(RNMapView, {
 export function LocationMapView({
 	className,
 	disabled,
+	children,
 }: {
 	className?: string;
 	disabled?: boolean;
+	children?: ReactNode;
 }) {
 	return (
 		<MapView
@@ -27,7 +29,9 @@ export function LocationMapView({
 			className={cn("w-full h-[200px] rounded-lg", className)}
 			zoomEnabled={!disabled}
 			scrollEnabled={!disabled}
-		/>
+		>
+			{children}
+		</MapView>
 	);
 }
 

@@ -1,5 +1,5 @@
 import { cn } from "@/utils/cn";
-import { remapProps } from "nativewind";
+import { cssInterop, remapProps } from "nativewind";
 import React, { useEffect, useRef } from "react";
 import { Animated } from "react-native";
 
@@ -10,7 +10,7 @@ type SkeletonProps = {
 	className?: string;
 };
 
-const AnimatedView = remapProps(Animated.View, {
+const AnimatedView = cssInterop(Animated.View, {
 	className: "style",
 });
 
@@ -40,12 +40,8 @@ const Skeleton: React.FC<SkeletonProps> = ({
 
 	return (
 		<AnimatedView
-			className={cn(
-				width && "w-[width]",
-				height && "h-[height]",
-				"rounded-lg bg-[#aeaeae]",
-				className
-			)}
+			style={{ width, height, opacity: pulseAnim }}
+			className={cn("rounded-lg bg-[#aeaeae]", className)}
 		/>
 	);
 };
