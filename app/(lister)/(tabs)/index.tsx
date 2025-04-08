@@ -125,30 +125,6 @@ const jobs = [
 ];
 
 export default function ListerIndexPage() {
-	const { updateRole } = useUserRoleUpdate();
-	const navigation = useNavigation();
-
-	function handleConfirmModal() {
-		showConfirmModal({
-			message:
-				"Are you sure you want to change to job lister mode? This means that all your current and upcoming jobs will be revoked. Are you sure you want to proceed?",
-			onConfirm: async () => {
-				try {
-					await updateRole("WORKER");
-					router.replace("/(worker)/(tabs)/");
-					navigation.dispatch(
-						CommonActions.reset({
-							index: 0,
-							routes: [{ name: "(worker)", params: { screen: "(tabs)" } }],
-						})
-					);
-				} catch (err) {
-					console.error("Failed to update role:", err);
-				}
-			},
-		});
-	}
-
 	return (
 		<SafeAreaView className="flex-1 bg-white">
 			<Header />
