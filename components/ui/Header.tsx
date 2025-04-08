@@ -8,6 +8,7 @@ import { SignedIn, SignedOut, useUser } from "@clerk/clerk-expo";
 import { cssInterop } from "nativewind";
 import { Text } from "./Text";
 import { cn } from "@/utils/cn";
+import { useUserRole } from "@/hooks/user/useUserRole";
 
 const Image = cssInterop(ExpoImage, {
 	className: "style",
@@ -15,6 +16,7 @@ const Image = cssInterop(ExpoImage, {
 
 export function Header() {
 	const { isSignedIn, user } = useUser();
+	const role = useUserRole();
 	const router = useRouter();
 	const color = useColorScheme();
 
@@ -72,7 +74,11 @@ export function Header() {
 				</SignedOut>
 				<SignedIn>
 					<TouchableOpacity
-						onPress={() => router.push("/(worker)/(tabs)/profile")}
+						onPress={() =>
+							router.push(
+								`/(${role === "LISTER" ? "lister" : "worker"})/(tabs)/profile`
+							)
+						}
 					>
 						<Image
 							source={{ uri: user?.imageUrl }}

@@ -5,6 +5,7 @@ import { Colors } from "@/constants/Colors";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import {
 	FontAwesome,
+	FontAwesome6,
 	Ionicons,
 	MaterialCommunityIcons,
 } from "@expo/vector-icons";
@@ -23,7 +24,7 @@ export default function ListerTabLayout() {
 				tabBarButton: HapticTab,
 				tabBarLabelStyle: {
 					fontFamily: "Zain-Bold",
-					fontSize: 16,
+					fontSize: 14,
 				},
 				tabBarStyle: {
 					borderTopWidth: 0,
@@ -40,9 +41,51 @@ export default function ListerTabLayout() {
 			<Tabs.Screen
 				name="index"
 				options={{
-					title: "Listings",
+					title: "Active",
 					tabBarIcon: ({ color }) => (
 						<Ionicons size={23} color={color} name={"home-outline"} />
+					),
+				}}
+			/>
+			<Tabs.Screen
+				name="applications"
+				options={{
+					title: "Applications",
+					tabBarIcon: ({ color }) => (
+						<FontAwesome6 size={23} name="clipboard-user" color={color} />
+					),
+				}}
+			/>
+			<Tabs.Screen
+				name="create-listing"
+				options={{
+					title: "Create",
+					tabBarIcon: ({ color }) => (
+						<Ionicons size={23} color={color} name={"add-circle-outline"} />
+					),
+				}}
+				listeners={{
+					tabPress: (e) => {
+						e.preventDefault();
+						router.push("/(lister)/(create-listing)/");
+					},
+				}}
+			/>
+			<Tabs.Screen
+				name="payments"
+				options={{
+					title: "Payments",
+					tabBarIcon: ({ color }) => (
+						<Ionicons size={23} color={color} name={"card-outline"} />
+					),
+				}}
+			/>
+			<Tabs.Screen
+				name="profile"
+				options={{
+					title: "Profile",
+					tabBarIcon: ({ color }) => (
+						<FontAwesome size={23} name="user-circle-o" color={color} />
 					),
 				}}
 			/>

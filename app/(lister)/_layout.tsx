@@ -14,6 +14,7 @@ export default function ListerRoutesLayout() {
 				name="(tabs)"
 				options={{ gestureEnabled: false, headerShown: false }}
 			/>
+			<Stack.Screen name="(create-listing)" options={{ headerShown: false }} />
 		</Stack>
 	);
 }

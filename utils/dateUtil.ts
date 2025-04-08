@@ -37,3 +37,21 @@ export function timeAgo(timestamp: number | string | Date): string {
 	const years = Math.floor(days / 365);
 	return `${years} year${years > 1 ? "s" : ""} ago`;
 }
+
+export function formatDate(isoString: string) {
+	const dateObj = new Date(isoString);
+
+	const formattedDate = dateObj.toLocaleDateString("en-GB", {
+		day: "numeric",
+		month: "long",
+		year: "numeric",
+	});
+
+	const formattedTime = dateObj.toLocaleTimeString("en-US", {
+		hour: "numeric",
+		minute: "2-digit",
+		hour12: true,
+	});
+
+	return `${formattedDate} at ${formattedTime}`;
+}

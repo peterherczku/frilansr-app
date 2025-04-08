@@ -50,6 +50,41 @@ function ActiveListingUpcomingBody({ job }: { job: Job }) {
 	);
 }
 
+function ActiveListingEndedHeader({ job }: { job: Job }) {
+	return (
+		<View className="flex-col">
+			<View className="flex-row items-center gap-[10]">
+				<Text className="text-2xl font-zain-bold">{job.listing.title}</Text>
+				<View className="flex-row items-center py-[6] px-[10] bg-[#A7A7A7] justify-between rounded-lg">
+					<Text className="text-sm font-zain-bold text-white">Ended</Text>
+				</View>
+			</View>
+			<View className="flex-row items-center gap-[5] mt-[-5]">
+				<Text className="text-muted">{job.listing.salary} kr</Text>
+				<Text className="text-muted">•</Text>
+				<Text className="text-muted">{job.listing.duration} mins</Text>
+			</View>
+		</View>
+	);
+}
+
+function ActiveListingEndedBody({ job }: { job: Job }) {
+	return (
+		<View className="flex-row items-center justify-between">
+			<View className="flex-row items-center gap-[10]">
+				<Image
+					source={{ uri: job.worker?.imageUrl }}
+					className="w-[35] h-[35] rounded-full bg-[#d9d9d9]"
+				/>
+				<Text>{job.worker?.name}</Text>
+			</View>
+			<TouchableOpacity className="flex-row items-center justify-between py-[6] px-[10] bg-[#FFDB71] rounded-lg">
+				<Text className="font-zain-bold ">Rate {job.worker?.name}</Text>
+			</TouchableOpacity>
+		</View>
+	);
+}
+
 function ActiveListingOngoingHeader({ job }: { job: Job }) {
 	return (
 		<>
@@ -137,9 +172,11 @@ export function ActiveListingElement({ job }: { job: Job }) {
 			<View className="flex-row items-center justify-between">
 				{job.status === "PENDING" && <ActiveListingUpcomingHeader job={job} />}
 				{job.status === "ONGOING" && <ActiveListingOngoingHeader job={job} />}
+				{job.status === "COMPLETED" && <ActiveListingEndedHeader job={job} />}
 			</View>
 			{job.status === "PENDING" && <ActiveListingUpcomingBody job={job} />}
 			{job.status === "ONGOING" && <ActiveListingOngoingBody job={job} />}
+			{job.status === "COMPLETED" && <ActiveListingEndedBody job={job} />}
 		</View>
 	);
 }
