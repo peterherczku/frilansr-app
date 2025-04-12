@@ -12,16 +12,32 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import Feather from "@expo/vector-icons/Feather";
 import { ReactNode } from "react";
+import {
+	CreateListingPageType,
+	getPreviousPage,
+} from "@/utils/createListingUtil";
+import { ZodIssue } from "zod";
+
+export function CreateListingErrors({ errors }: { errors: ZodIssue[] }) {
+	return errors.map((error) => (
+		<Text key={error.code} className="text-red-500">
+			{error.message}
+		</Text>
+	));
+}
 
 export function CreateListingFooter({
-	route,
+	onSubmit,
+	isLoading,
 }: {
-	route: `/(lister)/(create-listing)/${string}`;
+	isLoading: boolean;
+	onSubmit: () => Promise<any>;
 }) {
 	return (
 		<TouchableOpacity
-			onPress={() => router.push(route)}
-			className="w-full bg-theme rounded-[20] flex-row items-center justify-center py-[12] mt-[20]"
+			onPress={onSubmit}
+			disabled={isLoading}
+			className="w-full bg-theme rounded-[20] flex-row items-center justify-center py-[12] mt-[20] disabled:opacity-50"
 		>
 			<Text className="text-white font-zain-bold text-lg">Continue</Text>
 		</TouchableOpacity>
@@ -60,11 +76,13 @@ export function CreateListingSubheader({
 }
 
 export function CreateListingBody({
-	nextRoute,
+	onSubmit,
 	children,
+	isLoading,
 }: {
-	nextRoute: `/(lister)/(create-listing)/${string}`;
+	onSubmit: () => Promise<any>;
 	children: React.ReactNode;
+	isLoading: boolean;
 }) {
 	return (
 		<KeyboardAvoidingView
@@ -74,7 +92,7 @@ export function CreateListingBody({
 			<View className="flex-col flex-1 justify-between">
 				<ScrollView contentContainerStyle={{ gap: 10 }}>{children}</ScrollView>
 				<View className="pb-[30]">
-					<CreateListingFooter route={nextRoute} />
+					<CreateListingFooter isLoading={isLoading} onSubmit={onSubmit} />
 				</View>
 			</View>
 		</KeyboardAvoidingView>
@@ -82,29 +100,36 @@ export function CreateListingBody({
 }
 
 export function CreateListingHeader({
+	currentPage,
 	done,
 	max,
 }: {
+	currentPage: CreateListingPageType;
 	done: number;
 	max: number;
 }) {
-	const width = 28 * done + 16 * (done - 1);
+	const width = 24 * done + 16 * (done - 1) + 8;
 
 	function back() {
-		router.back();
+		const page = getPreviousPage(currentPage);
+		if (page === "HOME") {
+			router.replace("/(lister)/");
+			return;
+		}
+		router.replace(`/(lister)/(create-listing)/${page}`);
 	}
 
 	function CheckedBox() {
 		return (
-			<View className="h-[28] w-[28] bg-theme border-4 border-solid border-theme rounded-full flex-row items-center justify-center">
-				<Feather name="check" size={20} color="white" />
+			<View className="h-[24] w-[24] bg-theme border-4 border-solid border-theme rounded-full flex-row items-center justify-center">
+				<Feather name="check" size={16} color="white" />
 			</View>
 		);
 	}
 
 	function UncheckedBox() {
 		return (
-			<View className="h-[28] w-[28] bg-[#F2F2F2] border-4 border-solid border-[#9BBA90] rounded-full flex-row items-center justify-between" />
+			<View className="h-[16] w-[16] bg-[#F2F2F2] border-4 border-solid border-[#9BBA90] rounded-full flex-row items-center justify-between" />
 		);
 	}
 
@@ -130,7 +155,7 @@ export function CreateListingHeader({
 						<UncheckedBox key={"not_done_" + index} />
 					))}
 					<View
-						className="left-0 absolute z-[-1] h-[2] bg-theme"
+						className="left-0 absolute z-[-1] h-[4] bg-theme"
 						style={{ width: width }}
 					/>
 					<View className="right-0 w-full absolute z-[-2] h-[4] bg-[#9BBA90]" />

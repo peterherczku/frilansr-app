@@ -3,18 +3,14 @@ import React from "react";
 import { HapticTab } from "@/components/ui/HapticTab";
 import { Colors } from "@/constants/Colors";
 import { useColorScheme } from "@/hooks/useColorScheme";
-import {
-	FontAwesome,
-	FontAwesome6,
-	Ionicons,
-	MaterialCommunityIcons,
-} from "@expo/vector-icons";
-import { useAuth } from "@clerk/clerk-expo";
+import { FontAwesome, FontAwesome6, Ionicons } from "@expo/vector-icons";
+import { useDraftListing } from "@/hooks/listing/useDraftListing";
+import { getPage } from "@/utils/createListingUtil";
 
 export default function ListerTabLayout() {
 	const router = useRouter();
 	const colorScheme = useColorScheme();
-	const { isSignedIn } = useAuth();
+	const { draft } = useDraftListing();
 
 	return (
 		<Tabs
@@ -65,9 +61,14 @@ export default function ListerTabLayout() {
 					),
 				}}
 				listeners={{
-					tabPress: (e) => {
+					tabPress: async (e) => {
 						e.preventDefault();
-						router.push("/(lister)/(create-listing)/");
+						if (!draft) {
+							router.push("/(lister)/(create-listing)/title");
+							return;
+						}
+						const page = getPage(draft.draft);
+						router.push(`/(lister)/(create-listing)/${page}`);
 					},
 				}}
 			/>
