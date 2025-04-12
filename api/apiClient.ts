@@ -1,6 +1,7 @@
 import { getClerkInstance } from "@clerk/clerk-expo";
 
-export const BACKEND_API_BASE_URL = "http://192.168.10.141:3000/api";
+export const BACKEND_API_BASE_URL =
+	"https://frilansr-backend-production.up.railway.app/api";
 
 export async function fetchWithAuth(url: string, options: RequestInit = {}) {
 	const clerkInstance = getClerkInstance();
@@ -14,7 +15,6 @@ export async function fetchWithAuth(url: string, options: RequestInit = {}) {
 	const res = await fetch(url, { ...options, headers });
 
 	if (!res.ok) {
-		console.log("ASDASD");
 		throw new Error(`Request failed: ${res.status} ${res.statusText}`);
 	}
 

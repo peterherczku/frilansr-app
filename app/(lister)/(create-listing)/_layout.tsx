@@ -11,6 +11,7 @@ export default function ListingRoutesLayout() {
 	return (
 		<Stack>
 			<Stack.Screen name={"index"} options={{ headerShown: false }} />
+			<Stack.Screen name={"description"} options={{ headerShown: false }} />
 		</Stack>
 	);
 }
