@@ -1,16 +1,31 @@
 import { Tabs, useRouter } from "expo-router";
-import React from "react";
+import React, { useState } from "react";
 import { HapticTab } from "@/components/ui/HapticTab";
 import { Colors } from "@/constants/Colors";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { FontAwesome, FontAwesome6, Ionicons } from "@expo/vector-icons";
 import { useDraftListing } from "@/hooks/listing/useDraftListing";
 import { getPage } from "@/utils/createListingUtil";
+import { ActivityIndicator, View } from "react-native";
 
 export default function ListerTabLayout() {
 	const router = useRouter();
 	const colorScheme = useColorScheme();
-	const { draft } = useDraftListing();
+	const { refetch } = useDraftListing({
+		enabled: false,
+	});
+	const [loading, setLoading] = useState(false);
+
+	if (loading) {
+		return (
+			<View className="flex-1 justify-center items-center">
+				<ActivityIndicator
+					size="large"
+					color={Colors[colorScheme ?? "light"].text}
+				/>
+			</View>
+		);
+	}
 
 	return (
 		<Tabs
@@ -63,11 +78,15 @@ export default function ListerTabLayout() {
 				listeners={{
 					tabPress: async (e) => {
 						e.preventDefault();
-						if (!draft) {
+						setLoading(true);
+						const draft = await refetch();
+						if (draft.error || !draft.data) {
+							setLoading(false);
 							router.push("/(lister)/(create-listing)/title");
 							return;
 						}
-						const page = getPage(draft.draft);
+						const page = getPage(draft.data.draft);
+						setLoading(false);
 						router.push(`/(lister)/(create-listing)/${page}`);
 					},
 				}}
