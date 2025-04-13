@@ -8,6 +8,7 @@ import {
 	CreateListingTitle,
 } from "@/components/lister/createListing/CreateListing";
 import { Text } from "@/components/ui/Text";
+import { useDraftListing } from "@/hooks/listing/useDraftListing";
 import { useUpdateDraftListing } from "@/hooks/listing/useUpdateDraftListing";
 import { getNextPage } from "@/utils/createListingUtil";
 import { updateListingDescriptionSchema } from "@/utils/validators";
@@ -19,9 +20,12 @@ import { ZodIssue } from "zod";
 const CURRENT = "description";
 
 export default function CreateListingDescriptionPage() {
+	const { draft } = useDraftListing();
 	const { updateDraft, isPending } = useUpdateDraftListing();
 	const [errors, setErrors] = useState<ZodIssue[]>([]);
-	const [description, setDescription] = useState("");
+	const [description, setDescription] = useState(
+		draft?.draft.description || ""
+	);
 
 	async function onSubmit() {
 		const res = updateListingDescriptionSchema.safeParse({ description });
@@ -47,7 +51,8 @@ export default function CreateListingDescriptionPage() {
 				<CreateListingSubheader current={2} max={7}>
 					<CreateListingTitle>Description</CreateListingTitle>
 					<CreateListingSubtitle>
-						Write a clear description that explains what the job entails.
+						Crafting a clear job description helps candidates understand the
+						role and decide if it suits their skills.
 					</CreateListingSubtitle>
 				</CreateListingSubheader>
 				<View className="flex-col">

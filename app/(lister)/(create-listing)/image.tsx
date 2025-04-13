@@ -52,7 +52,8 @@ export default function CreateListingImagePage() {
 				<CreateListingSubheader current={3} max={7}>
 					<CreateListingTitle>Image</CreateListingTitle>
 					<CreateListingSubtitle>
-						Write a clear description that explains what the job entails.
+						Choosing a compelling cover image adds visual appeal and reinforces
+						the brand of your job listing.
 					</CreateListingSubtitle>
 				</CreateListingSubheader>
 				<View className="flex-col gap-[5]">

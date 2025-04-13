@@ -46,7 +46,7 @@ export function CreateListingFooter({
 
 export function CreateListingSubtitle({ children }: { children: string }) {
 	return (
-		<Text className="text-lg text-muted leading-[20px] mt-[-3] w-[80%]">
+		<Text className="text-lg text-muted leading-[20px] mt-[-3] w-[90%]">
 			{children}
 		</Text>
 	);
@@ -112,7 +112,6 @@ export function CreateListingHeader({
 
 	function back() {
 		const page = getPreviousPage(currentPage);
-		console.log(page);
 		if (page === "HOME") {
 			router.replace("/(lister)/");
 			return;
