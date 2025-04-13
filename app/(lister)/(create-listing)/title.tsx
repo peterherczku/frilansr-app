@@ -44,7 +44,7 @@ export default function CreateListingTitlePage() {
 
 	return (
 		<CreateListingContainer>
-			<CreateListingHeader currentPage="title" done={0} max={7} />
+			<CreateListingHeader currentPage={CURRENT} done={0} max={7} />
 			<CreateListingBody isLoading={isPending} onSubmit={onSubmit}>
 				<CreateListingSubheader current={1} max={7}>
 					<CreateListingTitle>Title</CreateListingTitle>

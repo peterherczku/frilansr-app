@@ -12,6 +12,8 @@ export default function ListingRoutesLayout() {
 		<Stack initialRouteName="title">
 			<Stack.Screen name={"title"} options={{ headerShown: false }} />
 			<Stack.Screen name={"description"} options={{ headerShown: false }} />
+			<Stack.Screen name={"image"} options={{ headerShown: false }} />
+			<Stack.Screen name={"salary"} options={{ headerShown: false }} />
 		</Stack>
 	);
 }

@@ -112,6 +112,7 @@ export function CreateListingHeader({
 
 	function back() {
 		const page = getPreviousPage(currentPage);
+		console.log(page);
 		if (page === "HOME") {
 			router.replace("/(lister)/");
 			return;
