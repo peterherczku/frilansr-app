@@ -2,7 +2,7 @@ import { cn } from "@/utils/cn";
 import { cssInterop, remapProps } from "nativewind";
 import { ReactNode } from "react";
 import { View } from "react-native";
-import { default as RNMapView } from "react-native-maps";
+import { Details, Region, default as RNMapView } from "react-native-maps";
 import { Text } from "../ui/Text";
 
 const MapView = cssInterop(RNMapView, {
@@ -12,14 +12,20 @@ const MapView = cssInterop(RNMapView, {
 export function LocationMapView({
 	className,
 	disabled,
+	onRegionChangeComplete,
+	onRegionChange,
 	children,
 }: {
 	className?: string;
 	disabled?: boolean;
 	children?: ReactNode;
+	onRegionChange?: (region: Region, details: Details) => void;
+	onRegionChangeComplete?: (region: Region, details: Details) => void;
 }) {
 	return (
 		<MapView
+			onRegionChangeComplete={onRegionChangeComplete}
+			onRegionChange={onRegionChange}
 			initialRegion={{
 				latitude: 59.3293,
 				longitude: 18.0686,

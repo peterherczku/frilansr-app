@@ -20,7 +20,7 @@ import { ZodIssue } from "zod";
 
 export function CreateListingErrors({ errors }: { errors: ZodIssue[] }) {
 	return errors.map((error) => (
-		<Text key={error.code} className="text-red-500">
+		<Text key={error.code + error.message} className="text-red-500">
 			{error.message}
 		</Text>
 	));

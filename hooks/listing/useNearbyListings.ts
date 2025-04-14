@@ -2,26 +2,11 @@ import { useEffect, useState } from "react";
 import * as Location from "expo-location";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { fetchNearbyListings } from "@/api/listingFunctions";
+import { useLocation } from "../useLocation";
 
 export function useNearbyListings() {
 	const queryClient = useQueryClient();
-	const [location, setLocation] = useState<{ lat: number; lon: number } | null>(
-		null
-	);
-	const [locationError, setLocationError] = useState<string | null>(null);
-
-	useEffect(() => {
-		(async () => {
-			const { status } = await Location.requestForegroundPermissionsAsync();
-			if (status !== "granted") {
-				setLocationError("Permission to access location was denied");
-				return;
-			}
-
-			const loc = await Location.getCurrentPositionAsync({});
-			setLocation({ lat: loc.coords.latitude, lon: loc.coords.longitude });
-		})();
-	}, []);
+	const { location, locationError } = useLocation();
 
 	const { data, error, isLoading } = useQuery({
 		queryKey: ["nearbyListings", location],

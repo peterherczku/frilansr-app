@@ -28,8 +28,18 @@ const updateListingSalarySchema = z.object({
 	salary: stringToIntegerSchema,
 });
 
+const updateListingLocationSchema = z.object({
+	longitude: z.number({
+		message: "Longitude is required",
+	}),
+	latitude: z.number({
+		message: "Latitude is required",
+	}),
+});
+
 export {
 	updateListingTitleSchema,
 	updateListingDescriptionSchema,
 	updateListingSalarySchema,
+	updateListingLocationSchema,
 };
