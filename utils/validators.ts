@@ -13,6 +13,15 @@ const stringToIntegerSchema = z.string().transform((val, ctx) => {
 	return Math.round(num * 100);
 });
 
+const isoDateString = z.string().refine(
+	(value) => {
+		return !isNaN(Date.parse(value));
+	},
+	{
+		message: "Invalid ISO date string",
+	}
+);
+
 const jobTypeEnum = z.enum(jobTypes, {
 	message: "Invalid job type",
 });
@@ -46,10 +55,25 @@ const updateListingTypeSchema = z.object({
 	type: jobTypeEnum,
 });
 
+const updateListingDateDurationSchema = z.object({
+	duration: z
+		.number({
+			message: "Duration is required",
+		})
+		.min(10, {
+			message: "Duration must be at least 10 minutes",
+		})
+		.int({
+			message: "Duration must be an integer",
+		}),
+	date: isoDateString,
+});
+
 export {
 	updateListingTitleSchema,
 	updateListingDescriptionSchema,
 	updateListingSalarySchema,
 	updateListingLocationSchema,
 	updateListingTypeSchema,
+	updateListingDateDurationSchema,
 };

@@ -7,7 +7,6 @@ export type CreateListingPageType =
 	| "salary"
 	| "location"
 	| "type"
-	| "duration"
 	| "date"
 	| "publish";
 
@@ -26,8 +25,6 @@ export function getNextPage(
 		case "location":
 			return "type";
 		case "type":
-			return "duration";
-		case "duration":
 			return "date";
 		case "date":
 			return "publish";
@@ -50,10 +47,8 @@ export function getPreviousPage(
 			return "salary";
 		case "type":
 			return "location";
-		case "duration":
-			return "type";
 		case "date":
-			return "duration";
+			return "type";
 		case "publish":
 			return "date";
 		default:
@@ -75,8 +70,6 @@ export function getPage(draft: ListingDraft) {
 			return "location";
 		case !draft.type:
 			return "type";
-		case !draft.duration:
-			return "duration";
 		case !draft.date:
 			return "date";
 		default:

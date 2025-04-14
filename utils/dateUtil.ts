@@ -55,3 +55,32 @@ export function formatDate(isoString: string) {
 
 	return `${formattedDate} at ${formattedTime}`;
 }
+
+export function formatDateWithoutHours(isoString: string) {
+	const dateObj = new Date(isoString);
+
+	const formattedDate = dateObj.toLocaleDateString("en-GB", {
+		day: "numeric",
+		month: "long",
+		year: "numeric",
+	});
+
+	return formattedDate;
+}
+
+export function formatDateWithoutDate(isoString: string) {
+	const dateObj = new Date(isoString);
+
+	const formattedTime = dateObj.toLocaleTimeString("en-US", {
+		hour: "numeric",
+		minute: "2-digit",
+		hour12: true,
+	});
+
+	return formattedTime;
+}
+
+export function differenceInMinutes(start: Date, end: Date): number {
+	const diffInMs = Math.abs(end.getTime() - start.getTime());
+	return Math.floor(diffInMs / (1000 * 60));
+}

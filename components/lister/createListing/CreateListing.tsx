@@ -27,9 +27,11 @@ export function CreateListingErrors({ errors }: { errors: ZodIssue[] }) {
 }
 
 export function CreateListingFooter({
+	text,
 	onSubmit,
 	isLoading,
 }: {
+	text: string;
 	isLoading: boolean;
 	onSubmit: () => Promise<any>;
 }) {
@@ -39,7 +41,7 @@ export function CreateListingFooter({
 			disabled={isLoading}
 			className="w-full bg-theme rounded-[20] flex-row items-center justify-center py-[12] mt-[20] disabled:opacity-50"
 		>
-			<Text className="text-white font-zain-bold text-lg">Continue</Text>
+			<Text className="text-white font-zain-bold text-lg">{text}</Text>
 		</TouchableOpacity>
 	);
 }
@@ -80,11 +82,13 @@ export function CreateListingBody({
 	children,
 	isLoading,
 	scrollable = true,
+	footerText = "Continue",
 }: {
 	onSubmit: () => Promise<any>;
 	children: React.ReactNode;
 	isLoading: boolean;
 	scrollable?: boolean;
+	footerText?: string;
 }) {
 	return (
 		<KeyboardAvoidingView
@@ -102,7 +106,11 @@ export function CreateListingBody({
 				)}
 				{!scrollable && <View className="flex-col gap-[10]">{children}</View>}
 				<View className="pb-[30]">
-					<CreateListingFooter isLoading={isLoading} onSubmit={onSubmit} />
+					<CreateListingFooter
+						text={footerText}
+						isLoading={isLoading}
+						onSubmit={onSubmit}
+					/>
 				</View>
 			</View>
 		</KeyboardAvoidingView>

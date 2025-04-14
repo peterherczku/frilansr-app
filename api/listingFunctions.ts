@@ -88,3 +88,13 @@ export async function updateDraft(draftId: string, data: any) {
 	);
 	return res.draft as ListingDraft;
 }
+
+export async function publishDraft(draftId: string) {
+	const res = await fetchWithAuth(
+		`${BACKEND_API_BASE_URL}/listings/${draftId}/publish`,
+		{
+			method: "POST",
+		}
+	);
+	return res.draft as ListingDraft;
+}

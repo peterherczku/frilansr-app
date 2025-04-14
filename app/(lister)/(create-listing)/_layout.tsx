@@ -16,7 +16,8 @@ export default function ListingRoutesLayout() {
 			<Stack.Screen name={"salary"} options={{ headerShown: false }} />
 			<Stack.Screen name={"location"} options={{ headerShown: false }} />
 			<Stack.Screen name={"type"} options={{ headerShown: false }} />
-			<Stack.Screen name={"duration"} options={{ headerShown: false }} />
+			<Stack.Screen name={"date"} options={{ headerShown: false }} />
+			<Stack.Screen name={"publish"} options={{ headerShown: false }} />
 		</Stack>
 	);
 }
