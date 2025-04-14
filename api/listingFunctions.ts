@@ -96,5 +96,5 @@ export async function publishDraft(draftId: string) {
 			method: "POST",
 		}
 	);
-	return res.draft as ListingDraft;
+	return res.draft as Listing;
 }
