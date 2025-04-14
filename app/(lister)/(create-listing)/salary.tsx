@@ -12,10 +12,7 @@ import { useDraftListing } from "@/hooks/listing/draft/useDraftListing";
 import { useUpdateDraftListing } from "@/hooks/listing/draft/useUpdateDraftListing";
 import { getNextPage } from "@/utils/createListingUtil";
 import { convertCentsToDecimalString } from "@/utils/numberUtil";
-import {
-	updateListingSalarySchema,
-	updateListingTitleSchema,
-} from "@/utils/validators";
+import { updateListingSalarySchema } from "@/utils/validators";
 import { router } from "expo-router";
 import { useState } from "react";
 import { TextInput, View } from "react-native";

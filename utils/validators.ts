@@ -1,3 +1,4 @@
+import { jobTypes } from "@/api/listingFunctions";
 import { z } from "zod";
 
 const stringToIntegerSchema = z.string().transform((val, ctx) => {
@@ -10,6 +11,10 @@ const stringToIntegerSchema = z.string().transform((val, ctx) => {
 		return z.NEVER;
 	}
 	return Math.round(num * 100);
+});
+
+const jobTypeEnum = z.enum(jobTypes, {
+	message: "Invalid job type",
 });
 
 const updateListingTitleSchema = z.object({
@@ -37,9 +42,14 @@ const updateListingLocationSchema = z.object({
 	}),
 });
 
+const updateListingTypeSchema = z.object({
+	type: jobTypeEnum,
+});
+
 export {
 	updateListingTitleSchema,
 	updateListingDescriptionSchema,
 	updateListingSalarySchema,
 	updateListingLocationSchema,
+	updateListingTypeSchema,
 };

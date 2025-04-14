@@ -79,10 +79,12 @@ export function CreateListingBody({
 	onSubmit,
 	children,
 	isLoading,
+	scrollable = true,
 }: {
 	onSubmit: () => Promise<any>;
 	children: React.ReactNode;
 	isLoading: boolean;
+	scrollable?: boolean;
 }) {
 	return (
 		<KeyboardAvoidingView
@@ -90,7 +92,15 @@ export function CreateListingBody({
 			className="flex-col flex-1 bg-white rounded-[40] p-[25]"
 		>
 			<View className="flex-col flex-1 justify-between">
-				<ScrollView contentContainerStyle={{ gap: 10 }}>{children}</ScrollView>
+				{scrollable && (
+					<ScrollView
+						nestedScrollEnabled={true}
+						contentContainerStyle={{ gap: 10 }}
+					>
+						{children}
+					</ScrollView>
+				)}
+				{!scrollable && <View className="flex-col gap-[10]">{children}</View>}
 				<View className="pb-[30]">
 					<CreateListingFooter isLoading={isLoading} onSubmit={onSubmit} />
 				</View>

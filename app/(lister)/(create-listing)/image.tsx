@@ -9,12 +9,8 @@ import {
 } from "@/components/lister/createListing/CreateListing";
 import { Text } from "@/components/ui/Text";
 import { useListingImageUploader } from "@/hooks/listing/draft/useListingImageUploader";
-import { useUpdateDraftListing } from "@/hooks/listing/draft/useUpdateDraftListing";
 import { getNextPage } from "@/utils/createListingUtil";
-import { useImageUploader } from "@/utils/uploadthing";
-import { updateListingDescriptionSchema } from "@/utils/validators";
 import { Image as ExpoImage } from "expo-image";
-import { openSettings } from "expo-linking";
 import { router } from "expo-router";
 import { cssInterop } from "nativewind";
 import { useState } from "react";

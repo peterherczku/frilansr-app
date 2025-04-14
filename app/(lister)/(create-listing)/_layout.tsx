@@ -1,4 +1,4 @@
-import { Redirect, Stack, useSegments } from "expo-router";
+import { Redirect, Stack } from "expo-router";
 import { useAuth } from "@clerk/clerk-expo";
 
 export default function ListingRoutesLayout() {
@@ -15,6 +15,7 @@ export default function ListingRoutesLayout() {
 			<Stack.Screen name={"image"} options={{ headerShown: false }} />
 			<Stack.Screen name={"salary"} options={{ headerShown: false }} />
 			<Stack.Screen name={"location"} options={{ headerShown: false }} />
+			<Stack.Screen name={"type"} options={{ headerShown: false }} />
 		</Stack>
 	);
 }

@@ -1,5 +1,9 @@
 import { BACKEND_API_BASE_URL, fetchWithAuth } from "./apiClient";
 
+export type JobType = "DOG_WALKING" | "DOG_SITTING" | "DOG_TRAINING";
+
+export const jobTypes = ["DOG_WALKING", "DOG_SITTING", "DOG_TRAINING"] as const;
+
 export interface Listing {
 	id: string;
 	title: string;
