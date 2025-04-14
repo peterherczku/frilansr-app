@@ -8,8 +8,8 @@ import {
 	CreateListingTitle,
 } from "@/components/lister/createListing/CreateListing";
 import { Text } from "@/components/ui/Text";
-import { useListingImageUploader } from "@/hooks/listing/useListingImageUploader";
-import { useUpdateDraftListing } from "@/hooks/listing/useUpdateDraftListing";
+import { useListingImageUploader } from "@/hooks/listing/draft/useListingImageUploader";
+import { useUpdateDraftListing } from "@/hooks/listing/draft/useUpdateDraftListing";
 import { getNextPage } from "@/utils/createListingUtil";
 import { useImageUploader } from "@/utils/uploadthing";
 import { updateListingDescriptionSchema } from "@/utils/validators";

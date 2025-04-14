@@ -1,5 +1,5 @@
 import { updateDraft } from "@/api/listingFunctions";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useDraftListing } from "./useDraftListing";
 
 export function useUpdateDraftListing() {

@@ -4,7 +4,7 @@ import { HapticTab } from "@/components/ui/HapticTab";
 import { Colors } from "@/constants/Colors";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { FontAwesome, FontAwesome6, Ionicons } from "@expo/vector-icons";
-import { useDraftListing } from "@/hooks/listing/useDraftListing";
+import { useDraftListing } from "@/hooks/listing/draft/useDraftListing";
 import { getPage } from "@/utils/createListingUtil";
 import { ActivityIndicator, View } from "react-native";
 

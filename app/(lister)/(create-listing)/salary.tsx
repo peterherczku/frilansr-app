@@ -8,8 +8,8 @@ import {
 	CreateListingTitle,
 } from "@/components/lister/createListing/CreateListing";
 import { Text } from "@/components/ui/Text";
-import { useDraftListing } from "@/hooks/listing/useDraftListing";
-import { useUpdateDraftListing } from "@/hooks/listing/useUpdateDraftListing";
+import { useDraftListing } from "@/hooks/listing/draft/useDraftListing";
+import { useUpdateDraftListing } from "@/hooks/listing/draft/useUpdateDraftListing";
 import { getNextPage } from "@/utils/createListingUtil";
 import { convertCentsToDecimalString } from "@/utils/numberUtil";
 import {

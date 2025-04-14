@@ -1,7 +1,8 @@
-import { Text } from "@/components/ui/Text";
+import { Colors } from "@/constants/Colors";
 import { useUser } from "@clerk/clerk-expo";
 import { useRootNavigationState, useRouter } from "expo-router";
 import { useEffect } from "react";
+import { ActivityIndicator, View } from "react-native";
 
 export default function IndexPage() {
 	const { user, isLoaded } = useUser();
@@ -20,5 +21,9 @@ export default function IndexPage() {
 		}
 	}, [rootNavigationState?.key, isLoaded]);
 
-	return <Text>Loading...</Text>;
+	return (
+		<View className="flex-1 justify-center items-center">
+			<ActivityIndicator size="large" color={Colors.light.text} />
+		</View>
+	);
 }
