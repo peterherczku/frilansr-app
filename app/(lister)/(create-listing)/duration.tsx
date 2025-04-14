@@ -18,49 +18,46 @@ import { useState } from "react";
 import { TextInput, View } from "react-native";
 import { ZodIssue } from "zod";
 
-const CURRENT = "type";
+const CURRENT = "duration";
 
-export default function CreateListingTypePage() {
+export default function CreateListingDurationpage() {
 	const { updateDraft, isPending } = useUpdateDraftListing();
 	const [errors, setErrors] = useState<ZodIssue[]>([]);
-	const [type, setType] = useState<JobType>("DOG_WALKING");
 
 	async function onSubmit() {
-		const res = updateListingTypeSchema.safeParse({ type });
-		if (!res.success) {
-			setErrors(res.error.issues);
-			return;
-		}
+		/*const res = updateListingTypeSchema.safeParse({ type });
+        if (!res.success) {
+            setErrors(res.error.issues);
+            return;
+        }
 
-		try {
-			await updateDraft(res.data);
-			const nextPage = getNextPage(CURRENT);
+        try {
+            await updateDraft(res.data);
+            const nextPage = getNextPage(CURRENT);
 
-			router.push(`/(lister)/(create-listing)/${nextPage}`);
-		} catch (error) {
-			console.error("Failed to update draft:", error);
-		}
+            router.push(`/(lister)/(create-listing)/${nextPage}`);
+        } catch (error) {
+            console.error("Failed to update draft:", error);
+        }*/
 	}
 
 	return (
 		<CreateListingContainer>
-			<CreateListingHeader currentPage={CURRENT} done={5} max={8} />
+			<CreateListingHeader currentPage={CURRENT} done={6} max={8} />
 			<CreateListingBody
 				scrollable={false}
 				isLoading={isPending}
 				onSubmit={onSubmit}
 			>
-				<CreateListingSubheader current={6} max={8}>
-					<CreateListingTitle>Job type</CreateListingTitle>
+				<CreateListingSubheader current={7} max={8}>
+					<CreateListingTitle>Duration</CreateListingTitle>
 					<CreateListingSubtitle>
-						Choose the most fitting job type to help candidates understand the
-						nature of the job.
+						Specify the approximate duration of the job
 					</CreateListingSubtitle>
 				</CreateListingSubheader>
 				<View className="flex-col">
 					<CreateListingErrors errors={errors} />
-					<Text className="text-xl">Type</Text>
-					<JobTypeSelectInput selected={type} setSelected={setType} />
+					<Text className="text-xl">Duration</Text>
 				</View>
 			</CreateListingBody>
 		</CreateListingContainer>

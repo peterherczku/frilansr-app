@@ -50,12 +50,12 @@ export default function CreateListingLocationPage() {
 
 	return (
 		<CreateListingContainer>
-			<CreateListingHeader currentPage={CURRENT} done={4} max={7} />
+			<CreateListingHeader currentPage={CURRENT} done={4} max={8} />
 			<CreateListingBody
 				isLoading={isPending || isMapMoving}
 				onSubmit={onSubmit}
 			>
-				<CreateListingSubheader current={5} max={7}>
+				<CreateListingSubheader current={5} max={8}>
 					<CreateListingTitle>Location</CreateListingTitle>
 					<CreateListingSubtitle>
 						Select the exact position of the starting location of the job.

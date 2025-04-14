@@ -7,8 +7,8 @@ export type CreateListingPageType =
 	| "salary"
 	| "location"
 	| "type"
-	| "date"
 	| "duration"
+	| "date"
 	| "publish";
 
 export function getNextPage(
@@ -26,10 +26,10 @@ export function getNextPage(
 		case "location":
 			return "type";
 		case "type":
-			return "date";
-		case "date":
 			return "duration";
 		case "duration":
+			return "date";
+		case "date":
 			return "publish";
 		default:
 			throw new Error("Invalid page type");
@@ -50,12 +50,12 @@ export function getPreviousPage(
 			return "salary";
 		case "type":
 			return "location";
-		case "date":
-			return "type";
 		case "duration":
-			return "date";
-		case "publish":
+			return "type";
+		case "date":
 			return "duration";
+		case "publish":
+			return "date";
 		default:
 			return "HOME";
 	}
@@ -75,10 +75,10 @@ export function getPage(draft: ListingDraft) {
 			return "location";
 		case !draft.type:
 			return "type";
-		case !draft.date:
-			return "date";
 		case !draft.duration:
 			return "duration";
+		case !draft.date:
+			return "date";
 		default:
 			return "publish";
 	}

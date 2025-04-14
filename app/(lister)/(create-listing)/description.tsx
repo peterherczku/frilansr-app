@@ -46,9 +46,9 @@ export default function CreateListingDescriptionPage() {
 
 	return (
 		<CreateListingContainer>
-			<CreateListingHeader currentPage={CURRENT} done={1} max={7} />
+			<CreateListingHeader currentPage={CURRENT} done={1} max={8} />
 			<CreateListingBody isLoading={isPending} onSubmit={onSubmit}>
-				<CreateListingSubheader current={2} max={7}>
+				<CreateListingSubheader current={2} max={8}>
 					<CreateListingTitle>Description</CreateListingTitle>
 					<CreateListingSubtitle>
 						Crafting a clear job description helps candidates understand the

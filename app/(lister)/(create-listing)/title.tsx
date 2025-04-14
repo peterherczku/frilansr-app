@@ -44,9 +44,9 @@ export default function CreateListingTitlePage() {
 
 	return (
 		<CreateListingContainer>
-			<CreateListingHeader currentPage={CURRENT} done={0} max={7} />
+			<CreateListingHeader currentPage={CURRENT} done={0} max={8} />
 			<CreateListingBody isLoading={isPending} onSubmit={onSubmit}>
-				<CreateListingSubheader current={1} max={7}>
+				<CreateListingSubheader current={1} max={8}>
 					<CreateListingTitle>Title</CreateListingTitle>
 					<CreateListingSubtitle>
 						Choose a concise and catchy title that immediately grabs attention.

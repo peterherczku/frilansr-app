@@ -48,9 +48,9 @@ export default function CreateListingSalaryPage() {
 
 	return (
 		<CreateListingContainer>
-			<CreateListingHeader currentPage={CURRENT} done={3} max={7} />
+			<CreateListingHeader currentPage={CURRENT} done={3} max={8} />
 			<CreateListingBody isLoading={isPending} onSubmit={onSubmit}>
-				<CreateListingSubheader current={4} max={7}>
+				<CreateListingSubheader current={4} max={8}>
 					<CreateListingTitle>Salary</CreateListingTitle>
 					<CreateListingSubtitle>
 						Outlining an accurate salary attracts applicants who value fair

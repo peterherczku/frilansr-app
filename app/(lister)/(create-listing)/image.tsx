@@ -43,9 +43,9 @@ export default function CreateListingImagePage() {
 
 	return (
 		<CreateListingContainer>
-			<CreateListingHeader currentPage={CURRENT} done={2} max={7} />
+			<CreateListingHeader currentPage={CURRENT} done={2} max={8} />
 			<CreateListingBody isLoading={isUploading} onSubmit={onSubmit}>
-				<CreateListingSubheader current={3} max={7}>
+				<CreateListingSubheader current={3} max={8}>
 					<CreateListingTitle>Image</CreateListingTitle>
 					<CreateListingSubtitle>
 						Choosing a compelling cover image adds visual appeal and reinforces
