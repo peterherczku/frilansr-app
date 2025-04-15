@@ -159,7 +159,7 @@ export function CreateListingHeader({
 					</TouchableOpacity>
 					<Text className="text-2xl font-zain-bold">Create listing</Text>
 				</View>
-				<TouchableOpacity>
+				<TouchableOpacity onPress={() => router.replace("/(lister)/")}>
 					<Ionicons name="close-outline" size={30} color={Colors.light.text} />
 				</TouchableOpacity>
 			</View>

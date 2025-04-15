@@ -60,7 +60,7 @@ export default function CreateListingSalaryPage() {
 				<View className="flex-col">
 					<CreateListingErrors errors={errors} />
 					<Text className="text-xl">Enter amount</Text>
-					<View className="flex-row items-center gap-2 bg-[#d9d9d9] px-6 rounded-[20] py-2">
+					<View className="flex-row items-center gap-2 bg-[#d9d9d9] px-6 rounded-[20] py-4">
 						<TextInput
 							keyboardType="numeric"
 							value={salary}
@@ -68,9 +68,10 @@ export default function CreateListingSalaryPage() {
 							numberOfLines={2}
 							multiline={true}
 							placeholder="1,000"
-							className="text-3xl text-muted"
+							className="text-xl text-muted bottom-[4]"
 						/>
-						<Text className="text-3xl text-muted mt-[8]">kr per hour</Text>
+
+						<Text className="text-xl text-muted">kr per hour</Text>
 					</View>
 				</View>
 			</CreateListingBody>
