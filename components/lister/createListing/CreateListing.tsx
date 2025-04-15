@@ -129,12 +129,11 @@ export function CreateListingHeader({
 	const width = 24 * done + 16 * (done - 1) + 8;
 
 	function back() {
-		const page = getPreviousPage(currentPage);
-		if (page === "HOME") {
+		if (!router.canGoBack()) {
 			router.replace("/(lister)/");
 			return;
 		}
-		router.replace(`/(lister)/(create-listing)/${page}`);
+		router.back();
 	}
 
 	function CheckedBox() {

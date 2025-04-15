@@ -1,15 +1,17 @@
-import { Tabs, useRouter } from "expo-router";
+import { Tabs, useNavigation, useRouter } from "expo-router";
 import React, { useState } from "react";
 import { HapticTab } from "@/components/ui/HapticTab";
 import { Colors } from "@/constants/Colors";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { FontAwesome, FontAwesome6, Ionicons } from "@expo/vector-icons";
 import { useDraftListing } from "@/hooks/listing/draft/useDraftListing";
-import { getPage } from "@/utils/createListingUtil";
+import { getPage, restoreRouter } from "@/utils/createListingUtil";
 import { ActivityIndicator, View } from "react-native";
+import { CommonActions } from "@react-navigation/native";
 
 export default function ListerTabLayout() {
 	const router = useRouter();
+	const navigation = useNavigation();
 	const colorScheme = useColorScheme();
 	const { refetch } = useDraftListing({
 		enabled: false,
@@ -86,8 +88,8 @@ export default function ListerTabLayout() {
 							return;
 						}
 						const page = getPage(draft.data.draft);
+						restoreRouter(navigation, page);
 						setLoading(false);
-						router.push(`/(lister)/(create-listing)/${page}`);
 					},
 				}}
 			/>

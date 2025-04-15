@@ -1,4 +1,9 @@
 import { ListingDraft } from "@/api/listingFunctions";
+import {
+	CommonActions,
+	NavigationProp,
+	NavigationState,
+} from "@react-navigation/native";
 
 export type CreateListingPageType =
 	| "title"
@@ -9,6 +14,83 @@ export type CreateListingPageType =
 	| "type"
 	| "date"
 	| "publish";
+
+export function restoreRouter(
+	navigation: Omit<
+		NavigationProp<ReactNavigation.RootParamList>,
+		"getState"
+	> & {
+		getState(): NavigationState | undefined;
+	},
+	page: CreateListingPageType
+) {
+	const prevPages = getAllPreviousPages(page);
+	const routes = prevPages.map((prevPage) => ({
+		name: prevPage,
+	}));
+	navigation.dispatch(
+		CommonActions.reset({
+			index: 0,
+			routes: [
+				{
+					name: "(lister)",
+					state: {
+						index: 1,
+						routes: [
+							{
+								name: "(tabs)",
+								state: {
+									index: 0,
+									routes: [{ name: "index" }],
+								},
+							},
+							{
+								name: "(create-listing)",
+								state: {
+									index: routes.length,
+									routes: [...routes, { name: page }],
+								},
+							},
+						],
+					},
+				},
+			],
+		})
+	);
+}
+
+function getAllPreviousPages(
+	current: CreateListingPageType
+): CreateListingPageType[] {
+	switch (current) {
+		case "title":
+			return [];
+		case "description":
+			return ["title"];
+		case "image":
+			return ["title", "description"];
+		case "salary":
+			return ["title", "description", "image"];
+		case "location":
+			return ["title", "description", "image", "salary"];
+		case "type":
+			return ["title", "description", "image", "salary", "location"];
+		case "date":
+			return ["title", "description", "image", "salary", "location", "type"];
+		case "publish":
+			return [
+				"title",
+				"description",
+				"image",
+				"salary",
+				"location",
+				"type",
+				"date",
+			];
+		default:
+			return [];
+	}
+}
 
 export function getNextPage(
 	current: CreateListingPageType
