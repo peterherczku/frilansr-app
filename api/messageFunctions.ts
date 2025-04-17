@@ -24,3 +24,31 @@ export async function fetchRecentConversations(page: number, limit: number) {
 	);
 	return res.conversations as RecentConversation[];
 }
+
+export async function fetchMessages(
+	conversationId: string,
+	limit: number,
+	before: Date
+) {
+	const res = await fetchWithAuth(
+		`${BACKEND_API_BASE_URL}/messages?conversationid=${conversationId}&limit=${limit}&before=${before.toISOString()}`
+	);
+	return {
+		messages: res.messages as Message[],
+		nextCursor: res.nextCursor as string,
+		hasMore: res.hasMore as boolean,
+	};
+}
+
+export async function sendMessageReq(conversationId: string, content: string) {
+	await fetchWithAuth(`${BACKEND_API_BASE_URL}/messages`, {
+		method: "POST",
+		headers: {
+			"Content-type": "application/json",
+		},
+		body: JSON.stringify({
+			conversationId,
+			content,
+		}),
+	});
+}
