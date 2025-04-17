@@ -22,7 +22,7 @@ import {
 	BottomSheetProvider,
 	useBottomSheet,
 } from "@/components/ui/BottomSheet";
-import ProfileAreYouSureModal from "@/components/ui/AreYouSureModal";
+import { AreYouSureModal } from "@/components/ui/AreYouSureModal";
 
 const data = [
 	{
@@ -111,7 +111,7 @@ export default function ProfileScreen() {
 						<ProfileSettingsBoxItem
 							onPress={() => {
 								open(
-									<ProfileAreYouSureModal
+									<AreYouSureModal
 										close={close}
 										handleConfirm={handleModalConfirm}
 										message="Are you sure you want to change to job lister mode? This means that all your current and upcoming jobs will be revoked. Are you sure you want to proceed?"

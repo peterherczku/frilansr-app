@@ -1,4 +1,4 @@
-import ProfileAreYouSureModal from "@/components/ui/AreYouSureModal";
+import { AreYouSureModal } from "@/components/ui/AreYouSureModal";
 import { useBottomSheet } from "@/components/ui/BottomSheet";
 import { Header } from "@/components/ui/Header";
 import { Text } from "@/components/ui/Text";
@@ -11,7 +11,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 export default function ListerProfilePage() {
 	const { updateRole } = useUserRoleUpdate();
 	const navigation = useNavigation();
-	const { open } = useBottomSheet();
+	const { open, close } = useBottomSheet();
 
 	async function handleModalConfirm() {
 		try {
@@ -35,7 +35,7 @@ export default function ListerProfilePage() {
 				className="bg-theme p-[12] rounded-lg mx-[20]"
 				onPress={() => {
 					open(
-						<ProfileAreYouSureModal
+						<AreYouSureModal
 							close={close}
 							handleConfirm={handleModalConfirm}
 							message="Are you sure you want to change to job lister mode? This means that all your current and upcoming jobs will be revoked. Are you sure you want to proceed?"

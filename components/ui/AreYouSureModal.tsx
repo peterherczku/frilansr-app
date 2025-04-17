@@ -1,9 +1,9 @@
 import { Colors } from "@/constants/Colors";
-import { MaterialIcons } from "@expo/vector-icons";
+import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import { TouchableOpacity, View } from "react-native";
 import { Text } from "./Text";
 
-export default function ProfileAreYouSureModal({
+export function AreYouSureModal({
 	handleConfirm,
 	message,
 	close,
@@ -15,8 +15,8 @@ export default function ProfileAreYouSureModal({
 	return (
 		<View className="justify-center items-center flex-1 mx-4">
 			<View className="flex-col mx-4 justify-center items-center gap-[10] w-full">
-				<MaterialIcons
-					name="currency-exchange"
+				<FontAwesome5
+					name="exclamation-triangle"
 					size={80}
 					color={Colors.light.themeColor}
 				/>
