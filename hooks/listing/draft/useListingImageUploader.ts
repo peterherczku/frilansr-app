@@ -18,7 +18,6 @@ export function useListingImageUploader() {
 				"X-Listing-Id": draft!.draft.id,
 			}),
 			onClientUploadComplete: (data) => {
-				console.log("Upload complete:", data);
 				queryClient.setQueryData(["draft-listing"], (oldData: any) => ({
 					...oldData,
 					draft: {

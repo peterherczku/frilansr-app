@@ -91,7 +91,6 @@ export const BottomSheetProvider: FC<{ children: ReactNode }> = ({
 export const useBottomSheet = (): BottomSheetContextType => {
 	const ctx = useContext(BottomSheetContext);
 	if (!ctx) {
-		console.log(ctx);
 		throw new Error(
 			"useBottomSheet must be used within a BottomSheetProvider – wrap your tree first!"
 		);

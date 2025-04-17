@@ -1,7 +1,7 @@
 import { Feather, FontAwesome6 } from "@expo/vector-icons";
 import { Image as ExpoImage } from "expo-image";
 import { router, useLocalSearchParams } from "expo-router";
-import { TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, TouchableOpacity, View } from "react-native";
 import { Colors } from "@/constants/Colors";
 import { ListingHeader } from "@/components/listing/ListingHeader";
 import { useUser } from "@clerk/clerk-expo";
@@ -24,8 +24,8 @@ export default function ListingIndexPage() {
 	const { listing, isLoading, error } = useListing(id as string);
 	if (isLoading) {
 		return (
-			<SafeAreaView>
-				<Text>Loading</Text>
+			<SafeAreaView className="flex-1 bg-white justify-center items-center">
+				<ActivityIndicator size="large" color="gray" />
 			</SafeAreaView>
 		);
 	}
