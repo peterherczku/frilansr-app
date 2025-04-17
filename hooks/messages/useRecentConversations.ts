@@ -3,7 +3,7 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 
 export function useRecentConversations() {
 	const { data, error, isLoading } = useInfiniteQuery({
-		queryKey: ["projects"],
+		queryKey: ["conversations"],
 		queryFn: async ({ pageParam }) =>
 			await fetchRecentConversations(pageParam, 10),
 		initialPageParam: 1,

@@ -1,5 +1,14 @@
 import { BACKEND_API_BASE_URL, fetchWithAuth } from "./apiClient";
 
+export interface Conversation {
+	id: string;
+	partner: {
+		id: string;
+		name: string;
+		imageUrl: string;
+	};
+}
+
 export interface RecentConversation {
 	id: string;
 	updatedAt: string;
@@ -20,9 +29,16 @@ export interface Message {
 
 export async function fetchRecentConversations(page: number, limit: number) {
 	const res = await fetchWithAuth(
-		`${BACKEND_API_BASE_URL}/messages/conversations?page=${page}&limit=${limit}`
+		`${BACKEND_API_BASE_URL}/messages/recent-conversations?page=${page}&limit=${limit}`
 	);
 	return res.conversations as RecentConversation[];
+}
+
+export async function fetchConversation(conversationId: string) {
+	const res = await fetchWithAuth(
+		`${BACKEND_API_BASE_URL}/messages/conversation?id=${conversationId}`
+	);
+	return res.conversation as Conversation;
 }
 
 export async function fetchMessages(
@@ -31,7 +47,7 @@ export async function fetchMessages(
 	before: Date
 ) {
 	const res = await fetchWithAuth(
-		`${BACKEND_API_BASE_URL}/messages?conversationid=${conversationId}&limit=${limit}&before=${before.toISOString()}`
+		`${BACKEND_API_BASE_URL}/messages?conversationId=${conversationId}&limit=${limit}&before=${before.toISOString()}`
 	);
 	return {
 		messages: res.messages as Message[],

@@ -1,12 +1,22 @@
 import { MessagesView } from "@/components/messages/MessagesView";
 import { Text } from "@/components/ui/Text";
 import { Colors } from "@/constants/Colors";
+import { useChatRoom } from "@/hooks/messages/useChatRoom";
+import { useConversation } from "@/hooks/messages/useConversation";
 import { useKeyboardHeight } from "@/hooks/useKeyboardHeight";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
 import { Image as ExpoImage } from "expo-image";
 import { router } from "expo-router";
+import { useLocalSearchParams, useSearchParams } from "expo-router/build/hooks";
 import { cssInterop } from "nativewind";
-import { TextInput, TouchableOpacity, View, Animated } from "react-native";
+import { useState } from "react";
+import {
+	TextInput,
+	TouchableOpacity,
+	View,
+	Animated,
+	ActivityIndicator,
+} from "react-native";
 import {
 	Edge,
 	SafeAreaView as RNSafeAreaView,
@@ -20,48 +30,36 @@ const SafeAreaView = cssInterop(RNSafeAreaView, {
 	className: "style",
 });
 
-const messageData = [
-	{
-		id: 0,
-		name: "Péter Herczku",
-		profilePicture:
-			"https://img.clerk.com/eyJ0eXBlIjoicHJveHkiLCJzcmMiOiJodHRwczovL2ltYWdlcy5jbGVyay5kZXYvdXBsb2FkZWQvaW1nXzJ1QnVBc2FqMHh3QjRXRWJjOW5VRWNtR2Y0NyJ9",
-		lastMessage: {
-			text: "Hello! Thank you for taking good care of Max :)",
-			date: 1742163849000,
-		},
-		messages: [
-			{
-				text: "Hello! Thank you for taking good care of Max :)",
-				user: {
-					id: "userID",
-					name: "Test name",
-					imageUrl: "yippie",
-				},
-				date: 1742163849000,
-			},
-			{
-				text: "No worries! :)",
-				user: {
-					id: "user_2uBrjWWLjAV055Q20Fqet6l9Hty",
-					name: "me",
-					imageUrl:
-						"https://img.clerk.com/eyJ0eXBlIjoicHJveHkiLCJzcmMiOiJodHRwczovL2ltYWdlcy5jbGVyay5kZXYvdXBsb2FkZWQvaW1nXzJ1QnVBc2FqMHh3QjRXRWJjOW5VRWNtR2Y0NyJ9",
-				},
-				date: 1742163849000,
-			},
-		],
-	},
-];
 export default function MessagesPage() {
+	const { id } = useLocalSearchParams();
+
+	const { conversation, isLoading: loadingConversation } = useConversation(
+		id as string
+	);
+	const { messages, sendMessage } = useChatRoom(id as string);
 	const { keyboardHeight, isKeyboardOpen } = useKeyboardHeight();
 	const safeEdges = isKeyboardOpen
 		? ["top", "left", "right"]
 		: ["top", "left", "right", "bottom"];
 	const footerPadding = Animated.add(keyboardHeight, 10);
 
+	const [text, setText] = useState("");
+
 	function back() {
 		router.back();
+	}
+
+	if (loadingConversation || !conversation) {
+		return (
+			<SafeAreaView className="flex-1 bg-white justify-center items-center">
+				<ActivityIndicator size="large" color="gray" />
+			</SafeAreaView>
+		);
+	}
+
+	async function publishMessage() {
+		await sendMessage(text);
+		console.log("sent message", text);
 	}
 
 	return (
@@ -72,13 +70,15 @@ export default function MessagesPage() {
 				</TouchableOpacity>
 				<View className="flex-row items-center gap-[10]">
 					<Image
-						source={{ uri: messageData[0].profilePicture }}
+						source={{ uri: conversation.partner.imageUrl }}
 						className="w-[50] h-[50] rounded-full bg-[#d9d9d9]"
 					/>
-					<Text className="text-2xl font-zain-bold">{messageData[0].name}</Text>
+					<Text className="text-2xl font-zain-bold">
+						{conversation.partner.name}
+					</Text>
 				</View>
 			</View>
-			<MessagesView messages={messageData[0].messages} />
+			<MessagesView conversation={conversation} messages={messages} />
 			<Animated.View
 				style={{
 					backgroundColor: "white",
@@ -107,10 +107,15 @@ export default function MessagesPage() {
 				</View>
 				<View className="flex-1 bg-[#efefef] rounded-lg justify-center px-[15] py-[8]">
 					<TextInput
+						value={text}
+						onChangeText={setText}
 						placeholder="Aa"
 						className="font-zain text-lg text-muted"
 					/>
 				</View>
+				<TouchableOpacity onPress={publishMessage}>
+					<AntDesign name="arrowup" size={24} color={Colors.light.themeColor} />
+				</TouchableOpacity>
 			</Animated.View>
 		</SafeAreaView>
 	);

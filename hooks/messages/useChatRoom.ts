@@ -2,12 +2,13 @@ import { useAuth } from "@clerk/clerk-expo";
 import { useEffect, useState } from "react";
 import { Realtime } from "ably";
 import {
+	InfiniteData,
 	useInfiniteQuery,
 	useMutation,
 	useQueryClient,
 } from "@tanstack/react-query";
 import { BACKEND_API_BASE_URL } from "@/api/apiClient";
-import { fetchMessages, sendMessageReq } from "@/api/messageFunctions";
+import { fetchMessages, Message, sendMessageReq } from "@/api/messageFunctions";
 
 function useChatMessages(conversationId: string) {
 	const { data, isLoading, error } = useInfiniteQuery({
@@ -35,7 +36,7 @@ export function useChatRoom(conversationId: string) {
 	useEffect(() => {
 		let ablyClient: Realtime;
 		(async () => {
-			const jwt = await getToken();
+			const jwt = await getToken({ template: "ably-token" });
 			ablyClient = new Realtime({
 				authUrl: `${BACKEND_API_BASE_URL}/ably/auth?conversationId=${encodeURIComponent(
 					conversationId
@@ -46,14 +47,33 @@ export function useChatRoom(conversationId: string) {
 			const channel = ablyClient.channels.get(conversationId);
 			channel.subscribe("message", (msg) => {
 				const data = msg.data;
-				queryClient.setQueryData(["chatMessages", conversationId], (old) => [
-					...(Array.isArray(old) ? old : []),
-					{
-						sender_id: data.senderId,
-						content: data.content,
-						sent_at: new Date().toISOString(),
-					},
-				]);
+				queryClient.setQueryData(
+					["chatMessages", conversationId],
+					(old: InfiniteData<{ messages: Message[] }> | undefined) => {
+						if (!old) return old; // cache not ready yet
+
+						const firstPage = old.pages[0] ?? { messages: [], hasMore: false };
+
+						return {
+							...old,
+							pages: [
+								{
+									...firstPage,
+									messages: [
+										...firstPage.messages,
+										{
+											id: data.id,
+											senderId: data.senderId,
+											content: data.content,
+											sentAt: new Date().toISOString(),
+										},
+									],
+								},
+								...old.pages.slice(1),
+							],
+						};
+					}
+				);
 			});
 
 			setAblyRealtime(ablyClient);
@@ -68,24 +88,13 @@ export function useChatRoom(conversationId: string) {
 		mutationFn: async (content: string) => {
 			await sendMessageReq(conversationId, content);
 		},
-		onMutate: (newMessage) => {
-			queryClient.setQueryData(["chatMessages", conversationId], (old) => [
-				...(Array.isArray(old) ? old : []),
-				{
-					sender_id: userId,
-					content: newMessage,
-					sent_at: new Date().toISOString(),
-				},
-			]);
-		},
 		onError: (err, newMessage, context) => {
 			// Optionally handle errors and revert optimistic update if needed
 		},
 	});
 
-	async function sendMessage(content: string, onSuccess: () => void) {
+	async function sendMessage(content: string) {
 		await mutateAsync(content);
-		onSuccess();
 	}
 
 	return { messages, sendMessage };
