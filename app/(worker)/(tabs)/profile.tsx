@@ -1,4 +1,4 @@
-import { ScrollView, View } from "react-native";
+import { Button, ScrollView, View } from "react-native";
 import { useClerk } from "@clerk/clerk-expo";
 import { router, useNavigation } from "expo-router";
 import { Header } from "@/components/ui/Header";
@@ -15,9 +15,14 @@ import {
 } from "@/components/profile/ProfileSettingsBox";
 import { Footer } from "@/components/ui/Footer";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { showConfirmModal } from "@/utils/modalCallbacks";
 import { useUserRoleUpdate } from "@/hooks/user/useUserRoleUpdate";
 import { CommonActions } from "@react-navigation/native";
+import { Text } from "@/components/ui/Text";
+import {
+	BottomSheetProvider,
+	useBottomSheet,
+} from "@/components/ui/BottomSheet";
+import ProfileAreYouSureModal from "@/components/ui/AreYouSureModal";
 
 const data = [
 	{
@@ -51,72 +56,78 @@ const data = [
 export default function ProfileScreen() {
 	const { updateRole } = useUserRoleUpdate();
 	const navigation = useNavigation();
+	const { open, close } = useBottomSheet();
 
-	function handleConfirmModal() {
-		showConfirmModal({
-			message:
-				"Are you sure you want to change to job lister mode? This means that all your current and upcoming jobs will be revoked. Are you sure you want to proceed?",
-			onConfirm: async () => {
-				try {
-					await updateRole("LISTER");
-					router.replace("/(lister)/(tabs)/");
-					navigation.dispatch(
-						CommonActions.reset({
-							index: 0,
-							routes: [{ name: "(lister)", params: { screen: "(tabs)" } }],
-						})
-					);
-				} catch (err) {
-					console.error("Failed to update role:", err);
-				}
-			},
-		});
+	async function handleModalConfirm() {
+		try {
+			await updateRole("LISTER");
+			router.replace("/(lister)/(tabs)/");
+			navigation.dispatch(
+				CommonActions.reset({
+					index: 0,
+					routes: [{ name: "(lister)", params: { screen: "(tabs)" } }],
+				})
+			);
+		} catch (err) {
+			console.error("Failed to update role:", err);
+		}
 	}
 
 	return (
-		<SafeAreaView className="flex-1 bg-white">
-			<Header />
-			<ScrollView>
-				<ProfileHeader />
-				<ProfilePaymentBox>
-					<ProfilePaymentBoxItem
-						title={"Payment history"}
-						subtitle={"15 payments"}
-						onPress={() =>
-							router.push("/(worker)/(settings)/(payment)/history")
-						}
-					/>
-					<View className="h-[2] bg-[#ECECEC] rounded-lg" />
-					<ProfilePaymentBoxItem
-						title={"Go to Payment settings"}
-						onPress={() =>
-							router.push("/(worker)/(settings)/(payment)/payment")
-						}
-					/>
-				</ProfilePaymentBox>
-				<ProfileAffiliateProgram />
-				<ProfileRecentWorks data={data} />
-				<ProfileSettingsBox>
-					<ProfileSettingsBoxItem
-						onPress={() => router.push("/(worker)/(settings)/account")}
-						title={"Account"}
-					/>
-					<View className="h-[2] bg-[#ECECEC] rounded-lg" />
-					<ProfileSettingsBoxItem
-						onPress={() => router.push("/(worker)/(settings)/payment")}
-						title={"Payment"}
-					/>
-					<View className="h-[2] bg-[#ECECEC] rounded-lg" />
-
-					<ProfileSettingsBoxItem
-						onPress={handleConfirmModal}
-						title={"Change to Job Lister mode"}
-					/>
-					<View className="h-[2] bg-[#ECECEC] rounded-lg" />
-					<ProfileSettingsBoxItem title={"Delete account"} destructive={true} />
-				</ProfileSettingsBox>
-				<Footer />
-			</ScrollView>
-		</SafeAreaView>
+		<BottomSheetProvider>
+			<SafeAreaView className="flex-1 bg-white">
+				<Header />
+				<ScrollView>
+					<ProfileHeader />
+					<ProfilePaymentBox>
+						<ProfilePaymentBoxItem
+							title={"Payment history"}
+							subtitle={"15 payments"}
+							onPress={() =>
+								router.push("/(worker)/(settings)/(payment)/history")
+							}
+						/>
+						<View className="h-[2] bg-[#ECECEC] rounded-lg" />
+						<ProfilePaymentBoxItem
+							title={"Go to Payment settings"}
+							onPress={() =>
+								router.push("/(worker)/(settings)/(payment)/payment")
+							}
+						/>
+					</ProfilePaymentBox>
+					<ProfileAffiliateProgram />
+					<ProfileRecentWorks data={data} />
+					<ProfileSettingsBox>
+						<ProfileSettingsBoxItem
+							onPress={() => router.push("/(worker)/(settings)/account")}
+							title={"Account"}
+						/>
+						<View className="h-[2] bg-[#ECECEC] rounded-lg" />
+						<ProfileSettingsBoxItem
+							onPress={() => router.push("/(worker)/(settings)/payment")}
+							title={"Payment"}
+						/>
+						<View className="h-[2] bg-[#ECECEC] rounded-lg" />
+						<ProfileSettingsBoxItem
+							onPress={() => {
+								open(
+									<ProfileAreYouSureModal
+										handleConfirm={handleModalConfirm}
+										message="Are you sure you want to change to job lister mode? This means that all your current and upcoming jobs will be revoked. Are you sure you want to proceed?"
+									/>
+								);
+							}}
+							title={"Change to Job Lister mode"}
+						/>
+						<View className="h-[2] bg-[#ECECEC] rounded-lg" />
+						<ProfileSettingsBoxItem
+							title={"Delete account"}
+							destructive={true}
+						/>
+					</ProfileSettingsBox>
+					<Footer />
+				</ScrollView>
+			</SafeAreaView>
+		</BottomSheetProvider>
 	);
 }

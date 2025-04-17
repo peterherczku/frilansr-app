@@ -16,9 +16,7 @@ import { ClerkLoaded, ClerkProvider } from "@clerk/clerk-expo";
 import { tokenCache } from "@/cache";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useReactQueryFocusSync } from "@/hooks/useReactQueryFocusSync";
-import { Platform } from "react-native";
 
-// Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
@@ -66,14 +64,6 @@ export default function RootLayout() {
 							<Stack.Screen
 								name={"(auth)"}
 								options={{ presentation: "modal", headerShown: false }}
-							/>
-							<Stack.Screen
-								name="confirm-modal"
-								options={{
-									headerShown: false,
-									presentation: "formSheet",
-									sheetAllowedDetents: "fitToContents",
-								}}
 							/>
 							<Stack.Screen name="+not-found" />
 						</Stack>

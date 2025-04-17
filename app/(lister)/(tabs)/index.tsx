@@ -3,12 +3,6 @@ import {
 	ActiveListingsHeader,
 } from "@/components/lister/activeListings/ActiveListings";
 import { Header } from "@/components/ui/Header";
-import { Text } from "@/components/ui/Text";
-import { useUserRoleUpdate } from "@/hooks/user/useUserRoleUpdate";
-import { showConfirmModal } from "@/utils/modalCallbacks";
-import { CommonActions } from "@react-navigation/native";
-import { router, useNavigation } from "expo-router";
-import { Pressable } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const jobs = [
