@@ -36,7 +36,7 @@ export default function ProfileAreYouSureModal({
 					</Text>
 				</TouchableOpacity>
 				<TouchableOpacity
-					className="p-4 w-full rounded-lg w-full"
+					className="p-4 rounded-lg w-full"
 					onPress={() => {
 						router.back();
 					}}
