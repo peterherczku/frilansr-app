@@ -112,6 +112,7 @@ export default function ProfileScreen() {
 							onPress={() => {
 								open(
 									<ProfileAreYouSureModal
+										close={close}
 										handleConfirm={handleModalConfirm}
 										message="Are you sure you want to change to job lister mode? This means that all your current and upcoming jobs will be revoked. Are you sure you want to proceed?"
 									/>

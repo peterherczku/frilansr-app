@@ -2,17 +2,16 @@ import { Colors } from "@/constants/Colors";
 import { MaterialIcons } from "@expo/vector-icons";
 import { TouchableOpacity, View } from "react-native";
 import { Text } from "./Text";
-import { useRouter } from "expo-router";
 
 export default function ProfileAreYouSureModal({
 	handleConfirm,
 	message,
+	close,
 }: {
-	handleConfirm: () => void;
+	handleConfirm: () => Promise<void>;
 	message: string;
+	close: () => void;
 }) {
-	const router = useRouter();
-
 	return (
 		<View className="justify-center items-center flex-1 mx-4">
 			<View className="flex-col mx-4 justify-center items-center gap-[10] w-full">
@@ -27,8 +26,9 @@ export default function ProfileAreYouSureModal({
 				</Text>
 				<TouchableOpacity
 					className="p-4 bg-theme w-full rounded-lg"
-					onPress={() => {
-						handleConfirm();
+					onPress={async () => {
+						await handleConfirm();
+						close();
 					}}
 				>
 					<Text className=" text-center text-white text-xl font-zain-bold">
@@ -38,7 +38,7 @@ export default function ProfileAreYouSureModal({
 				<TouchableOpacity
 					className="p-4 rounded-lg w-full"
 					onPress={() => {
-						router.back();
+						close();
 					}}
 				>
 					<Text className=" text-center text-theme text-xl font-zain-bold">
