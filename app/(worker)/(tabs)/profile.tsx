@@ -15,7 +15,6 @@ import {
 } from "@/components/profile/ProfileSettingsBox";
 import { Footer } from "@/components/ui/Footer";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { showConfirmModal } from "@/utils/modalCallbacks";
 import { useUserRoleUpdate } from "@/hooks/user/useUserRoleUpdate";
 import { CommonActions } from "@react-navigation/native";
 import { Text } from "@/components/ui/Text";
@@ -111,13 +110,12 @@ export default function ProfileScreen() {
 						<View className="h-[2] bg-[#ECECEC] rounded-lg" />
 						<ProfileSettingsBoxItem
 							onPress={() => {
-								const a = (
+								open(
 									<ProfileAreYouSureModal
 										handleConfirm={handleModalConfirm}
 										message="Are you sure you want to change to job lister mode? This means that all your current and upcoming jobs will be revoked. Are you sure you want to proceed?"
 									/>
 								);
-								open(a);
 							}}
 							title={"Change to Job Lister mode"}
 						/>
