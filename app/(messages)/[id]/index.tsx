@@ -16,6 +16,7 @@ import {
 	View,
 	Animated,
 	ActivityIndicator,
+	Keyboard,
 } from "react-native";
 import {
 	Edge,
@@ -43,6 +44,7 @@ export default function MessagesPage() {
 		: ["top", "left", "right", "bottom"];
 	const footerPadding = Animated.add(keyboardHeight, 10);
 
+	const [isMessageSending, setIsMessageSending] = useState(false);
 	const [text, setText] = useState("");
 
 	function back() {
@@ -58,8 +60,11 @@ export default function MessagesPage() {
 	}
 
 	async function publishMessage() {
+		setIsMessageSending(true);
 		await sendMessage(text);
-		console.log("sent message", text);
+		setText("");
+		Keyboard.dismiss();
+		setIsMessageSending(false);
 	}
 
 	return (
@@ -113,7 +118,11 @@ export default function MessagesPage() {
 						className="font-zain text-lg text-muted"
 					/>
 				</View>
-				<TouchableOpacity onPress={publishMessage}>
+				<TouchableOpacity
+					className="disabled:opacity-50"
+					disabled={isMessageSending}
+					onPress={publishMessage}
+				>
 					<AntDesign name="arrowup" size={24} color={Colors.light.themeColor} />
 				</TouchableOpacity>
 			</Animated.View>

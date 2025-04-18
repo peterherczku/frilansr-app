@@ -28,8 +28,11 @@ export function MessagesList({ data }: { data: RecentConversation[] }) {
 				<View>
 					<Text className="fotn-zain-bold text-xl">{item.partner.name}</Text>
 					{item.lastMessage && (
-						<View className="mt-[-7] flex-row gap-[5] items-center">
-							<Text numberOfLines={1} className="text-muted text-lg w-[120]">
+						<View className="mt-[-7] flex-row gap-[8] items-center">
+							<Text
+								numberOfLines={1}
+								className="text-muted text-lg max-w-[120]"
+							>
 								{item.lastMessage.content}
 							</Text>
 							<View className="w-[4] h-[4] rounded-full bg-muted" />

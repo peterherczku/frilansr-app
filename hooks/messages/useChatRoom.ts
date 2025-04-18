@@ -3,12 +3,18 @@ import { useEffect, useState } from "react";
 import { Realtime } from "ably";
 import {
 	InfiniteData,
+	QueryClient,
 	useInfiniteQuery,
 	useMutation,
 	useQueryClient,
 } from "@tanstack/react-query";
 import { BACKEND_API_BASE_URL } from "@/api/apiClient";
-import { fetchMessages, Message, sendMessageReq } from "@/api/messageFunctions";
+import {
+	fetchMessages,
+	Message,
+	RecentConversation,
+	sendMessageReq,
+} from "@/api/messageFunctions";
 
 function useChatMessages(conversationId: string) {
 	const { data, isLoading, error } = useInfiniteQuery({
@@ -25,6 +31,71 @@ function useChatMessages(conversationId: string) {
 
 	const messages = data?.pages.flatMap((page) => page.messages) || [];
 	return { messages, isLoading, error };
+}
+
+function updateChatMessages(
+	queryClient: QueryClient,
+	conversationId: string,
+	data: Message
+) {
+	queryClient.setQueryData(
+		["chatMessages", conversationId],
+		(old: InfiniteData<{ messages: Message[] }> | undefined) => {
+			if (!old) return old; // cache not ready yet
+
+			const firstPage = old.pages[0] ?? { messages: [], hasMore: false };
+
+			return {
+				...old,
+				pages: [
+					{
+						...firstPage,
+						messages: [
+							...firstPage.messages,
+							{
+								id: data.id,
+								senderId: data.senderId,
+								content: data.content,
+								sentAt: new Date().toISOString(),
+							},
+						],
+					},
+					...old.pages.slice(1),
+				],
+			};
+		}
+	);
+}
+
+function updateLastMessage(
+	queryClient: QueryClient,
+	conversationId: string,
+	data: Message
+) {
+	queryClient.setQueryData(
+		["conversations"],
+		(old: InfiniteData<RecentConversation[], unknown>) => {
+			if (!old) return old; // cache not ready yet
+
+			return {
+				...old,
+				pages: old.pages.map((page) =>
+					page.map((conversation) => {
+						if (conversation.id !== conversationId) return conversation;
+						return {
+							...conversation,
+							lastMessage: {
+								id: data.id,
+								senderId: data.senderId,
+								content: data.content,
+								sentAt: new Date().toISOString(),
+							},
+						};
+					})
+				),
+			};
+		}
+	);
 }
 
 export function useChatRoom(conversationId: string) {
@@ -47,33 +118,8 @@ export function useChatRoom(conversationId: string) {
 			const channel = ablyClient.channels.get(conversationId);
 			channel.subscribe("message", (msg) => {
 				const data = msg.data;
-				queryClient.setQueryData(
-					["chatMessages", conversationId],
-					(old: InfiniteData<{ messages: Message[] }> | undefined) => {
-						if (!old) return old; // cache not ready yet
-
-						const firstPage = old.pages[0] ?? { messages: [], hasMore: false };
-
-						return {
-							...old,
-							pages: [
-								{
-									...firstPage,
-									messages: [
-										...firstPage.messages,
-										{
-											id: data.id,
-											senderId: data.senderId,
-											content: data.content,
-											sentAt: new Date().toISOString(),
-										},
-									],
-								},
-								...old.pages.slice(1),
-							],
-						};
-					}
-				);
+				updateChatMessages(queryClient, conversationId, data);
+				updateLastMessage(queryClient, conversationId, data);
 			});
 
 			setAblyRealtime(ablyClient);

@@ -19,6 +19,11 @@ import { useReactQueryFocusSync } from "@/hooks/useReactQueryFocusSync";
 
 SplashScreen.preventAutoHideAsync();
 
+const queryClient = new QueryClient();
+queryClient.setQueryDefaults(["listing-applications"], {
+	staleTime: 1000 * 60 * 3,
+});
+
 export default function RootLayout() {
 	const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!;
 
@@ -41,8 +46,6 @@ export default function RootLayout() {
 			SplashScreen.hideAsync();
 		}
 	}, [loaded]);
-
-	const queryClient = new QueryClient();
 
 	if (!loaded) {
 		return null;

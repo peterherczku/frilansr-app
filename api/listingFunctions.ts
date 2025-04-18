@@ -25,6 +25,46 @@ export interface Listing {
 	};
 }
 
+export interface ListingWithApplications {
+	id: string;
+	title: string;
+	description: string;
+	image: string;
+	salary: number;
+	location: {
+		longitude: number;
+		latitude: number;
+	};
+	createdAt: string;
+	type: string;
+	date: string;
+	duration: number;
+	user: {
+		id: string;
+		imageUrl: string;
+		name: string;
+	};
+	applications: {
+		id: string;
+		user: {
+			id: string;
+			imageUrl: string;
+			name: string;
+		};
+		message: string;
+	}[];
+}
+
+export interface Application {
+	id: string;
+	user: {
+		id: string;
+		imageUrl: string;
+		name: string;
+	};
+	message: string;
+}
+
 export interface ListingDraft {
 	id: string;
 	title?: string;
@@ -97,4 +137,16 @@ export async function publishDraft(draftId: string) {
 		}
 	);
 	return res.draft as Listing;
+}
+
+export async function fetchPendingListings() {
+	const res = await fetchWithAuth(`${BACKEND_API_BASE_URL}/listings/pending`);
+	return res as ListingWithApplications[];
+}
+
+export async function fetchApplications(listingId: string) {
+	const res = await fetchWithAuth(
+		`${BACKEND_API_BASE_URL}/listings/${listingId}/applications`
+	);
+	return res.applications as Application[];
 }
