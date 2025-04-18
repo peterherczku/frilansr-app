@@ -14,41 +14,13 @@ import {
 	Keyboard,
 } from "react-native";
 import { Text } from "../ui/Text";
-
-const data = [
-	{
-		id: 0,
-		title: "Walk with Max",
-		category: "Dog walking",
-		salary: "120 kr",
-		location: "Central Stockholm",
-		date: "Monday, 17th March at 13:00",
-	},
-	{
-		id: 1,
-		title: "Walk with Max",
-		category: "Dog walking",
-		salary: "120 kr",
-		location: "Central Stockholm",
-		date: "Tuesday, 18th March at 13:00",
-	},
-	{
-		id: 2,
-		title: "Walk with Max",
-		category: "Dog walking",
-		salary: "120 kr",
-		location: "Central Stockholm",
-		date: "Wednesday, 19th March at 13:00",
-	},
-	{
-		id: 3,
-		title: "Walk with Max",
-		category: "Dog walking",
-		salary: "120 kr",
-		location: "Central Stockholm",
-		date: "Thursday, 20th March at 13:00",
-	},
-];
+import { JobWithUser } from "@/api/jobFunctions";
+import { jobStatusText, jobTypeText } from "@/utils/enumUtils";
+import { calculateEstimatedPayout } from "@/utils/paymentUtil";
+import { formatRawMoney } from "@/utils/numberUtil";
+import { useDistance } from "@/hooks/useDistance";
+import { formatTimeDifference } from "@/utils/dateUtil";
+import { sortUpcomingJobs } from "@/utils/jobUtil";
 
 function CalendarFooter() {
 	return (
@@ -70,21 +42,11 @@ function CalendarFooter() {
 	);
 }
 
-export function CalendarList() {
+export function CalendarList({ activeJobs }: { activeJobs: JobWithUser[] }) {
 	const [searchInput, setSearchInput] = useState("");
 
-	function renderItem({
-		item,
-	}: {
-		item: {
-			id: number;
-			title: string;
-			category: string;
-			salary: string;
-			location: string;
-			date: string;
-		};
-	}) {
+	function CalendarListItem({ item }: { item: JobWithUser }) {
+		const distance = useDistance(item.listing.location);
 		function onPressJob() {}
 
 		return (
@@ -97,7 +59,9 @@ export function CalendarList() {
 							color={Colors.light.text}
 						/>
 					</View>
-					<Text className="text-lg font-zain-bold">{item.date}</Text>
+					<Text className="text-lg font-zain-bold">
+						{jobStatusText(item.status)}
+					</Text>
 				</View>
 				<Pressable
 					onPress={onPressJob}
@@ -105,20 +69,32 @@ export function CalendarList() {
 				>
 					<View className="flex-row items-center gap-[5] justify-between">
 						<View>
-							<Text className="text-lg font-zain-bold">{item.title}</Text>
-							<Text className="text-muted mt-[-6]">{item.category}</Text>
+							<Text className="text-lg font-zain-bold">
+								{item.listing.title}
+							</Text>
+							<Text className="text-muted mt-[-6]">
+								{jobTypeText(item.listing.type)}
+							</Text>
 							<View className="flex-row items-center gap-[5]">
 								<View className="flex-row items-center gap-[5]">
-									<Text className="text-muted">{item.salary}</Text>
+									<Text className="text-muted">
+										{formatRawMoney(
+											calculateEstimatedPayout(
+												item.listing.salary,
+												item.listing.duration
+											)
+										)}
+										{" kr"}
+									</Text>
 								</View>
 								<View className="w-[4] h-[4] rounded-full bg-[gray]" />
 								<View className="flex-row items-center gap-[5]">
-									<Text className="text-muted">{item.location}</Text>
+									<Text className="text-muted">{distance} away</Text>
 								</View>
 							</View>
 						</View>
 						<Text className="text-theme font-zain-bold mr-[10] text-[18px]">
-							in 2 days 1 hour
+							{formatTimeDifference(item.listing.date)}
 						</Text>
 					</View>
 				</Pressable>
@@ -168,8 +144,8 @@ export function CalendarList() {
 			</View>
 			<Text className="font-zain-bold text-xl my-[5] ml-[20]">Calendar</Text>
 			<FlatList
-				data={data}
-				renderItem={renderItem}
+				data={sortUpcomingJobs(activeJobs)}
+				renderItem={({ item }) => <CalendarListItem item={item} />}
 				keyExtractor={(item) => item.id.toString()}
 				scrollEnabled={true}
 				showsVerticalScrollIndicator={false}

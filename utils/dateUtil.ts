@@ -84,3 +84,40 @@ export function differenceInMinutes(start: Date, end: Date): number {
 	const diffInMs = Math.abs(end.getTime() - start.getTime());
 	return Math.floor(diffInMs / (1000 * 60));
 }
+
+export function formatTimeDifference(isoString: string): string {
+	const now = new Date();
+	const then = new Date(isoString);
+	if (isNaN(then.getTime())) {
+		throw new Error(`Invalid ISO date string: "${isoString}"`);
+	}
+
+	let deltaMs = then.getTime() - now.getTime();
+	const isPast = deltaMs < 0;
+	deltaMs = Math.abs(deltaMs);
+
+	const MS_PER_MINUTE = 1000 * 60;
+	const MS_PER_HOUR = MS_PER_MINUTE * 60;
+	const MS_PER_DAY = MS_PER_HOUR * 24;
+
+	const days = Math.floor(deltaMs / MS_PER_DAY);
+	const hours = Math.floor((deltaMs % MS_PER_DAY) / MS_PER_HOUR);
+	const minutes = Math.floor((deltaMs % MS_PER_HOUR) / MS_PER_MINUTE);
+
+	const pluralize = (value: number, unit: string): string =>
+		`${value} ${unit}${value === 1 ? "" : "s"}`;
+
+	let result: string;
+	if (days >= 1) {
+		result = `in ${pluralize(days, "day")} ${pluralize(hours, "hour")}`;
+	} else {
+		result = `in ${pluralize(hours, "hour")} ${pluralize(minutes, "minute")}`;
+	}
+
+	if (isPast) {
+		// remove leading "in " and append " ago"
+		result = result.replace(/^in\s+/, "") + " ago";
+	}
+
+	return result;
+}

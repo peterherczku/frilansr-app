@@ -1,6 +1,8 @@
 import { BACKEND_API_BASE_URL, fetchWithAuth } from "./apiClient";
 import { Listing } from "./listingFunctions";
 
+export type JobStatus = "WAITING_FOR_WORKER" | "IN_PROGRESS" | "COMPLETED";
+
 export interface Job {
 	id: string;
 	listing: Listing;
@@ -19,7 +21,7 @@ export interface Job {
 
 export interface JobWithUser {
 	id: string;
-	status: "WAITING_FOR_WORKER" | "IN_PROGRESS" | "COMPLETED";
+	status: JobStatus;
 	createdAt: string;
 	updatedAt: string;
 	worker: {
@@ -32,5 +34,10 @@ export interface JobWithUser {
 
 export async function fetchActiveJobs() {
 	const res = await fetchWithAuth(`${BACKEND_API_BASE_URL}/jobs/active`);
+	return res as JobWithUser[];
+}
+
+export async function fetchActiveWorkerJobs() {
+	const res = await fetchWithAuth(`${BACKEND_API_BASE_URL}/jobs/active-worker`);
 	return res as JobWithUser[];
 }

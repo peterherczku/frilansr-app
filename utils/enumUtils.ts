@@ -1,3 +1,4 @@
+import { JobStatus } from "@/api/jobFunctions";
 import { JobType } from "@/api/listingFunctions";
 
 function jobTypeText(type: JobType) {
@@ -13,4 +14,17 @@ function jobTypeText(type: JobType) {
 	}
 }
 
-export { jobTypeText };
+function jobStatusText(status: JobStatus) {
+	switch (status) {
+		case "WAITING_FOR_WORKER":
+			return "Waiting for Worker";
+		case "IN_PROGRESS":
+			return "In Progress";
+		case "COMPLETED":
+			return "Completed";
+		default:
+			return "Unknown";
+	}
+}
+
+export { jobTypeText, jobStatusText };
