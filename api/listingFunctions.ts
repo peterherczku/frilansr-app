@@ -1,4 +1,5 @@
 import { BACKEND_API_BASE_URL, fetchWithAuth } from "./apiClient";
+import { JobWithUser } from "./jobFunctions";
 
 export type JobType = "DOG_WALKING" | "DOG_SITTING" | "DOG_TRAINING";
 
@@ -167,4 +168,21 @@ export async function applyForListing(listingId: string, message?: string) {
 	return res as {
 		success: boolean;
 	};
+}
+
+export async function selectApplication(
+	listingId: string,
+	applicationId: string
+) {
+	const res = await fetchWithAuth(
+		`${BACKEND_API_BASE_URL}/listings/${listingId}/select-application`,
+		{
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({ applicationId }),
+		}
+	);
+	return res.job as JobWithUser;
 }

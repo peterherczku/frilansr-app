@@ -15,3 +15,16 @@ export interface Job {
 		name: string;
 	};
 }
+
+export interface JobWithUser {
+	id: string;
+	status: "WAITING_FOR_WORKER" | "IN_PROGRESS" | "COMPLETED";
+	createdAt: string;
+	updatedAt: string;
+	worker: {
+		id: string;
+		name: string;
+		imageUrl: string;
+	};
+	listing: Listing;
+}

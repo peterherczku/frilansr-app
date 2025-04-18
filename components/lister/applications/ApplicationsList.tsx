@@ -1,10 +1,17 @@
 import { Application } from "@/api/listingFunctions";
 import { Text } from "@/components/ui/Text";
+import { useSelectApplication } from "@/hooks/listing/useSelectApplication";
 import { cn } from "@/utils/cn";
 import { Image } from "expo-image";
 import { router } from "expo-router";
 import { useState } from "react";
-import { FlatList, Pressable, TouchableOpacity, View } from "react-native";
+import {
+	Alert,
+	FlatList,
+	Pressable,
+	TouchableOpacity,
+	View,
+} from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 function Header({ applications }: { applications: Application[] }) {
@@ -84,12 +91,15 @@ function ApplicationItem({
 }
 
 export function ApplicationsList({
+	listingId,
 	applications,
 }: {
+	listingId: string;
 	applications: Application[];
 }) {
 	const insets = useSafeAreaInsets();
 	const [selected, setSelected] = useState("");
+	const { mutateAsync: selectApplication } = useSelectApplication();
 
 	function renderItem({ item }: { item: Application }) {
 		return (
@@ -99,6 +109,17 @@ export function ApplicationsList({
 				setSelected={setSelected}
 			/>
 		);
+	}
+
+	async function acceptSelected() {
+		try {
+			await selectApplication({ listingId, applicationId: selected });
+			Alert.alert("Application accepted", "You have accepted the application");
+			setSelected("");
+			router.back();
+		} catch (err) {
+			Alert.alert("Error", "Something went wrong. Please try again later.");
+		}
 	}
 
 	return (
@@ -112,10 +133,13 @@ export function ApplicationsList({
 			/>
 			<View className="fixed mx-[20]" style={{ bottom: insets.bottom + 50 }}>
 				<TouchableOpacity
+					onPress={acceptSelected}
 					disabled={selected === ""}
 					className="py-3 bg-theme rounded-lg flex-row items-center justify-center shadow-custom disabled:opacity-50"
 				>
-					<Text className="font-zain-bold text-white text-lg">Accept</Text>
+					<Text className="font-zain-bold text-white text-lg">
+						Accept selected
+					</Text>
 				</TouchableOpacity>
 			</View>
 		</View>

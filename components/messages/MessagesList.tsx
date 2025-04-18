@@ -55,7 +55,11 @@ export function MessagesList({ data }: { data: RecentConversation[] }) {
 
 	return (
 		<View className="flex-1 mx-[20]">
-			<FlatList data={data} renderItem={renderItem} />
+			<FlatList
+				contentContainerClassName="gap-[15]"
+				data={data}
+				renderItem={renderItem}
+			/>
 		</View>
 	);
 }

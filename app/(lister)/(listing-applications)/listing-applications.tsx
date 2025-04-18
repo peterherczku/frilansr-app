@@ -16,5 +16,7 @@ export default function ListingApplications() {
 		);
 	}
 
-	return <ApplicationsList applications={applications} />;
+	return (
+		<ApplicationsList listingId={id as string} applications={applications} />
+	);
 }
