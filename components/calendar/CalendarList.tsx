@@ -47,7 +47,9 @@ export function CalendarList({ activeJobs }: { activeJobs: JobWithUser[] }) {
 
 	function CalendarListItem({ item }: { item: JobWithUser }) {
 		const distance = useDistance(item.listing.location);
-		function onPressJob() {}
+		function onPressJob() {
+			router.push(`/(worker)/(active-job)/${item.id}`);
+		}
 
 		return (
 			<View className="relative">
