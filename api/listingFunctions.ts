@@ -150,3 +150,21 @@ export async function fetchApplications(listingId: string) {
 	);
 	return res.applications as Application[];
 }
+
+export async function applyForListing(listingId: string, message?: string) {
+	const res = await fetchWithAuth(
+		`${BACKEND_API_BASE_URL}/listings/${listingId}/apply`,
+		{
+			method: "POST",
+			...(message && {
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({ message }),
+			}),
+		}
+	);
+	return res as {
+		success: boolean;
+	};
+}
