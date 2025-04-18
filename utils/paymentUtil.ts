@@ -25,6 +25,11 @@ export function calculateEstimatedPayout(
 ): number {
 	const appFee = calculateApplicationFee(salary, duration);
 	const transFee = calculateTransactionFee(salary, duration);
+	const netPayout = calculateNetPayout(salary, duration);
+	return netPayout - appFee - transFee;
+}
+
+export function calculateNetPayout(salary: number, duration: number) {
 	const payout = Math.round(salary * (duration / 60));
-	return payout - appFee - transFee;
+	return payout;
 }

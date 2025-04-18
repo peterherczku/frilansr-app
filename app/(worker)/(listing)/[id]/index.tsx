@@ -14,11 +14,12 @@ import { cssInterop } from "nativewind";
 import { jobTypeText } from "@/utils/enumUtils";
 import { formatDate } from "@/utils/dateUtil";
 import {
-	calculatePayment,
 	convertCentsToDecimalString,
 	formatMoney,
+	formatRawMoney,
 } from "@/utils/numberUtil";
 import { Circle } from "react-native-maps";
+import { calculateNetPayout } from "@/utils/paymentUtil";
 
 const Image = cssInterop(ExpoImage, {
 	className: "style",
@@ -42,6 +43,10 @@ export default function ListingIndexPage() {
 			</SafeAreaView>
 		);
 	}
+
+	const netPayout = formatRawMoney(
+		calculateNetPayout(listing.salary, listing.duration)
+	);
 
 	return (
 		<>
@@ -151,7 +156,7 @@ export default function ListingIndexPage() {
 					Apply for the job
 				</Text>
 				<Text className="text-white font-zain-bold text-xl">
-					{formatMoney(calculatePayment(listing.salary, listing.duration))} kr
+					{netPayout} kr
 				</Text>
 			</TouchableOpacity>
 		</>

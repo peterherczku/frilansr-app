@@ -5,7 +5,6 @@ import { useListing } from "@/hooks/listing/useListing";
 import { useDistance } from "@/hooks/useDistance";
 import { formatDate } from "@/utils/dateUtil";
 import {
-	calculatePayment,
 	convertCentsToDecimalString,
 	formatMoney,
 	formatRawMoney,
@@ -13,6 +12,7 @@ import {
 import {
 	calculateApplicationFee,
 	calculateEstimatedPayout,
+	calculateNetPayout,
 	calculateTransactionFee,
 } from "@/utils/paymentUtil";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
@@ -51,6 +51,20 @@ export default function ApplyForJobPage() {
 			</SafeAreaView>
 		);
 	}
+
+	const netPayout = formatRawMoney(
+		calculateNetPayout(listing.salary, listing.duration)
+	);
+
+	const applicationFee = formatRawMoney(
+		calculateApplicationFee(listing.salary, listing.duration)
+	);
+	const transactionFee = formatRawMoney(
+		calculateTransactionFee(listing.salary, listing.duration)
+	);
+	const estimatedPayout = formatRawMoney(
+		calculateEstimatedPayout(listing.salary, listing.duration)
+	);
 
 	return (
 		<SafeAreaView className="flex-1 bg-white">
@@ -108,13 +122,7 @@ export default function ApplyForJobPage() {
 									BANK ACCOUNT **** 1111
 								</Text>
 								<Text className="text-muted mt-[-5]">
-									Estimated payout{" "}
-									{formatMoney(
-										formatRawMoney(
-											calculateEstimatedPayout(listing.salary, listing.duration)
-										)
-									)}{" "}
-									kr
+									Estimated payout {estimatedPayout} kr
 								</Text>
 							</View>
 						</View>
@@ -164,13 +172,8 @@ export default function ApplyForJobPage() {
 					<Text className="text-2xl font-zain-bold mx-[20]">Summary</Text>
 					<View>
 						<View className="py-[5] flex-row items-center justify-between mx-[20]">
-							<Text className="text-lg">Salary</Text>
-							<Text className="text-lg font-zain-bold">
-								{formatMoney(
-									calculatePayment(listing.salary, listing.duration)
-								)}{" "}
-								kr
-							</Text>
+							<Text className="text-lg">Net payout</Text>
+							<Text className="text-lg font-zain-bold">{netPayout} kr</Text>
 						</View>
 						<View className="py-[5] flex-row items-center justify-between mx-[20]">
 							<Text className="text-lg">Transaction fee</Text>
@@ -205,8 +208,10 @@ export default function ApplyForJobPage() {
 				</View>
 			</ScrollView>
 			<View className="absolute bottom-[50] w-full">
-				<TouchableOpacity className="bg-theme mx-[20] p-[12] flex-row justify-center rounded-lg shadow-custom">
-					<Text className="text-xl text-white">Click to apply for job </Text>
+				<TouchableOpacity className="bg-theme mx-[20] p-[12] flex-row justify-center rounded-lg shadow-custom disabled:opacity-50">
+					<Text className="text-xl text-white font-zain-bold">
+						Click to apply for job{" "}
+					</Text>
 				</TouchableOpacity>
 			</View>
 		</SafeAreaView>

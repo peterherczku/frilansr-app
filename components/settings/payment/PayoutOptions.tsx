@@ -65,7 +65,7 @@ export function PayoutOptions() {
 		<SettingsSection title="Payout options">
 			{payoutOptions.map((option) => renderPayoutOption(option))}
 			<TouchableOpacity
-				className="mx-[20] mt-[10] mb-[20] p-[7] flex-row justify-center rounded-lg"
+				className="mx-[20] mt-[10] mb-[20] p-[7] flex-row justify-center rounded-lg bg-theme"
 				onPress={() =>
 					router.push("/(worker)/(settings)/(payment)/add-payout-option")
 				}
