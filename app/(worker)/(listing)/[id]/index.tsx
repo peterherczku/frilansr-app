@@ -4,7 +4,6 @@ import { router, useLocalSearchParams } from "expo-router";
 import { ActivityIndicator, TouchableOpacity, View } from "react-native";
 import { Colors } from "@/constants/Colors";
 import { ListingHeader } from "@/components/listing/ListingHeader";
-import { useUser } from "@clerk/clerk-expo";
 import { LocationBox, LocationMapView } from "@/components/listing/LocationBox";
 import { ListingJobLister } from "@/components/listing/ListingJobLister";
 import { Dimensions } from "react-native";
@@ -12,6 +11,14 @@ import { useListing } from "@/hooks/listing/useListing";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Text } from "@/components/ui/Text";
 import { cssInterop } from "nativewind";
+import { jobTypeText } from "@/utils/enumUtils";
+import { formatDate } from "@/utils/dateUtil";
+import {
+	calculatePayment,
+	convertCentsToDecimalString,
+	formatMoney,
+} from "@/utils/numberUtil";
+import { Circle } from "react-native-maps";
 
 const Image = cssInterop(ExpoImage, {
 	className: "style",
@@ -19,7 +26,6 @@ const Image = cssInterop(ExpoImage, {
 
 export default function ListingIndexPage() {
 	const { id } = useLocalSearchParams();
-	const { user } = useUser();
 
 	const { listing, isLoading, error } = useListing(id as string);
 	if (isLoading) {
@@ -39,18 +45,18 @@ export default function ListingIndexPage() {
 
 	return (
 		<>
-			<ListingHeader>
+			<ListingHeader listing={listing}>
 				<View className="m-[20] z-0">
 					<View className="flex-row items-center justify-between">
 						<View>
 							<Text className="text-2xl font-zain-bold">{listing.title}</Text>
 							<Text className="text-[17px] text-muted mt-[-8]">
-								{listing.type}
+								{jobTypeText(listing.type)}
 							</Text>
 						</View>
 						<View className="flex-row items-center justify-between">
 							<Image
-								source={{ uri: user?.imageUrl }}
+								source={{ uri: listing.user.imageUrl }}
 								className="w-[50] h-[50] rounded-full"
 							/>
 						</View>
@@ -72,7 +78,7 @@ export default function ListingIndexPage() {
 							</View>
 							<View>
 								<Text className="text-[17px] font-zain-bold text-theme">
-									40 - 50 mins
+									{listing.duration} mins
 								</Text>
 							</View>
 						</View>
@@ -101,18 +107,35 @@ export default function ListingIndexPage() {
 						<Text className="text-xl font-zain-bold">Date</Text>
 						<View>
 							<Text className="text-lg font-zain-bold text-theme">
-								Monday at 13:00 - 14:00
+								{formatDate(listing.date)}
 							</Text>
 						</View>
 					</View>
 					<View className="flex-row justify-between items-center my-[5]">
 						<Text className="text-xl font-zain-bold">Salary</Text>
 						<Text className="text-lg font-zain-bold text-theme">
-							120,00 kr / hour
+							{formatMoney(convertCentsToDecimalString(listing.salary))} kr /
+							hour
 						</Text>
 					</View>
 					<LocationBox>
-						<LocationMapView className="my-[10]" />
+						<LocationMapView
+							initialRegion={{
+								longitude: listing.location.longitude,
+								latitude: listing.location.latitude,
+								latitudeDelta: 0.0125,
+								longitudeDelta: 0.0125,
+							}}
+							className="my-[10]"
+						>
+							<Circle
+								center={listing.location}
+								radius={200}
+								strokeWidth={2}
+								strokeColor="rgba(52, 152, 219, 0.8)"
+								fillColor="rgba(52, 152, 219, 0.5)"
+							/>
+						</LocationMapView>
 					</LocationBox>
 					<ListingJobLister id={id as string} />
 				</View>
@@ -127,7 +150,9 @@ export default function ListingIndexPage() {
 				<Text className="font-zain-bold text-white text-xl">
 					Apply for the job
 				</Text>
-				<Text className="text-white font-zain-bold text-xl">180,00 kr</Text>
+				<Text className="text-white font-zain-bold text-xl">
+					{formatMoney(calculatePayment(listing.salary, listing.duration))} kr
+				</Text>
 			</TouchableOpacity>
 		</>
 	);

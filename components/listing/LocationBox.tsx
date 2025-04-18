@@ -10,12 +10,14 @@ const MapView = cssInterop(RNMapView, {
 });
 
 export function LocationMapView({
+	initialRegion,
 	className,
 	disabled,
 	onRegionChangeComplete,
 	onRegionChange,
 	children,
 }: {
+	initialRegion?: Region;
 	className?: string;
 	disabled?: boolean;
 	children?: ReactNode;
@@ -26,12 +28,14 @@ export function LocationMapView({
 		<MapView
 			onRegionChangeComplete={onRegionChangeComplete}
 			onRegionChange={onRegionChange}
-			initialRegion={{
-				latitude: 59.3293,
-				longitude: 18.0686,
-				latitudeDelta: 0.0522,
-				longitudeDelta: 0.0221,
-			}}
+			initialRegion={
+				initialRegion ?? {
+					latitude: 59.3293,
+					longitude: 18.0686,
+					latitudeDelta: 0.0522,
+					longitudeDelta: 0.0221,
+				}
+			}
 			className={cn("w-full h-[200px] rounded-lg", className)}
 			zoomEnabled={!disabled}
 			scrollEnabled={!disabled}

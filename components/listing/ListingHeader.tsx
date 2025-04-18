@@ -1,3 +1,4 @@
+import { Listing } from "@/api/listingFunctions";
 import ParallaxScrollView from "@/components/ui/ParallaxScrollView";
 import { Colors } from "@/constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
@@ -12,7 +13,13 @@ const Image = cssInterop(ExpoImage, {
 	className: "style",
 });
 
-export function ListingHeader({ children }: { children: ReactNode }) {
+export function ListingHeader({
+	listing,
+	children,
+}: {
+	listing: Listing;
+	children: ReactNode;
+}) {
 	useFocusEffect(
 		useCallback(() => {
 			setStatusBarStyle("light");
@@ -34,7 +41,7 @@ export function ListingHeader({ children }: { children: ReactNode }) {
 					<View className="w-full h-full relative z-[50]">
 						<Image
 							source={{
-								uri: "https://i.ytimg.com/vi/fa3Slv2i0Uw/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLAWGk8rcsk5pPehDJ-uhCLmw0q9EA",
+								uri: listing.image,
 							}}
 							className={"w-full h-full z-[50]"}
 						/>

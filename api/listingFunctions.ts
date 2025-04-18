@@ -15,7 +15,7 @@ export interface Listing {
 		latitude: number;
 	};
 	createdAt: string;
-	type: string;
+	type: JobType;
 	date: string;
 	duration: number;
 	user: {
@@ -36,7 +36,7 @@ export interface ListingWithApplications {
 		latitude: number;
 	};
 	createdAt: string;
-	type: string;
+	type: JobType;
 	date: string;
 	duration: number;
 	user: {
@@ -76,7 +76,7 @@ export interface ListingDraft {
 		latitude: number;
 	};
 	createdAt?: string;
-	type?: string;
+	type?: JobType;
 	date?: string;
 	duration?: number;
 	user: {

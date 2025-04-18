@@ -20,7 +20,7 @@ const jobs = [
 				latitude: 59.33258,
 			},
 			createdAt: "2023-10-01T12:00:00Z",
-			type: "DOG_WALKING",
+			type: "DOG_WALKING" as const,
 			date: "2025-10-01T12:00:00Z",
 			duration: 40,
 			user: {
@@ -52,7 +52,7 @@ const jobs = [
 				latitude: 55.6761,
 			},
 			createdAt: "2023-10-01T12:00:00Z",
-			type: "DOG_WALKING",
+			type: "DOG_WALKING" as const,
 			date: "2025-10-01T12:00:00Z",
 			duration: 40,
 			user: {
@@ -98,7 +98,7 @@ const jobs = [
 				latitude: 59.33258,
 			},
 			createdAt: "2023-10-01T12:00:00Z",
-			type: "DOG_WALKING",
+			type: "DOG_WALKING" as const,
 			date: "2025-10-01T12:00:00Z",
 			duration: 40,
 			user: {

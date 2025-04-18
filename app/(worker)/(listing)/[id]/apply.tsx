@@ -1,10 +1,31 @@
 import { LocationMapView } from "@/components/listing/LocationBox";
 import { Text } from "@/components/ui/Text";
 import { Colors } from "@/constants/Colors";
+import { useListing } from "@/hooks/listing/useListing";
+import { useDistance } from "@/hooks/useDistance";
+import { formatDate } from "@/utils/dateUtil";
+import {
+	calculatePayment,
+	convertCentsToDecimalString,
+	formatMoney,
+	formatRawMoney,
+} from "@/utils/numberUtil";
+import {
+	calculateApplicationFee,
+	calculateEstimatedPayout,
+	calculateTransactionFee,
+} from "@/utils/paymentUtil";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
-import { router } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import { cssInterop } from "nativewind";
-import { ScrollView, TouchableOpacity, View } from "react-native";
+import { useMemo } from "react";
+import {
+	ActivityIndicator,
+	ScrollView,
+	TouchableOpacity,
+	View,
+} from "react-native";
+import { Circle } from "react-native-maps";
 import { SafeAreaView as RNSafeAreView } from "react-native-safe-area-context";
 
 const SafeAreaView = cssInterop(RNSafeAreView, {
@@ -12,6 +33,25 @@ const SafeAreaView = cssInterop(RNSafeAreView, {
 });
 
 export default function ApplyForJobPage() {
+	const { id } = useLocalSearchParams();
+	const { listing, isLoading, error } = useListing(id as string);
+	const distance = useDistance(listing?.location);
+
+	if (isLoading) {
+		return (
+			<SafeAreaView className="flex-1 bg-white justify-center items-center">
+				<ActivityIndicator size="large" color="gray" />
+			</SafeAreaView>
+		);
+	}
+	if (error || !listing) {
+		return (
+			<SafeAreaView>
+				<Text>Error {error?.message}</Text>
+			</SafeAreaView>
+		);
+	}
+
 	return (
 		<SafeAreaView className="flex-1 bg-white">
 			<View className="mx-[20] flex-row gap-[6] items-center">
@@ -23,29 +63,30 @@ export default function ApplyForJobPage() {
 			<ScrollView className="my-[20] flex-1">
 				<View className="mx-[20] my-[10]">
 					<View className="py-[5] flex-row items-center justify-between">
-						<Text className="text-2xl font-zain-bold">
-							Take a walk with Max
-						</Text>
+						<Text className="text-2xl font-zain-bold">{listing.title}</Text>
 					</View>
 					<View className="py-[5] flex-row items-center justify-between">
 						<Text className="text-lg">Salary</Text>
-						<Text className="text-lg font-zain-bold">180,00 kr</Text>
+						<Text className="text-lg font-zain-bold">
+							{formatMoney(convertCentsToDecimalString(listing.salary))} kr /
+							hour
+						</Text>
 					</View>
 					<View className="py-[5] flex-row items-center justify-between">
 						<Text className="text-lg">Date</Text>
 						<Text className="text-lg font-zain-bold">
-							Monday at 13:00 - 13:40
+							{formatDate(listing.date)}
 						</Text>
 					</View>
 					<View className="py-[5] flex-row items-center justify-between">
 						<Text className="text-lg">Duration</Text>
-						<Text className="text-lg font-zain-bold">30 - 40 minutes</Text>
+						<Text className="text-lg font-zain-bold">
+							{listing.duration} minutes
+						</Text>
 					</View>
 					<View className="py-[5] flex-row items-center justify-between">
-						<Text className="text-lg">Location</Text>
-						<Text className="text-lg font-zain-bold">
-							Gamla stan, 5 km away
-						</Text>
+						<Text className="text-lg">Distance</Text>
+						<Text className="text-lg font-zain-bold">{distance}</Text>
 					</View>
 				</View>
 				<View className="my-[10] gap-[10]">
@@ -67,7 +108,13 @@ export default function ApplyForJobPage() {
 									BANK ACCOUNT **** 1111
 								</Text>
 								<Text className="text-muted mt-[-5]">
-									Estimated payout 166,15 kr
+									Estimated payout{" "}
+									{formatMoney(
+										formatRawMoney(
+											calculateEstimatedPayout(listing.salary, listing.duration)
+										)
+									)}{" "}
+									kr
 								</Text>
 							</View>
 						</View>
@@ -88,7 +135,23 @@ export default function ApplyForJobPage() {
 						</Text>
 					</View>
 					<View className="mx-[20] relative">
-						<LocationMapView disabled={true} />
+						<LocationMapView
+							initialRegion={{
+								longitude: listing.location.longitude,
+								latitude: listing.location.latitude,
+								latitudeDelta: 0.0125,
+								longitudeDelta: 0.0125,
+							}}
+							disabled={true}
+						>
+							<Circle
+								center={listing.location}
+								radius={200}
+								strokeWidth={2}
+								strokeColor="rgba(52, 152, 219, 0.8)"
+								fillColor="rgba(52, 152, 219, 0.5)"
+							/>
+						</LocationMapView>
 						<View
 							className="absolute w-full h-full rounded-lg"
 							style={{
@@ -102,26 +165,48 @@ export default function ApplyForJobPage() {
 					<View>
 						<View className="py-[5] flex-row items-center justify-between mx-[20]">
 							<Text className="text-lg">Salary</Text>
-							<Text className="text-lg font-zain-bold">180,00 kr</Text>
+							<Text className="text-lg font-zain-bold">
+								{formatMoney(
+									calculatePayment(listing.salary, listing.duration)
+								)}{" "}
+								kr
+							</Text>
 						</View>
 						<View className="py-[5] flex-row items-center justify-between mx-[20]">
 							<Text className="text-lg">Transaction fee</Text>
-							<Text className="text-lg font-zain-bold">-5,85 kr</Text>
+							<Text className="text-lg font-zain-bold">
+								-{" "}
+								{formatRawMoney(
+									calculateTransactionFee(listing.salary, listing.duration)
+								)}{" "}
+								kr
+							</Text>
 						</View>
 						<View className="py-[5] flex-row items-center justify-between mx-[20]">
 							<Text className="text-lg">Application fee</Text>
-							<Text className="text-lg font-zain-bold">- 8 kr</Text>
+							<Text className="text-lg font-zain-bold">
+								-{" "}
+								{formatRawMoney(
+									calculateApplicationFee(listing.salary, listing.duration)
+								)}{" "}
+								kr
+							</Text>
 						</View>
 						<View className="py-[5] flex-row items-center justify-between mx-[20]">
 							<Text className="text-lg">Final salary</Text>
-							<Text className="text-lg font-zain-bold">166,15 kr</Text>
+							<Text className="text-lg font-zain-bold">
+								{formatRawMoney(
+									calculateEstimatedPayout(listing.salary, listing.duration)
+								)}{" "}
+								kr
+							</Text>
 						</View>
 					</View>
 				</View>
 			</ScrollView>
 			<View className="absolute bottom-[50] w-full">
 				<TouchableOpacity className="bg-theme mx-[20] p-[12] flex-row justify-center rounded-lg shadow-custom">
-					<Text className="text-xl text-white">Swipe to accept job offer</Text>
+					<Text className="text-xl text-white">Click to apply for job </Text>
 				</TouchableOpacity>
 			</View>
 		</SafeAreaView>
