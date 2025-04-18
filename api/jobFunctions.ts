@@ -1,3 +1,4 @@
+import { BACKEND_API_BASE_URL, fetchWithAuth } from "./apiClient";
 import { Listing } from "./listingFunctions";
 
 export interface Job {
@@ -27,4 +28,9 @@ export interface JobWithUser {
 		imageUrl: string;
 	};
 	listing: Listing;
+}
+
+export async function fetchActiveJobs() {
+	const res = await fetchWithAuth(`${BACKEND_API_BASE_URL}/jobs/active`);
+	return res as JobWithUser[];
 }

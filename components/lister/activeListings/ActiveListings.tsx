@@ -1,11 +1,13 @@
-import { Job } from "@/api/jobFunctions";
+import { Job, JobWithUser } from "@/api/jobFunctions";
 import { LocationMapView } from "@/components/listing/LocationBox";
 import { Text } from "@/components/ui/Text";
+import { formatRawMoney } from "@/utils/numberUtil";
+import { calculateNetPayout } from "@/utils/paymentUtil";
 import { Image } from "expo-image";
 import { FlatList, TouchableOpacity, View } from "react-native";
 import { Marker } from "react-native-maps";
 
-function ActiveListingUpcomingHeader({ job }: { job: Job }) {
+function ActiveListingUpcomingHeader({ job }: { job: JobWithUser }) {
 	return (
 		<View className="flex-col">
 			<View className="flex-row items-center gap-[10]">
@@ -15,7 +17,12 @@ function ActiveListingUpcomingHeader({ job }: { job: Job }) {
 				</View>
 			</View>
 			<View className="flex-row items-center gap-[5] mt-[-5]">
-				<Text className="text-muted">{job.listing.salary} kr</Text>
+				<Text className="text-muted">
+					{formatRawMoney(
+						calculateNetPayout(job.listing.salary, job.listing.duration)
+					)}{" "}
+					kr
+				</Text>
 				<Text className="text-muted">•</Text>
 				<Text className="text-muted">{job.listing.duration} mins</Text>
 			</View>
@@ -23,34 +30,23 @@ function ActiveListingUpcomingHeader({ job }: { job: Job }) {
 	);
 }
 
-function ActiveListingUpcomingBody({ job }: { job: Job }) {
+function ActiveListingUpcomingBody({ job }: { job: JobWithUser }) {
 	return (
 		<View className="flex-row items-center justify-between">
 			<View className="flex-col">
 				<View className="flex-row items-center gap-[10]">
-					<Text>Applications</Text>
-					<View className="flex-row  relative w-[60] h-[20]">
-						{job.applications?.slice(0, 3).map((application) => (
-							<Image
-								key={application.id}
-								source={{ uri: application.imageUrl }}
-								className="absolute top-0 left-0 w-[20] h-[20] rounded-full shadow-md"
-							/>
-						))}
-					</View>
+					<Image
+						source={{ uri: job.worker.imageUrl }}
+						className="w-[35] h-[35] rounded-full bg-[#d9d9d9]"
+					/>
+					<Text>{job.worker.name}</Text>
 				</View>
-				<Text className="text-muted text-sm mt-[-4]">
-					{job.applications?.length} applications pending
-				</Text>
 			</View>
-			<TouchableOpacity className="flex-row items-center justify-between py-[6] px-[10] bg-[#71B8CA] rounded-lg">
-				<Text className="font-zain-bold text-white">See applications</Text>
-			</TouchableOpacity>
 		</View>
 	);
 }
 
-function ActiveListingEndedHeader({ job }: { job: Job }) {
+function ActiveListingEndedHeader({ job }: { job: JobWithUser }) {
 	return (
 		<View className="flex-col">
 			<View className="flex-row items-center gap-[10]">
@@ -60,7 +56,12 @@ function ActiveListingEndedHeader({ job }: { job: Job }) {
 				</View>
 			</View>
 			<View className="flex-row items-center gap-[5] mt-[-5]">
-				<Text className="text-muted">{job.listing.salary} kr</Text>
+				<Text className="text-muted">
+					{formatRawMoney(
+						calculateNetPayout(job.listing.salary, job.listing.duration)
+					)}{" "}
+					kr
+				</Text>
 				<Text className="text-muted">•</Text>
 				<Text className="text-muted">{job.listing.duration} mins</Text>
 			</View>
@@ -68,24 +69,24 @@ function ActiveListingEndedHeader({ job }: { job: Job }) {
 	);
 }
 
-function ActiveListingEndedBody({ job }: { job: Job }) {
+function ActiveListingEndedBody({ job }: { job: JobWithUser }) {
 	return (
 		<View className="flex-row items-center justify-between">
 			<View className="flex-row items-center gap-[10]">
 				<Image
-					source={{ uri: job.worker?.imageUrl }}
+					source={{ uri: job.worker.imageUrl }}
 					className="w-[35] h-[35] rounded-full bg-[#d9d9d9]"
 				/>
-				<Text>{job.worker?.name}</Text>
+				<Text>{job.worker.name}</Text>
 			</View>
 			<TouchableOpacity className="flex-row items-center justify-between py-[6] px-[10] bg-[#FFDB71] rounded-lg">
-				<Text className="font-zain-bold ">Rate {job.worker?.name}</Text>
+				<Text className="font-zain-bold ">Rate {job.worker.name}</Text>
 			</TouchableOpacity>
 		</View>
 	);
 }
 
-function ActiveListingOngoingHeader({ job }: { job: Job }) {
+function ActiveListingOngoingHeader({ job }: { job: JobWithUser }) {
 	return (
 		<>
 			<View className="flex-col">
@@ -93,7 +94,12 @@ function ActiveListingOngoingHeader({ job }: { job: Job }) {
 					<Text className="text-2xl font-zain-bold">{job.listing.title}</Text>
 				</View>
 				<View className="flex-row items-center gap-[5] mt-[-5]">
-					<Text className="text-muted">{job.listing.salary} kr</Text>
+					<Text className="text-muted">
+						{formatRawMoney(
+							calculateNetPayout(job.listing.salary, job.listing.duration)
+						)}{" "}
+						kr
+					</Text>
 					<Text className="text-muted">•</Text>
 					<Text className="text-muted">{job.listing.duration} mins</Text>
 				</View>
@@ -108,7 +114,7 @@ function ActiveListingOngoingHeader({ job }: { job: Job }) {
 	);
 }
 
-function ActiveListingOngoingBody({ job }: { job: Job }) {
+function ActiveListingOngoingBody({ job }: { job: JobWithUser }) {
 	const percent = 66;
 
 	return (
@@ -151,8 +157,8 @@ function ActiveListingOngoingBody({ job }: { job: Job }) {
 	);
 }
 
-export function ActiveListings({ jobs }: { jobs: Job[] }) {
-	function renderItem({ item }: { item: Job }) {
+export function ActiveListings({ jobs }: { jobs: JobWithUser[] }) {
+	function renderItem({ item }: { item: JobWithUser }) {
 		return <ActiveListingElement job={item} />;
 	}
 
@@ -166,16 +172,22 @@ export function ActiveListings({ jobs }: { jobs: Job[] }) {
 	);
 }
 
-export function ActiveListingElement({ job }: { job: Job }) {
+export function ActiveListingElement({ job }: { job: JobWithUser }) {
 	return (
 		<View className="mx-[20] my-[10] p-[10] rounded-lg shadow-custom bg-white flex-col gap-[15]">
 			<View className="flex-row items-center justify-between">
-				{job.status === "PENDING" && <ActiveListingUpcomingHeader job={job} />}
-				{job.status === "ONGOING" && <ActiveListingOngoingHeader job={job} />}
+				{job.status === "WAITING_FOR_WORKER" && (
+					<ActiveListingUpcomingHeader job={job} />
+				)}
+				{job.status === "IN_PROGRESS" && (
+					<ActiveListingOngoingHeader job={job} />
+				)}
 				{job.status === "COMPLETED" && <ActiveListingEndedHeader job={job} />}
 			</View>
-			{job.status === "PENDING" && <ActiveListingUpcomingBody job={job} />}
-			{job.status === "ONGOING" && <ActiveListingOngoingBody job={job} />}
+			{job.status === "WAITING_FOR_WORKER" && (
+				<ActiveListingUpcomingBody job={job} />
+			)}
+			{job.status === "IN_PROGRESS" && <ActiveListingOngoingBody job={job} />}
 			{job.status === "COMPLETED" && <ActiveListingEndedBody job={job} />}
 		</View>
 	);

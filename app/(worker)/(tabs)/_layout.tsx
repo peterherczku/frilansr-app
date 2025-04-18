@@ -56,11 +56,15 @@ export default function TabLayout() {
 				}}
 			/>
 			<Tabs.Screen
-				name="calendar"
+				name="active"
 				options={{
-					title: "Calendar",
+					title: "Active",
 					tabBarIcon: ({ color }) => (
-						<Ionicons size={23} name="calendar-outline" color={color} />
+						<MaterialCommunityIcons
+							name="briefcase-clock-outline"
+							size={23}
+							color={color}
+						/>
 					),
 				}}
 				listeners={{
@@ -73,11 +77,11 @@ export default function TabLayout() {
 				}}
 			/>
 			<Tabs.Screen
-				name="past-jobs"
+				name="calendar"
 				options={{
-					title: "Past Jobs",
+					title: "Calendar",
 					tabBarIcon: ({ color }) => (
-						<Ionicons size={23} name="folder-open-outline" color={color} />
+						<Ionicons size={23} name="calendar-outline" color={color} />
 					),
 				}}
 				listeners={{
