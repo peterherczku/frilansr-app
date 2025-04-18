@@ -4,7 +4,7 @@ import {
 } from "@/components/settings/SettingsSection";
 import { Text } from "@/components/ui/Text";
 import { Colors } from "@/constants/Colors";
-import { useClerk } from "@clerk/clerk-expo";
+import { useSignOut } from "@/hooks/auth/useSignOut";
 import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
 import { cssInterop } from "nativewind";
@@ -16,7 +16,7 @@ const SafeAreaView = cssInterop(RNSafeAreaView, {
 });
 
 export default function AccountSettingsPage() {
-	const { signOut } = useClerk();
+	const { signOut } = useSignOut();
 
 	return (
 		<SafeAreaView className="flex-1 bg-white">

@@ -4,6 +4,7 @@ import { Image as ExpoImage } from "expo-image";
 import { useRouter } from "expo-router";
 import { cssInterop } from "nativewind";
 import { Text } from "../ui/Text";
+import { useSignOut } from "@/hooks/auth/useSignOut";
 
 const Image = cssInterop(ExpoImage, {
 	className: "style",
@@ -12,7 +13,7 @@ const Image = cssInterop(ExpoImage, {
 export function ProfileHeader() {
 	const { user } = useUser();
 	const router = useRouter();
-	const { signOut } = useClerk();
+	const { signOut } = useSignOut();
 
 	async function pressChangeAccount() {
 		await signOut();

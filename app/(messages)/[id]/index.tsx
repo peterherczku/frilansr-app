@@ -1,3 +1,4 @@
+import { MessagesForm } from "@/components/messages/MessagesForm";
 import { MessagesView } from "@/components/messages/MessagesView";
 import { Text } from "@/components/ui/Text";
 import { Colors } from "@/constants/Colors";
@@ -45,7 +46,6 @@ export default function MessagesPage() {
 	const footerPadding = Animated.add(keyboardHeight, 10);
 
 	const [isMessageSending, setIsMessageSending] = useState(false);
-	const [text, setText] = useState("");
 
 	function back() {
 		router.back();
@@ -57,14 +57,6 @@ export default function MessagesPage() {
 				<ActivityIndicator size="large" color="gray" />
 			</SafeAreaView>
 		);
-	}
-
-	async function publishMessage() {
-		setIsMessageSending(true);
-		await sendMessage(text);
-		setText("");
-		Keyboard.dismiss();
-		setIsMessageSending(false);
 	}
 
 	return (
@@ -84,48 +76,7 @@ export default function MessagesPage() {
 				</View>
 			</View>
 			<MessagesView conversation={conversation} messages={messages} />
-			<Animated.View
-				style={{
-					backgroundColor: "white",
-					flexDirection: "row",
-					paddingVertical: 12,
-					paddingHorizontal: 20,
-					shadowOffset: {
-						width: 0,
-						height: -2,
-					},
-					shadowOpacity: 0.6,
-					shadowColor: "#D9D9D9",
-					shadowRadius: 2,
-					gap: 15,
-					alignItems: "center",
-					paddingBottom: footerPadding,
-				}}
-			>
-				<View className="flex-row gap-[15]">
-					<AntDesign
-						name="pluscircle"
-						size={24}
-						color={Colors.light.themeColor}
-					/>
-					<AntDesign name="camera" size={24} color={Colors.light.themeColor} />
-				</View>
-				<View className="flex-1 bg-[#efefef] rounded-lg justify-center px-[15] py-[8]">
-					<TextInput
-						value={text}
-						onChangeText={setText}
-						placeholder="Aa"
-						className="font-zain text-lg text-muted"
-					/>
-				</View>
-				<TouchableOpacity
-					className="disabled:opacity-50"
-					disabled={isMessageSending}
-					onPress={publishMessage}
-				>
-					<AntDesign name="arrowup" size={24} color={Colors.light.themeColor} />
-				</TouchableOpacity>
-			</Animated.View>
+			<MessagesForm sendMessage={sendMessage} />
 		</SafeAreaView>
 	);
 }
