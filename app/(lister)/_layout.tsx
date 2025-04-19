@@ -3,11 +3,13 @@ import { useAuth } from "@clerk/clerk-expo";
 import { BottomSheetProvider } from "@/components/ui/BottomSheet";
 import { useHandleNewConversations } from "@/hooks/messages/useHandleNewConversations";
 import { useHandleChatMessages } from "@/hooks/messages/useHandleChatMessages";
+import { useHandleChatSeens } from "@/hooks/messages/useHandleChatSeens";
 
 export default function ListerRoutesLayout() {
 	const { isSignedIn } = useAuth();
 	useHandleNewConversations();
 	useHandleChatMessages();
+	useHandleChatSeens();
 
 	if (!isSignedIn) {
 		return <Redirect href={"/"} />;

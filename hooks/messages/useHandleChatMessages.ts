@@ -13,6 +13,9 @@ function updateChatMessages(
 	conversationId: string,
 	data: Message
 ) {
+	const existing = queryClient.getQueryData(["chatMessages", conversationId]);
+	if (!existing) return;
+
 	queryClient.setQueryData(
 		["chatMessages", conversationId],
 		(old: InfiniteData<{ messages: Message[] }> | undefined) => {

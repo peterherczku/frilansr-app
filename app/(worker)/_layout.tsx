@@ -2,10 +2,12 @@ import { BottomSheetProvider } from "@/components/ui/BottomSheet";
 import { useHandleNewConversations } from "@/hooks/messages/useHandleNewConversations";
 import { useHandleChatMessages } from "@/hooks/messages/useHandleChatMessages";
 import { Stack } from "expo-router";
+import { useHandleChatSeens } from "@/hooks/messages/useHandleChatSeens";
 
 export default function WorkerRoutesLayout() {
 	useHandleNewConversations();
 	useHandleChatMessages();
+	useHandleChatSeens();
 
 	return (
 		<BottomSheetProvider>

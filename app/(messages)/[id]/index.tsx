@@ -5,6 +5,7 @@ import { Colors } from "@/constants/Colors";
 import { useChatMessages } from "@/hooks/messages/useChatMessages";
 import { useConversation } from "@/hooks/messages/useConversation";
 import { useSendMessage } from "@/hooks/messages/useSendMessage";
+import { useSendSeen } from "@/hooks/messages/useSendSeen";
 import { useKeyboardHeight } from "@/hooks/useKeyboardHeight";
 import { Ionicons } from "@expo/vector-icons";
 import { Image as ExpoImage } from "expo-image";
@@ -33,7 +34,8 @@ export default function MessagesPage() {
 	);
 	const { messages } = useChatMessages(id as string);
 	const { sendMessage } = useSendMessage(id as string);
-	const { keyboardHeight, isKeyboardOpen } = useKeyboardHeight();
+	useSendSeen(id as string, messages);
+	const { isKeyboardOpen } = useKeyboardHeight();
 	const safeEdges = isKeyboardOpen
 		? ["top", "left", "right"]
 		: ["top", "left", "right", "bottom"];

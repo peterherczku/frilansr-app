@@ -6,6 +6,7 @@ export interface Conversation {
 		id: string;
 		name: string;
 		imageUrl: string;
+		lastSeenAt: string | undefined;
 	};
 }
 
@@ -16,6 +17,7 @@ export interface RecentConversation {
 		id: string;
 		name: string;
 		imageUrl: string;
+		lastSeenAt: string | undefined;
 	};
 	lastMessage: Message | null;
 }
@@ -65,6 +67,18 @@ export async function sendMessageReq(conversationId: string, content: string) {
 		body: JSON.stringify({
 			conversationId,
 			content,
+		}),
+	});
+}
+
+export async function sendSeen(conversationId: string) {
+	await fetchWithAuth(`${BACKEND_API_BASE_URL}/messages/seen`, {
+		method: "POST",
+		headers: {
+			"Content-type": "application/json",
+		},
+		body: JSON.stringify({
+			conversationId,
 		}),
 	});
 }

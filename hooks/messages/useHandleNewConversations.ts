@@ -17,6 +17,9 @@ function addNewConversation(
 	newConversation: Conversation,
 	lastMessage: Message
 ) {
+	const existing = queryClient.getQueryData(["conversations"]);
+	if (!existing) return;
+
 	queryClient.setQueryData(
 		["conversations"],
 		(old: InfiniteData<RecentConversation[], unknown>) => {
