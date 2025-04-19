@@ -8,7 +8,7 @@ import React, {
 import { useAuth } from "@clerk/clerk-expo";
 import { BACKEND_API_BASE_URL } from "@/api/apiClient";
 import { Realtime } from "ably";
-import { useGlobalChatUpdates } from "../useGlobalChatUpdates";
+import { useGlobalChatUpdates } from "../useHandleNewConversations";
 
 interface AblyContextValue {
 	ablyClient: Realtime | null;

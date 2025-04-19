@@ -2,6 +2,7 @@ import { MessagesList } from "@/components/messages/MessagesList";
 import { Text } from "@/components/ui/Text";
 import { Colors } from "@/constants/Colors";
 import { useRecentConversations } from "@/hooks/messages/useRecentConversations";
+import { sortRecentConversations } from "@/utils/conversationUtil";
 import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
 import { cssInterop } from "nativewind";
@@ -56,7 +57,7 @@ export default function MessagesPage() {
 					<Text className="text-xl font-zain-bold text-muted">Archived</Text>
 				</TouchableOpacity>
 			</View>
-			<MessagesList data={recentConversations} />
+			<MessagesList data={sortRecentConversations(recentConversations)} />
 		</SafeAreaView>
 	);
 }

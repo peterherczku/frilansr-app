@@ -1,38 +1,12 @@
 import { useAuth } from "@clerk/clerk-expo";
-import { useEffect, useState } from "react";
-import { Realtime } from "ably";
+import { useEffect } from "react";
 import {
 	InfiniteData,
 	QueryClient,
-	useInfiniteQuery,
-	useMutation,
 	useQueryClient,
 } from "@tanstack/react-query";
-import { BACKEND_API_BASE_URL } from "@/api/apiClient";
-import {
-	fetchMessages,
-	Message,
-	RecentConversation,
-	sendMessageReq,
-} from "@/api/messageFunctions";
+import { Message, RecentConversation } from "@/api/messageFunctions";
 import { useAblyClient } from "./context/AblyClientContext";
-
-function useChatMessages(conversationId: string) {
-	const { data, isLoading, error } = useInfiniteQuery({
-		queryKey: ["chatMessages", conversationId],
-		queryFn: async ({ pageParam }) => {
-			return fetchMessages(conversationId, 10, new Date(pageParam));
-		},
-		initialPageParam: new Date().toISOString(),
-		getNextPageParam: (lastPage) => {
-			return lastPage.hasMore ? lastPage.nextCursor : undefined;
-		},
-		enabled: !!conversationId,
-	});
-
-	const messages = data?.pages.flatMap((page) => page.messages) || [];
-	return { messages, isLoading, error };
-}
 
 function updateChatMessages(
 	queryClient: QueryClient,
@@ -92,6 +66,7 @@ function updateLastMessage(
 								content: data.content,
 								sentAt: new Date().toISOString(),
 							},
+							updatedAt: new Date().toISOString(),
 						};
 					})
 				),
@@ -100,41 +75,28 @@ function updateLastMessage(
 	);
 }
 
-export function useChatRoom(conversationId: string) {
+export function useHandleChatMessages() {
 	const queryClient = useQueryClient();
+	const { userId } = useAuth();
 	const { ablyClient } = useAblyClient();
-	const { messages } = useChatMessages(conversationId);
 
 	useEffect(() => {
-		if (!ablyClient) return;
+		if (!ablyClient || !userId) return;
 		(async () => {
-			const channel = ablyClient.channels.get(`conversation:${conversationId}`);
+			const channel = ablyClient.channels.get(`user:${userId}`);
 			channel.subscribe("message", (msg) => {
 				const data = msg.data;
-				updateChatMessages(queryClient, conversationId, data);
-				updateLastMessage(queryClient, conversationId, data);
+				const message = data.message as Message;
+				const conversationId = data.conversationId as string;
+				updateChatMessages(queryClient, conversationId, message);
+				updateLastMessage(queryClient, conversationId, message);
 			});
 		})();
 
 		return () => {
 			if (!ablyClient) return;
-			const channel = ablyClient.channels.get(`conversation:${conversationId}`);
+			const channel = ablyClient.channels.get(`user:${userId}`);
 			channel.unsubscribe("message");
 		};
-	}, [ablyClient]);
-
-	const { mutateAsync } = useMutation({
-		mutationFn: async (content: string) => {
-			await sendMessageReq(conversationId, content);
-		},
-		onError: (err, newMessage, context) => {
-			// Optionally handle errors and revert optimistic update if needed
-		},
-	});
-
-	async function sendMessage(content: string) {
-		await mutateAsync(content);
-	}
-
-	return { messages, sendMessage };
+	}, [ablyClient, userId]);
 }

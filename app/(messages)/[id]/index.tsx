@@ -2,23 +2,16 @@ import { MessagesForm } from "@/components/messages/MessagesForm";
 import { MessagesView } from "@/components/messages/MessagesView";
 import { Text } from "@/components/ui/Text";
 import { Colors } from "@/constants/Colors";
-import { useChatRoom } from "@/hooks/messages/useChatRoom";
+import { useChatMessages } from "@/hooks/messages/useChatMessages";
 import { useConversation } from "@/hooks/messages/useConversation";
+import { useSendMessage } from "@/hooks/messages/useSendMessage";
 import { useKeyboardHeight } from "@/hooks/useKeyboardHeight";
-import { AntDesign, Ionicons } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 import { Image as ExpoImage } from "expo-image";
 import { router } from "expo-router";
 import { useLocalSearchParams, useSearchParams } from "expo-router/build/hooks";
 import { cssInterop } from "nativewind";
-import { useState } from "react";
-import {
-	TextInput,
-	TouchableOpacity,
-	View,
-	Animated,
-	ActivityIndicator,
-	Keyboard,
-} from "react-native";
+import { TouchableOpacity, View, ActivityIndicator } from "react-native";
 import {
 	Edge,
 	SafeAreaView as RNSafeAreaView,
@@ -38,14 +31,12 @@ export default function MessagesPage() {
 	const { conversation, isLoading: loadingConversation } = useConversation(
 		id as string
 	);
-	const { messages, sendMessage } = useChatRoom(id as string);
+	const { messages } = useChatMessages(id as string);
+	const { sendMessage } = useSendMessage(id as string);
 	const { keyboardHeight, isKeyboardOpen } = useKeyboardHeight();
 	const safeEdges = isKeyboardOpen
 		? ["top", "left", "right"]
 		: ["top", "left", "right", "bottom"];
-	const footerPadding = Animated.add(keyboardHeight, 10);
-
-	const [isMessageSending, setIsMessageSending] = useState(false);
 
 	function back() {
 		router.back();

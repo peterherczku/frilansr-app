@@ -1,11 +1,13 @@
 import { Redirect, Stack } from "expo-router";
 import { useAuth } from "@clerk/clerk-expo";
 import { BottomSheetProvider } from "@/components/ui/BottomSheet";
-import { useGlobalChatUpdates } from "@/hooks/messages/useGlobalChatUpdates";
+import { useHandleNewConversations } from "@/hooks/messages/useHandleNewConversations";
+import { useHandleChatMessages } from "@/hooks/messages/useHandleChatMessages";
 
 export default function ListerRoutesLayout() {
 	const { isSignedIn } = useAuth();
-	useGlobalChatUpdates();
+	useHandleNewConversations();
+	useHandleChatMessages();
 
 	if (!isSignedIn) {
 		return <Redirect href={"/"} />;
