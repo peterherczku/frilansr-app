@@ -15,6 +15,7 @@ import {
 	RecentConversation,
 	sendMessageReq,
 } from "@/api/messageFunctions";
+import { useAblyClient } from "./context/AblyClientContext";
 
 function useChatMessages(conversationId: string) {
 	const { data, isLoading, error } = useInfiniteQuery({
@@ -62,6 +63,7 @@ function updateChatMessages(
 					},
 					...old.pages.slice(1),
 				],
+				pageParams: new Date(),
 			};
 		}
 	);
@@ -100,35 +102,26 @@ function updateLastMessage(
 
 export function useChatRoom(conversationId: string) {
 	const queryClient = useQueryClient();
-	const { userId, getToken } = useAuth();
-	const [ablyRealtime, setAblyRealtime] = useState<Realtime | null>(null);
+	const { ablyClient } = useAblyClient();
 	const { messages } = useChatMessages(conversationId);
 
 	useEffect(() => {
-		let ablyClient: Realtime;
+		if (!ablyClient) return;
 		(async () => {
-			const jwt = await getToken({ template: "ably-token" });
-			ablyClient = new Realtime({
-				authUrl: `${BACKEND_API_BASE_URL}/ably/auth?conversationId=${encodeURIComponent(
-					conversationId
-				)}`,
-				authHeaders: { Authorization: `Bearer ${jwt}` },
-			});
-
-			const channel = ablyClient.channels.get(conversationId);
+			const channel = ablyClient.channels.get(`conversation:${conversationId}`);
 			channel.subscribe("message", (msg) => {
 				const data = msg.data;
 				updateChatMessages(queryClient, conversationId, data);
 				updateLastMessage(queryClient, conversationId, data);
 			});
-
-			setAblyRealtime(ablyClient);
 		})();
 
 		return () => {
-			if (ablyClient) ablyClient.close();
+			if (!ablyClient) return;
+			const channel = ablyClient.channels.get(`conversation:${conversationId}`);
+			channel.unsubscribe("message");
 		};
-	}, [conversationId, queryClient]);
+	}, [ablyClient]);
 
 	const { mutateAsync } = useMutation({
 		mutationFn: async (content: string) => {

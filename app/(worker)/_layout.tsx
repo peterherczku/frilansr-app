@@ -1,7 +1,10 @@
 import { BottomSheetProvider } from "@/components/ui/BottomSheet";
+import { useGlobalChatUpdates } from "@/hooks/messages/useGlobalChatUpdates";
 import { Stack } from "expo-router";
 
 export default function WorkerRoutesLayout() {
+	useGlobalChatUpdates();
+
 	return (
 		<BottomSheetProvider>
 			<Stack>

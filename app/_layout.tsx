@@ -16,6 +16,7 @@ import { ClerkLoaded, ClerkProvider } from "@clerk/clerk-expo";
 import { tokenCache } from "@/cache";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useReactQueryFocusSync } from "@/hooks/useReactQueryFocusSync";
+import { AblyProvider } from "@/hooks/messages/context/AblyClientContext";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -55,23 +56,31 @@ export default function RootLayout() {
 		<QueryClientProvider client={queryClient}>
 			<ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
 				<ClerkProvider tokenCache={tokenCache} publishableKey={publishableKey}>
-					<ClerkLoaded>
-						<Stack>
-							<Stack.Screen name="index" options={{ headerShown: false }} />
-							<Stack.Screen name="(worker)" options={{ headerShown: false }} />
-							<Stack.Screen name="(lister)" options={{ headerShown: false }} />
-							<Stack.Screen
-								name="(messages)"
-								options={{ headerShown: false }}
-							/>
-							<Stack.Screen
-								name={"(auth)"}
-								options={{ presentation: "modal", headerShown: false }}
-							/>
-							<Stack.Screen name="+not-found" />
-						</Stack>
-						<StatusBar style="auto" />
-					</ClerkLoaded>
+					<AblyProvider>
+						<ClerkLoaded>
+							<Stack>
+								<Stack.Screen name="index" options={{ headerShown: false }} />
+								<Stack.Screen
+									name="(worker)"
+									options={{ headerShown: false }}
+								/>
+								<Stack.Screen
+									name="(lister)"
+									options={{ headerShown: false }}
+								/>
+								<Stack.Screen
+									name="(messages)"
+									options={{ headerShown: false }}
+								/>
+								<Stack.Screen
+									name={"(auth)"}
+									options={{ presentation: "modal", headerShown: false }}
+								/>
+								<Stack.Screen name="+not-found" />
+							</Stack>
+							<StatusBar style="auto" />
+						</ClerkLoaded>
+					</AblyProvider>
 				</ClerkProvider>
 			</ThemeProvider>
 		</QueryClientProvider>
