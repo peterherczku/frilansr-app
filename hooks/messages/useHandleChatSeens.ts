@@ -39,6 +39,7 @@ export function useHandleChatSeens() {
 				const seenAt = data.seenAt as string;
 				const targetUserId = data.userId as string;
 				const conversationId = data.conversationId as string;
+				console.log(data);
 				if (targetUserId === userId) return;
 
 				updateLastSeen(queryClient, conversationId, seenAt);

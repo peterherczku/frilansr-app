@@ -4,11 +4,14 @@ import { useEffect } from "react";
 
 export function useSendSeen(conversationId: string, messages: Message[]) {
 	const { mutateAsync } = useMutation({
-		mutationFn: () => sendSeen(conversationId),
+		mutationFn: async () => {
+			return await sendSeen(conversationId);
+		},
 	});
 
 	useEffect(() => {
 		if (!conversationId) return;
+
 		mutateAsync();
-	}, [conversationId, sendSeen, messages]);
+	}, [conversationId, sendSeen]);
 }
