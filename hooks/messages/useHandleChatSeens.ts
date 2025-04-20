@@ -13,11 +13,9 @@ function updateLastSeen(
 	if (!existing) {
 		queryClient.refetchQueries({
 			queryKey: ["conversation", conversationId],
-			exact: true,
 		});
 		return;
 	}
-
 	queryClient.setQueryData(
 		["conversation", conversationId],
 		(oldData: Conversation) =>
@@ -25,7 +23,7 @@ function updateLastSeen(
 				...oldData,
 				partner: {
 					...oldData.partner,
-					lastSeenAt: lastSeen,
+					lastSeen: lastSeen,
 				},
 			} as Conversation)
 	);
@@ -43,10 +41,9 @@ export function useHandleChatSeens() {
 			channel.subscribe("seen", (msg) => {
 				const data = msg.data;
 				const seenAt = data.seenAt as string;
-				const targetUserId = data.userId as string;
+				const partnerUserId = data.userId as string;
 				const conversationId = data.conversationId as string;
-				console.log(data);
-				if (targetUserId === userId) return;
+				if (partnerUserId === userId) return;
 
 				updateLastSeen(queryClient, conversationId, seenAt);
 			});

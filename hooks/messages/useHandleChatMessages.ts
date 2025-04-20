@@ -20,6 +20,7 @@ function useHandleAutomaticSeen() {
 	const handleAutomaticSeen = useCallback(async (conversationId: string) => {
 		const segments = pathnameRef.current.split("/");
 		if (segments[1] !== "messages" || segments[2] !== conversationId) return;
+		console.log("sent seen");
 		await sendSeen(conversationId);
 	}, []);
 	return { handleAutomaticSeen };
@@ -34,7 +35,6 @@ function updateChatMessages(
 	if (!existing) {
 		queryClient.refetchQueries({
 			queryKey: ["chatMessages", conversationId],
-			exact: true,
 		});
 		return;
 	}
