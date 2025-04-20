@@ -1,7 +1,7 @@
 import { Redirect, Stack } from "expo-router";
 import { useAuth } from "@clerk/clerk-expo";
 
-export default function PaymentSettingsLayout() {
+export default function ListerPaymentSettingsLayout() {
 	const { isSignedIn } = useAuth();
 
 	if (!isSignedIn) {
@@ -11,11 +11,6 @@ export default function PaymentSettingsLayout() {
 	return (
 		<Stack>
 			<Stack.Screen name={"payment"} options={{ headerShown: false }} />
-			<Stack.Screen name={"history"} options={{ headerShown: false }} />
-			<Stack.Screen
-				name={"add-payout-option"}
-				options={{ headerShown: false }}
-			/>
 			<Stack.Screen
 				name={"attach-new-card"}
 				options={{ headerShown: false, presentation: "modal" }}

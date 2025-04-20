@@ -34,6 +34,16 @@ export default function ListerProfilePage() {
 			<TouchableOpacity
 				className="bg-theme p-[12] rounded-lg mx-[20]"
 				onPress={() => {
+					router.push("/(lister)/(settings)/(payment)/payment");
+				}}
+			>
+				<Text className="text-white text-center font-zain-bold text-lg">
+					Payment settings
+				</Text>
+			</TouchableOpacity>
+			<TouchableOpacity
+				className="bg-theme p-[12] rounded-lg mx-[20]"
+				onPress={() => {
 					open(
 						<AreYouSureModal
 							close={close}

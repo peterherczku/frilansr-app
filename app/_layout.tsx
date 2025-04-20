@@ -18,6 +18,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useReactQueryFocusSync } from "@/hooks/useReactQueryFocusSync";
 import { AblyProvider } from "@/hooks/messages/context/AblyClientContext";
 import { AblyWrapper } from "@/components/AblyWrapper";
+import { StripeProvider } from "@stripe/stripe-react-native";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -28,6 +29,7 @@ queryClient.setQueryDefaults(["listing-applications"], {
 
 export default function RootLayout() {
 	const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!;
+	const stripePublishableKey = process.env.EXPO_PUBLIC_STRIPE_PUBLISHABLE_KEY!;
 
 	if (!publishableKey) {
 		throw new Error(
@@ -57,33 +59,38 @@ export default function RootLayout() {
 		<QueryClientProvider client={queryClient}>
 			<ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
 				<ClerkProvider tokenCache={tokenCache} publishableKey={publishableKey}>
-					<AblyProvider>
-						<AblyWrapper>
-							<ClerkLoaded>
-								<Stack>
-									<Stack.Screen name="index" options={{ headerShown: false }} />
-									<Stack.Screen
-										name="(worker)"
-										options={{ headerShown: false }}
-									/>
-									<Stack.Screen
-										name="(lister)"
-										options={{ headerShown: false }}
-									/>
-									<Stack.Screen
-										name="messages"
-										options={{ headerShown: false }}
-									/>
-									<Stack.Screen
-										name={"(auth)"}
-										options={{ presentation: "modal", headerShown: false }}
-									/>
-									<Stack.Screen name="+not-found" />
-								</Stack>
-								<StatusBar style="auto" />
-							</ClerkLoaded>
-						</AblyWrapper>
-					</AblyProvider>
+					<StripeProvider publishableKey={stripePublishableKey}>
+						<AblyProvider>
+							<AblyWrapper>
+								<ClerkLoaded>
+									<Stack>
+										<Stack.Screen
+											name="index"
+											options={{ headerShown: false }}
+										/>
+										<Stack.Screen
+											name="(worker)"
+											options={{ headerShown: false }}
+										/>
+										<Stack.Screen
+											name="(lister)"
+											options={{ headerShown: false }}
+										/>
+										<Stack.Screen
+											name="messages"
+											options={{ headerShown: false }}
+										/>
+										<Stack.Screen
+											name={"(auth)"}
+											options={{ presentation: "modal", headerShown: false }}
+										/>
+										<Stack.Screen name="+not-found" />
+									</Stack>
+									<StatusBar style="auto" />
+								</ClerkLoaded>
+							</AblyWrapper>
+						</AblyProvider>
+					</StripeProvider>
 				</ClerkProvider>
 			</ThemeProvider>
 		</QueryClientProvider>

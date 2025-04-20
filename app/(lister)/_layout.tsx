@@ -23,6 +23,7 @@ export default function ListerRoutesLayout() {
 					name="(create-listing)"
 					options={{ headerShown: false }}
 				/>
+				<Stack.Screen name="(settings)" options={{ headerShown: false }} />
 				<Stack.Screen
 					name="(listing-applications)"
 					options={{ headerShown: false, presentation: "modal" }}

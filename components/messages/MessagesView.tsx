@@ -1,7 +1,7 @@
 import { cn } from "@/utils/cn";
 import { useUser } from "@clerk/clerk-expo";
 import { Image as ExpoImage } from "expo-image";
-import { cssInterop, remapProps } from "nativewind";
+import { cssInterop } from "nativewind";
 import { Dimensions, FlatList as RNFlatList, View } from "react-native";
 import { Text } from "../ui/Text";
 import { Conversation, Message } from "@/api/messageFunctions";

@@ -16,6 +16,7 @@ import {
 import { SafeAreaView as RNSafeAreaView } from "react-native-safe-area-context";
 import { CardField, CardForm, useStripe } from "@stripe/stripe-react-native";
 import { useBottomSheet } from "@/components/ui/BottomSheet";
+import { SetupCustomerAccount } from "@/components/lister/settings/payment/SetupCustomerAccount";
 
 const SafeAreaView = cssInterop(RNSafeAreaView, {
 	className: "style",
@@ -50,7 +51,10 @@ export default function PaymentSettingsPage() {
 				</TouchableOpacity>
 				<Text className="text-2xl font-zain-bold">Payment settings</Text>
 			</View>
-			<ScrollView>{hasAccount && <PayoutOptions />}</ScrollView>
+			<ScrollView contentContainerClassName="flex-1">
+				{hasAccount && <CardOptions />}
+				{!hasAccount && <SetupCustomerAccount />}
+			</ScrollView>
 		</SafeAreaView>
 	);
 }
