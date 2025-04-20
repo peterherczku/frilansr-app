@@ -7,9 +7,6 @@ import { useHandleChatSeens } from "@/hooks/messages/useHandleChatSeens";
 
 export default function ListerRoutesLayout() {
 	const { isSignedIn } = useAuth();
-	useHandleNewConversations();
-	useHandleChatMessages();
-	useHandleChatSeens();
 
 	if (!isSignedIn) {
 		return <Redirect href={"/"} />;

@@ -15,7 +15,7 @@ export function MessagesList({ data }: { data: RecentConversation[] }) {
 	const { user } = useUser();
 	function renderItem({ item }: { item: RecentConversation }) {
 		function selectMessageChannel() {
-			router.push(`/(messages)/${item.id}`);
+			router.push(`/messages/${item.id}`);
 		}
 
 		return (

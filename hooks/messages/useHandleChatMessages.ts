@@ -1,12 +1,29 @@
 import { useAuth } from "@clerk/clerk-expo";
-import { useEffect } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import {
 	InfiniteData,
 	QueryClient,
 	useQueryClient,
 } from "@tanstack/react-query";
-import { Message, RecentConversation } from "@/api/messageFunctions";
+import { Message, RecentConversation, sendSeen } from "@/api/messageFunctions";
 import { useAblyClient } from "./context/AblyClientContext";
+import { usePathname } from "expo-router";
+
+function useHandleAutomaticSeen() {
+	const pathname = usePathname();
+	const pathnameRef = useRef(pathname);
+
+	useEffect(() => {
+		pathnameRef.current = pathname;
+	}, [pathname]);
+
+	const handleAutomaticSeen = useCallback(async (conversationId: string) => {
+		const segments = pathnameRef.current.split("/");
+		if (segments[1] !== "messages" || segments[2] !== conversationId) return;
+		await sendSeen(conversationId);
+	}, []);
+	return { handleAutomaticSeen };
+}
 
 function updateChatMessages(
 	queryClient: QueryClient,
@@ -14,7 +31,13 @@ function updateChatMessages(
 	data: Message
 ) {
 	const existing = queryClient.getQueryData(["chatMessages", conversationId]);
-	if (!existing) return;
+	if (!existing) {
+		queryClient.refetchQueries({
+			queryKey: ["chatMessages", conversationId],
+			exact: true,
+		});
+		return;
+	}
 
 	queryClient.setQueryData(
 		["chatMessages", conversationId],
@@ -82,6 +105,7 @@ export function useHandleChatMessages() {
 	const queryClient = useQueryClient();
 	const { userId } = useAuth();
 	const { ablyClient } = useAblyClient();
+	const { handleAutomaticSeen } = useHandleAutomaticSeen();
 
 	useEffect(() => {
 		if (!ablyClient || !userId) return;
@@ -93,6 +117,7 @@ export function useHandleChatMessages() {
 				const conversationId = data.conversationId as string;
 				updateChatMessages(queryClient, conversationId, message);
 				updateLastMessage(queryClient, conversationId, message);
+				handleAutomaticSeen(conversationId);
 			});
 		})();
 

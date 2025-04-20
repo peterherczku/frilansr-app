@@ -10,7 +10,7 @@ export default function MessagesRoutesLayout() {
 
 	return (
 		<Stack>
-			<Stack.Screen name={"messages"} options={{ headerShown: false }} />
+			<Stack.Screen name={"recent-messages"} options={{ headerShown: false }} />
 			<Stack.Screen name={"[id]"} options={{ headerShown: false }} />
 		</Stack>
 	);

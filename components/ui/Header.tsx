@@ -25,7 +25,7 @@ export function Header() {
 	}
 
 	function handleMessagesPressed() {
-		router.push("/(messages)/messages");
+		router.push("/messages/recent-messages");
 	}
 
 	function handleLogoPressed() {

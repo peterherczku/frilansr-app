@@ -6,7 +6,7 @@ export interface Conversation {
 		id: string;
 		name: string;
 		imageUrl: string;
-		lastSeenAt: string | undefined;
+		lastSeen: string | undefined;
 	};
 }
 
@@ -17,7 +17,7 @@ export interface RecentConversation {
 		id: string;
 		name: string;
 		imageUrl: string;
-		lastSeenAt: string | undefined;
+		lastSeen: string | undefined;
 	};
 	lastMessage: Message | null;
 }

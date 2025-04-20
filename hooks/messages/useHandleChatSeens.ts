@@ -10,7 +10,13 @@ function updateLastSeen(
 	lastSeen: string
 ) {
 	const existing = queryClient.getQueryData(["conversation", conversationId]);
-	if (!existing) return;
+	if (!existing) {
+		queryClient.refetchQueries({
+			queryKey: ["conversation", conversationId],
+			exact: true,
+		});
+		return;
+	}
 
 	queryClient.setQueryData(
 		["conversation", conversationId],

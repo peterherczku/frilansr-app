@@ -18,7 +18,13 @@ function addNewConversation(
 	lastMessage: Message
 ) {
 	const existing = queryClient.getQueryData(["conversations"]);
-	if (!existing) return;
+	if (!existing) {
+		queryClient.refetchQueries({
+			queryKey: ["conversations"],
+			exact: true,
+		});
+		return;
+	}
 
 	queryClient.setQueryData(
 		["conversations"],

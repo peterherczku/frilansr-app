@@ -5,10 +5,6 @@ import { Stack } from "expo-router";
 import { useHandleChatSeens } from "@/hooks/messages/useHandleChatSeens";
 
 export default function WorkerRoutesLayout() {
-	useHandleNewConversations();
-	useHandleChatMessages();
-	useHandleChatSeens();
-
 	return (
 		<BottomSheetProvider>
 			<Stack>
