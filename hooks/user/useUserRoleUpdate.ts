@@ -3,9 +3,10 @@ import {
 	UserRole,
 } from "@/api/userFunctions";
 import { useUser } from "@clerk/clerk-expo";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export function useUserRoleUpdate() {
+	const queryClient = useQueryClient();
 	const { user } = useUser();
 
 	const { mutateAsync, isError, error, isPending } = useMutation({
@@ -15,6 +16,7 @@ export function useUserRoleUpdate() {
 		onSuccess: async (data) => {
 			if (!data.success || !user) return;
 			await user.reload();
+			queryClient.clear();
 		},
 	});
 

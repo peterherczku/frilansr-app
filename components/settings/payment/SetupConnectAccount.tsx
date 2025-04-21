@@ -2,16 +2,13 @@ import { Text } from "@/components/ui/Text";
 import { TouchableOpacity, View } from "react-native";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import { Colors } from "@/constants/Colors";
-import { useCreateCustomerAccount } from "@/hooks/stripe/useCreateCustomerAccount";
-import { useState } from "react";
-import { isLoading } from "expo-font";
+import { useCreateConnectAccount } from "@/hooks/stripe/useCreateConnectAccount";
 
-export function SetupCustomerAccount() {
-	const { createCustomerAccount, isPending, error } =
-		useCreateCustomerAccount();
+export function SetupConnectAccount() {
+	const { createConnectAccount, isPending, error } = useCreateConnectAccount();
 
-	async function handleEnablePayments() {
-		await createCustomerAccount();
+	async function handleEnablePayouts() {
+		await createConnectAccount();
 	}
 
 	return (
@@ -22,19 +19,19 @@ export function SetupCustomerAccount() {
 				color={Colors.light.themeColor}
 			/>
 			<View className="items-center justify-center">
-				<Text className="text-xl font-zain-bold">Enable payments</Text>
+				<Text className="text-xl font-zain-bold">Enable payouts</Text>
 				<Text className="text-muted text-sm leading-2 text-center">
-					Add your credit card to enable payments and seamlessly hire workers
+					Add your bank account to enable payouts and seamlessly receive money
 					for your jobs. Securely attach your payment method to get started.
 				</Text>
 			</View>
 			<TouchableOpacity
-				onPress={handleEnablePayments}
+				onPress={handleEnablePayouts}
 				disabled={isPending}
 				className="bg-theme w-full justify-center items-center p-3 rounded-lg disabled:opacity-50"
 			>
 				<Text className="text-lg font-zain-bold text-white">
-					Enable payments
+					Enable payouts
 				</Text>
 			</TouchableOpacity>
 			{error?.message && <Text className="text-red-500">{error?.message}</Text>}

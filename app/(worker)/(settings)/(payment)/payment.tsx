@@ -1,4 +1,3 @@
-import { CardOptions } from "@/components/settings/payment/CardOptions";
 import { PayoutOptions } from "@/components/settings/payment/PayoutOptions";
 import { Text } from "@/components/ui/Text";
 import { Colors } from "@/constants/Colors";
@@ -9,13 +8,12 @@ import { cssInterop } from "nativewind";
 import {
 	ActivityIndicator,
 	ScrollView,
-	StyleSheet,
 	TouchableOpacity,
 	View,
 } from "react-native";
 import { SafeAreaView as RNSafeAreaView } from "react-native-safe-area-context";
-import { CardField, CardForm, useStripe } from "@stripe/stripe-react-native";
-import { useBottomSheet } from "@/components/ui/BottomSheet";
+import { SetupCustomerAccount } from "@/components/lister/settings/payment/SetupCustomerAccount";
+import { SetupConnectAccount } from "@/components/settings/payment/SetupConnectAccount";
 
 const SafeAreaView = cssInterop(RNSafeAreaView, {
 	className: "style",
@@ -50,7 +48,10 @@ export default function PaymentSettingsPage() {
 				</TouchableOpacity>
 				<Text className="text-2xl font-zain-bold">Payment settings</Text>
 			</View>
-			<ScrollView>{hasAccount && <PayoutOptions />}</ScrollView>
+			<ScrollView contentContainerClassName="flex-1">
+				{hasAccount && <PayoutOptions />}
+				{!hasAccount && <SetupConnectAccount />}
+			</ScrollView>
 		</SafeAreaView>
 	);
 }

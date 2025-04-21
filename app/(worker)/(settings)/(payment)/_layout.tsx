@@ -16,10 +16,6 @@ export default function PaymentSettingsLayout() {
 				name={"add-payout-option"}
 				options={{ headerShown: false }}
 			/>
-			<Stack.Screen
-				name={"attach-new-card"}
-				options={{ headerShown: false, presentation: "modal" }}
-			/>
 		</Stack>
 	);
 }

@@ -8,6 +8,15 @@ export type CustomerPaymentMethod = {
 	exp_year: number;
 };
 
+export type ConnectedBankAccount = {
+	id: string;
+	bank: string;
+	last4: string;
+	country: string;
+	currency: string;
+	default_for_currency: boolean;
+};
+
 export async function hasAccountConnected() {
 	const res = await fetchWithAuth(`${BACKEND_API_BASE_URL}/stripe/has-account`);
 	return res as {
@@ -44,4 +53,34 @@ export async function fetchCustomerPaymentMethods() {
 		`${BACKEND_API_BASE_URL}/stripe/customer-payment-methods`
 	);
 	return res.paymentMethods as CustomerPaymentMethod[];
+}
+
+export async function createConnectAccount() {
+	const res = await fetchWithAuth(
+		`${BACKEND_API_BASE_URL}/stripe/create-connect-account`,
+		{
+			method: "POST",
+		}
+	);
+	return res as {
+		accountId: string;
+	};
+}
+
+export async function fetchOnboardingLink() {
+	const res = await fetchWithAuth(
+		`${BACKEND_API_BASE_URL}/stripe/account-link`
+	);
+	return res as {
+		url: string;
+	};
+}
+
+export async function fetchConnectedBankAccounts() {
+	const res = await fetchWithAuth(
+		`${BACKEND_API_BASE_URL}/stripe/connected-account-bank-accounts`
+	);
+	return res as {
+		bankAccounts: ConnectedBankAccount[];
+	};
 }

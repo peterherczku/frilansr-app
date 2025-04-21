@@ -1,25 +1,53 @@
 import { Text } from "@/components/ui/Text";
-import { Colors } from "@/constants/Colors";
-import { Ionicons } from "@expo/vector-icons";
+import { useConnectOnboardingLink } from "@/hooks/stripe/useConnectOnboardingLink";
+import { useQueryClient } from "@tanstack/react-query";
+import { WebView, WebViewNavigation } from "react-native-webview";
+import { useRef } from "react";
+import { ActivityIndicator, View } from "react-native";
 import { router } from "expo-router";
-import { cssInterop } from "nativewind";
-import { ScrollView, TouchableOpacity, View } from "react-native";
-import { SafeAreaView as RNSafeAreaView } from "react-native-safe-area-context";
+import { SafeAreaView } from "react-native-safe-area-context";
 
-const SafeAreaView = cssInterop(RNSafeAreaView, {
-	className: "style",
-});
+const REFRESH_URL = "https://yourapp.com/stripe-refresh";
+const RETURN_URL = "https://yourapp.com/stripe-return";
 
 export default function AddPayoutOptionPage() {
-	return (
-		<SafeAreaView className="flex-1 bg-white">
-			<View className="mx-[20] flex-row gap-[6] items-center">
-				<TouchableOpacity onPress={() => router.back()}>
-					<Ionicons name="chevron-back" size={30} color={Colors.light.text} />
-				</TouchableOpacity>
-				<Text className="text-2xl font-zain-bold">Add new payout option</Text>
+	const { onboardingLink, isLoading, error } = useConnectOnboardingLink();
+	const queryClient = useQueryClient();
+	const webviewRef = useRef<WebView>(null);
+
+	if (isLoading) {
+		return <ActivityIndicator />;
+	}
+	if (error || !onboardingLink) {
+		return (
+			<View>
+				<Text>Error loading onboarding: {error?.message}</Text>
 			</View>
-			<ScrollView></ScrollView>
+		);
+	}
+
+	function onNavStateChange(nav: WebViewNavigation) {
+		const url = nav.url;
+
+		if (url.startsWith(REFRESH_URL)) {
+			queryClient.invalidateQueries({ queryKey: ["stripeAccountLink"] });
+			return;
+		}
+
+		if (url.startsWith(RETURN_URL)) {
+			queryClient.invalidateQueries({ queryKey: ["connectedBankAccounts"] });
+			router.back();
+		}
+	}
+
+	return (
+		<SafeAreaView className="flex-1">
+			<WebView
+				ref={webviewRef}
+				source={{ uri: onboardingLink }}
+				onNavigationStateChange={onNavStateChange}
+				startInLoadingState
+			/>
 		</SafeAreaView>
 	);
 }

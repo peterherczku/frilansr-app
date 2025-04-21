@@ -44,7 +44,6 @@ export default function AddCardOptionPage() {
 			return;
 		}
 		if (setupIntent && setupIntent.status === "Succeeded") {
-			console.log(setupIntent);
 			Alert.alert("✅ Card saved", "We’ll use this card for future payments.");
 			queryClient.invalidateQueries({
 				queryKey: ["customerPaymentMethods"],
