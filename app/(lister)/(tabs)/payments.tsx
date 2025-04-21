@@ -3,56 +3,58 @@ import {
 	ActivePaymentsHeader,
 	ActivePaymentsSubtitle,
 	ActivePaymentsTitle,
-	Payment,
 } from "@/components/lister/payments/ActivePayments";
 import { Header } from "@/components/ui/Header";
+import { Text } from "@/components/ui/Text";
+import { useHasConnectedAccount } from "@/hooks/stripe/useHasConnectedAccount";
+import { useOutgoingPayments } from "@/hooks/stripe/useOutgoingPayments";
+import { Redirect } from "expo-router";
+import { ActivityIndicator, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-const payments: Payment[] = [
-	{
-		id: "0",
-		amount: 100,
-		date: "2024-09-15T12:00:00Z",
-		status: "ARRIVED_AT_DESTINATION",
-		target: {
-			id: "0",
-			name: "John Doe",
-			imageUrl: "https://example.com/image.jpg",
-		},
-	},
-	{
-		id: "1",
-		amount: 173.21,
-		date: "2024-10-15T12:00:00Z",
-		status: "ON_ITS_WAY_TO_DESTINATION",
-		target: {
-			id: "0",
-			name: "John Doe",
-			imageUrl: "https://example.com/image.jpg",
-		},
-	},
-	{
-		id: "2",
-		amount: 73.21,
-		date: "2024-12-15T12:00:00Z",
-		status: "ON_ITS_WAY_TO_FRILANSR",
-		target: {
-			id: "0",
-			name: "Péter Herczku",
-			imageUrl: "https://example.com/image.jpg",
-		},
-	},
-];
-
 export default function OutgoingPaymentsPage() {
+	const {
+		hasAccount,
+		isLoading: isHasAccountLoading,
+		error: hasAccountError,
+	} = useHasConnectedAccount();
+	const { outgoingPayments, isLoading, error } = useOutgoingPayments();
+
+	if (hasAccountError || error) {
+		return (
+			<View className="flex-1 justify-center items-center">
+				<Text className="text-lg text-red-500">Error loading data</Text>
+			</View>
+		);
+	}
+
+	if (
+		isLoading ||
+		isHasAccountLoading ||
+		hasAccount === undefined ||
+		outgoingPayments === undefined
+	) {
+		return (
+			<View className="flex-1 justify-center items-center">
+				<ActivityIndicator size="large" color="gray" />
+			</View>
+		);
+	}
+
+	if (!hasAccount) {
+		return <Redirect href={"/(lister)/settings/payment"} />;
+	}
+
 	return (
 		<SafeAreaView className="flex-1 bg-white">
 			<Header />
 			<ActivePaymentsHeader>
 				<ActivePaymentsTitle>Outgoing payments</ActivePaymentsTitle>
-				<ActivePaymentsSubtitle>10 payments</ActivePaymentsSubtitle>
+				<ActivePaymentsSubtitle>
+					{`${outgoingPayments.length} payments`}
+				</ActivePaymentsSubtitle>
 			</ActivePaymentsHeader>
-			<ActivePayments payments={payments} />
+			<ActivePayments payments={outgoingPayments} />
 		</SafeAreaView>
 	);
 }

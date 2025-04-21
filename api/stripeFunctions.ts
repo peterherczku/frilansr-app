@@ -1,5 +1,11 @@
 import { BACKEND_API_BASE_URL, fetchWithAuth } from "./apiClient";
 
+export type TransactionStatus =
+	| "ON_WAY_TO_FRILASNSR"
+	| "ARRIVED_AT_FRILANSR"
+	| "ON_WAY_TO_DESTINATION"
+	| "ARRIVED_AT_DESTINATION";
+
 export type CustomerPaymentMethod = {
 	id: string;
 	brand: string;
@@ -16,6 +22,13 @@ export type ConnectedBankAccount = {
 	country: string;
 	currency: string;
 	default_for_currency: boolean;
+};
+
+export type OutgoingPayment = {
+	id: string;
+	amount: number;
+	status: TransactionStatus;
+	createdAt: string;
 };
 
 export async function hasAccountConnected() {
@@ -101,5 +114,14 @@ export async function updateDefaultPaymentMethod(paymentMethodId: string) {
 	);
 	return res as {
 		success: boolean;
+	};
+}
+
+export async function fetchOutgoingPayments() {
+	const res = await fetchWithAuth(
+		`${BACKEND_API_BASE_URL}/stripe/outgoing-payments`
+	);
+	return res as {
+		outgoingPayments: OutgoingPayment[];
 	};
 }

@@ -1,5 +1,7 @@
+import { OutgoingPayment } from "@/api/stripeFunctions";
 import { Text } from "@/components/ui/Text";
 import { formatDate } from "@/utils/dateUtil";
+import { formatRawMoney } from "@/utils/numberUtil";
 import { FontAwesome6, Ionicons } from "@expo/vector-icons";
 import { ReactNode } from "react";
 import { FlatList, View } from "react-native";
@@ -34,8 +36,8 @@ export function ActivePaymentsHeader({ children }: { children: ReactNode }) {
 	return <View className="mx-[20] mb-[10]">{children}</View>;
 }
 
-export function ActivePayments({ payments }: { payments: Payment[] }) {
-	function renderItem({ item }: { item: Payment }) {
+export function ActivePayments({ payments }: { payments: OutgoingPayment[] }) {
+	function renderItem({ item }: { item: OutgoingPayment }) {
 		return <ActivePaymentElement payment={item} />;
 	}
 
@@ -49,14 +51,20 @@ export function ActivePayments({ payments }: { payments: Payment[] }) {
 	);
 }
 
-export function ActivePaymentElement({ payment }: { payment: Payment }) {
+export function ActivePaymentElement({
+	payment,
+}: {
+	payment: OutgoingPayment;
+}) {
 	function ActivePaymentHeader() {
 		return (
 			<View className="flex-row items-center justify-between">
 				<View>
-					<Text className="text-xl font-zain-bold">{payment.amount} kr</Text>
+					<Text className="text-xl font-zain-bold">
+						{formatRawMoney(payment.amount)} kr
+					</Text>
 					<Text className="text-lg text-muted mt-[-6]">
-						{formatDate(payment.date)}
+						{formatDate(payment.createdAt)}
 					</Text>
 				</View>
 				{payment.status === "ARRIVED_AT_DESTINATION" && (
@@ -80,16 +88,16 @@ export function ActivePaymentElement({ payment }: { payment: Payment }) {
 			text = "Arrived at Frilansr";
 			progress = 50;
 		}
-		if (payment.status === "ON_ITS_WAY_TO_FRILANSR") {
+		if (payment.status === "ON_WAY_TO_FRILASNSR") {
 			text = "On its way to Frilansr";
 			progress = 25;
 		}
-		if (payment.status === "ON_ITS_WAY_TO_DESTINATION") {
-			text = `On its way to ${payment.target.name}'s bank account`;
+		if (payment.status === "ON_WAY_TO_DESTINATION") {
+			text = `On its way to target's bank account`;
 			progress = 75;
 		}
 		if (payment.status === "ARRIVED_AT_DESTINATION") {
-			text = `Arrived at ${payment.target.name}'s bank account`;
+			text = `Arrived at target's bank account`;
 			progress = 100;
 		}
 
