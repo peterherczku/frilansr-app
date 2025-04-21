@@ -10,23 +10,15 @@ import { Text } from "../../ui/Text";
 import { useCustomerPaymentMethods } from "@/hooks/stripe/useCustomerPaymentMethods";
 import { CustomerPaymentMethod } from "@/api/stripeFunctions";
 
-const cardOptions = [
-	{
-		id: 0,
-		cardNumber: "●●●● ●●●● ●●●●  4999",
-		isDefault: true,
-	},
-	{
-		id: 1,
-		cardNumber: "●●●● ●●●● ●●●● 1111",
-		isDefault: false,
-	},
-];
-
 export function CardOptions() {
 	const { paymentMethods, isLoading, error } = useCustomerPaymentMethods();
 
-	function renderCardOption({ id, brand, last4 }: CustomerPaymentMethod) {
+	function renderCardOption({
+		id,
+		brand,
+		last4,
+		isDefault,
+	}: CustomerPaymentMethod) {
 		return (
 			<SettingsSectionItemCard key={id.toString()}>
 				<View className="flex-row justify-between items-center">
@@ -61,11 +53,11 @@ export function CardOptions() {
 							</Text>
 						</View>
 					</View>
-					{/*isDefault && (
+					{isDefault && (
 						<View className="bg-[#d9d9d9] py-[4] px-[10] rounded-md">
 							<Text className="font-zain-extrabold">Default</Text>
 						</View>
-					)*/}
+					)}
 				</View>
 			</SettingsSectionItemCard>
 		);

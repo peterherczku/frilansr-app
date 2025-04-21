@@ -17,11 +17,14 @@ import { Details } from "@stripe/stripe-react-native/lib/typescript/src/types/co
 import { createSetupIntent } from "@/api/stripeFunctions";
 import { useQueryClient } from "@tanstack/react-query";
 import { router } from "expo-router";
+import { useUpdateDefaultPaymentMethod } from "@/hooks/stripe/useUpdateDefaultPaymentMethod";
 
 export default function AddCardOptionPage() {
 	const queryClient = useQueryClient();
 	const keyboardVerticalOffset = Platform.select({ ios: 80, android: 0 });
 
+	const { updateDefaultPaymentMethod, isPending, error } =
+		useUpdateDefaultPaymentMethod();
 	const { confirmSetupIntent } = useStripe();
 	const [cardDetails, setCardDetails] = useState<Details>();
 
@@ -44,11 +47,17 @@ export default function AddCardOptionPage() {
 			return;
 		}
 		if (setupIntent && setupIntent.status === "Succeeded") {
-			Alert.alert("✅ Card saved", "We’ll use this card for future payments.");
-			queryClient.invalidateQueries({
-				queryKey: ["customerPaymentMethods"],
-			});
-			router.back();
+			try {
+				await updateDefaultPaymentMethod(setupIntent.paymentMethod!.id);
+				Alert.alert(
+					"✅ Card saved",
+					"We’ll use this card for future payments."
+				);
+				router.back();
+			} catch (err) {
+				Alert.alert("Error", "Failed to save card. Please try again later.");
+				console.error("Error saving card:", err);
+			}
 		} else {
 			Alert.alert(
 				"Setup incomplete",

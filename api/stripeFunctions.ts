@@ -6,6 +6,7 @@ export type CustomerPaymentMethod = {
 	last4: string;
 	exp_month: number;
 	exp_year: number;
+	isDefault: boolean;
 };
 
 export type ConnectedBankAccount = {
@@ -82,5 +83,23 @@ export async function fetchConnectedBankAccounts() {
 	);
 	return res as {
 		bankAccounts: ConnectedBankAccount[];
+	};
+}
+
+export async function updateDefaultPaymentMethod(paymentMethodId: string) {
+	const res = await fetchWithAuth(
+		`${BACKEND_API_BASE_URL}/stripe/default-payment-method`,
+		{
+			method: "POST",
+			body: JSON.stringify({
+				paymentMethodId,
+			}),
+			headers: {
+				"Content-Type": "application/json",
+			},
+		}
+	);
+	return res as {
+		success: boolean;
 	};
 }

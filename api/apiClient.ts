@@ -20,6 +20,7 @@ export async function fetchWithAuth(url: string, options: RequestInit = {}) {
 			console.log("Error message:", error.message);
 			throw new Error(error.message);
 		}
+		console.log(JSON.stringify(error));
 		throw new Error(`Request failed: ${res.status} ${res.statusText}`);
 	}
 	return res.json();
