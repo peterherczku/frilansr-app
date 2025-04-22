@@ -12,6 +12,10 @@ export default function WorkerRoutesLayout() {
 				<Stack.Screen name="(active-job)" options={{ headerShown: false }} />
 				<Stack.Screen name="(tabs)" options={{ headerShown: false }} />
 				<Stack.Screen name="(settings)" options={{ headerShown: false }} />
+				<Stack.Screen
+					name="active-job"
+					options={{ headerShown: false, animation: "slide_from_bottom" }}
+				/>
 				<Stack.Screen name="+not-found" />
 			</Stack>
 		</BottomSheetProvider>
