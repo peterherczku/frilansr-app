@@ -3,14 +3,15 @@ import { Text } from "../ui/Text";
 import { router } from "expo-router";
 import CircularProgress from "react-native-circular-progress-indicator";
 import { Colors } from "@/constants/Colors";
+import { useOngoingJob } from "@/hooks/job/useOngoingJob";
+import { elapsedTimeInMinutes } from "@/utils/dateUtil";
 
-export function FLoatingActiveOrder({
-	elapsedTime,
-	maxTime,
-}: {
-	elapsedTime: number;
-	maxTime: number;
-}) {
+export function FLoatingActiveOrder() {
+	const { ongoingJob, isLoading, error } = useOngoingJob();
+	if (isLoading || error || ongoingJob === undefined) return null;
+	const startDate = new Date(ongoingJob.startTime);
+	const elapsedTime = elapsedTimeInMinutes(startDate);
+	const maxTime = ongoingJob.listing.duration;
 	const progress = (elapsedTime / maxTime) * 100;
 	function onPress() {
 		router.push("/(worker)/active-job");

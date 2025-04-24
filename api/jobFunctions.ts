@@ -32,6 +32,20 @@ export interface JobWithUser {
 	listing: Listing;
 }
 
+export interface OngoingJobWithUser {
+	id: string;
+	status: JobStatus;
+	createdAt: string;
+	updatedAt: string;
+	startTime: string;
+	worker: {
+		id: string;
+		name: string;
+		imageUrl: string;
+	};
+	listing: Listing;
+}
+
 export async function fetchActiveJobs() {
 	const res = await fetchWithAuth(`${BACKEND_API_BASE_URL}/jobs/active`);
 	return res as JobWithUser[];
@@ -40,4 +54,21 @@ export async function fetchActiveJobs() {
 export async function fetchActiveWorkerJobs() {
 	const res = await fetchWithAuth(`${BACKEND_API_BASE_URL}/jobs/active-worker`);
 	return res as JobWithUser[];
+}
+
+export async function fetchOngoingWorkerJob() {
+	const res = await fetchWithAuth(
+		`${BACKEND_API_BASE_URL}/jobs/ongoing-worker`
+	);
+	return res as OngoingJobWithUser[];
+}
+
+export async function startJob(jobId: string) {
+	const res = await fetchWithAuth(
+		`${BACKEND_API_BASE_URL}/jobs/${jobId}/start`,
+		{
+			method: "POST",
+		}
+	);
+	return res as OngoingJobWithUser;
 }

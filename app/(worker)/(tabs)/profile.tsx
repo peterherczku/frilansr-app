@@ -23,6 +23,7 @@ import {
 	useBottomSheet,
 } from "@/components/ui/BottomSheet";
 import { AreYouSureModal } from "@/components/ui/AreYouSureModal";
+import { FLoatingActiveOrder } from "@/components/home/FloatingActiveOrder";
 
 const data = [
 	{
@@ -128,6 +129,7 @@ export default function ProfileScreen() {
 					</ProfileSettingsBox>
 					<Footer />
 				</ScrollView>
+				<FLoatingActiveOrder />
 			</SafeAreaView>
 		</BottomSheetProvider>
 	);

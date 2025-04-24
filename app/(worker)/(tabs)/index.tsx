@@ -33,7 +33,7 @@ export default function HomeScreen() {
 				</ListingPresenter>
 				<Footer />
 			</ScrollView>
-			<FLoatingActiveOrder elapsedTime={18} maxTime={60} />
+			<FLoatingActiveOrder />
 		</SafeAreaView>
 	);
 }

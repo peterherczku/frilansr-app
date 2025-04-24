@@ -9,6 +9,7 @@ import {
 	MaterialCommunityIcons,
 } from "@expo/vector-icons";
 import { useAuth } from "@clerk/clerk-expo";
+import { FLoatingActiveOrder } from "@/components/home/FloatingActiveOrder";
 
 export default function TabLayout() {
 	const router = useRouter();

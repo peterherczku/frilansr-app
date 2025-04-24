@@ -4,6 +4,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useActiveWorkerJobs } from "@/hooks/job/useActiveWorkerJobs";
 import { ActivityIndicator, View } from "react-native";
 import { Text } from "@/components/ui/Text";
+import { FLoatingActiveOrder } from "@/components/home/FloatingActiveOrder";
 
 export default function CalendarScreen() {
 	const { activeJobs, isLoading, error } = useActiveWorkerJobs();
@@ -28,6 +29,7 @@ export default function CalendarScreen() {
 		<SafeAreaView className="flex-1 bg-white">
 			<Header />
 			<CalendarList activeJobs={activeJobs} />
+			<FLoatingActiveOrder />
 		</SafeAreaView>
 	);
 }

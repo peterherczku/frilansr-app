@@ -121,3 +121,8 @@ export function formatTimeDifference(isoString: string): string {
 
 	return result;
 }
+
+export function elapsedTimeInMinutes(start: Date): number {
+	const diffInMs = differenceInMinutes(start, new Date());
+	return Math.round(diffInMs / 1000 / 60);
+}
