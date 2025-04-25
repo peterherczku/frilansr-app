@@ -13,10 +13,6 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function ActiveJobScreen() {
 	const { ongoingJob, isLoading, error } = useOngoingJob();
-	if (isLoading || error || ongoingJob === undefined) return null;
-	const startDate = new Date(ongoingJob.startTime);
-	const elapsedTime = elapsedTimeInMinutes(startDate);
-	const maxTime = ongoingJob.listing.duration;
 
 	useFocusEffect(
 		useCallback(() => {
@@ -27,6 +23,12 @@ export default function ActiveJobScreen() {
 			};
 		}, [])
 	);
+
+	if (isLoading || error || ongoingJob === undefined) return null;
+
+	const startDate = new Date(ongoingJob.startTime);
+	const elapsedTime = elapsedTimeInMinutes(startDate);
+	const maxTime = ongoingJob.listing.duration;
 
 	function onClose() {
 		router.back();

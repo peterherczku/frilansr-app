@@ -13,7 +13,7 @@ export interface TimeRemaining {
  * @param targetDate - The target date as a Date or parsable date string
  * @returns TimeRemaining - Remaining time until target
  */
-export function useCountdown(targetDate: string | Date): TimeRemaining {
+export function useTimeDifference(targetDate: string | Date): TimeRemaining {
 	const target = useRef(new Date(targetDate));
 
 	const [timeLeft, setTimeLeft] = useState<TimeRemaining>(
@@ -42,7 +42,7 @@ export function useCountdown(targetDate: string | Date): TimeRemaining {
  * Helper: calculates time difference between now and endDate
  */
 function getTimeRemaining(endDate: Date): TimeRemaining {
-	const total = endDate.getTime() - new Date().getTime();
+	const total = Math.abs(endDate.getTime() - new Date().getTime());
 	const seconds = Math.max(Math.floor((total / 1000) % 60), 0);
 	const minutes = Math.max(Math.floor((total / 1000 / 60) % 60), 0);
 	const hours = Math.max(Math.floor((total / (1000 * 60 * 60)) % 24), 0);

@@ -13,7 +13,7 @@ export function sortUpcomingJobs(jobs: JobWithUser[]) {
 
 export function selectClosestJob(jobs: JobWithUser[]) {
 	if (!Array.isArray(jobs) || jobs.length === 0) return null;
-
+	jobs = jobs.filter((job) => job.status !== "COMPLETED");
 	const now = Date.now();
 
 	return jobs.reduce((closest, job) => {

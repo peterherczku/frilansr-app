@@ -3,11 +3,15 @@ import { Header } from "@/components/ui/Header";
 import { Text } from "@/components/ui/Text";
 import { useActiveWorkerJobs } from "@/hooks/job/useActiveWorkerJobs";
 import { selectClosestJob } from "@/utils/jobUtil";
-import { ActivityIndicator, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { ActivityIndicator, FlatList, View } from "react-native";
+import {
+	SafeAreaView,
+	useSafeAreaInsets,
+} from "react-native-safe-area-context";
 
 export default function ActiveJobsScreen() {
 	const { activeJobs, isLoading, error } = useActiveWorkerJobs();
+	const insets = useSafeAreaInsets();
 
 	if (error) {
 		return (
@@ -30,15 +34,28 @@ export default function ActiveJobsScreen() {
 	return (
 		<SafeAreaView className="flex-1 bg-white">
 			<Header />
-			<View className="gap-[15]">
-				{firstJob && <ActiveJobWidget job={firstJob} />}
-				<View className="mx-[20]">
-					<Text className="text-3xl font-zain-bold">Later jobs</Text>
-					<Text className="text-muted mt-[-5] text-lg">
-						These are your upcoming jobs that you cannot start yet
-					</Text>
-				</View>
-			</View>
+			<FlatList
+				data={activeJobs}
+				renderItem={() => <></>}
+				contentContainerStyle={{ paddingBottom: insets.bottom + 25 }}
+				ListHeaderComponent={
+					<View className="gap-[15]">
+						<View className="mx-[20]">
+							<Text className="text-3xl font-zain-bold">Next job</Text>
+							<Text className="text-muted mt-[-6]">
+								Your next job is shown here
+							</Text>
+						</View>
+						{firstJob && <ActiveJobWidget job={firstJob} />}
+						<View className="mx-[20]">
+							<Text className="text-3xl font-zain-bold">Later jobs</Text>
+							<Text className="text-muted mt-[-6]">
+								These are your upcoming jobs that you cannot start yet
+							</Text>
+						</View>
+					</View>
+				}
+			/>
 		</SafeAreaView>
 	);
 }

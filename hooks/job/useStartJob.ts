@@ -4,20 +4,22 @@ import {
 	useMutation,
 	useQueryClient,
 } from "@tanstack/react-query";
-import { useOngoingJob } from "./useOngoingJob";
 
-function updateCache(
+export function updateOngoingJobCache(
 	queryClient: QueryClient,
 	jobId: string,
 	result: JobWithUser
 ) {
-	if (queryClient.getQueryData(["active-jobs"])) {
-		queryClient.setQueryData(["active-jobs"], (oldData: JobWithUser[]) => {
-			return oldData.map((job) => {
-				if (job.id !== jobId) return job;
-				return result;
-			});
-		});
+	if (queryClient.getQueryData(["active-worker-jobs"])) {
+		queryClient.setQueryData(
+			["active-worker-jobs"],
+			(oldData: JobWithUser[]) => {
+				return oldData.map((job) => {
+					if (job.id !== jobId) return job;
+					return result;
+				});
+			}
+		);
 	}
 	if (queryClient.getQueryData(["jobs"])) {
 		queryClient.setQueryData(["jobs", result.id], result);
@@ -32,7 +34,7 @@ export function useStartJob() {
 	const { mutateAsync, isPending, error } = useMutation({
 		mutationFn: async (jobId: string) => await apiStartJob(jobId),
 		onSuccess: (result, jobId) => {
-			updateCache(queryClient, jobId, result);
+			updateOngoingJobCache(queryClient, jobId, result);
 		},
 	});
 
