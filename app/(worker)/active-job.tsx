@@ -1,6 +1,8 @@
 import { ProgressBar } from "@/components/active-order/ProgressRing";
 import { Text } from "@/components/ui/Text";
 import { Colors } from "@/constants/Colors";
+import { useOngoingJob } from "@/hooks/job/useOngoingJob";
+import { elapsedTimeInMinutes } from "@/utils/dateUtil";
 import { Ionicons } from "@expo/vector-icons";
 import { Image } from "expo-image";
 import { router, useFocusEffect } from "expo-router";
@@ -10,6 +12,12 @@ import { TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function ActiveJobScreen() {
+	const { ongoingJob, isLoading, error } = useOngoingJob();
+	if (isLoading || error || ongoingJob === undefined) return null;
+	const startDate = new Date(ongoingJob.startTime);
+	const elapsedTime = elapsedTimeInMinutes(startDate);
+	const maxTime = ongoingJob.listing.duration;
+
 	useFocusEffect(
 		useCallback(() => {
 			setStatusBarStyle("light");
@@ -30,7 +38,7 @@ export default function ActiveJobScreen() {
 				<Image
 					className="flex-1"
 					source={{
-						uri: "https://nf1hfvmf3k.ufs.sh/f/gQVRIQtjoqO2EKiQ1vfLP9q1iOuWJZTQkacnKjrfRwoGHC0g",
+						uri: ongoingJob.listing.image,
 					}}
 				/>
 				<View className="absolute top-0 left-0 bg-black opacity-40 z-10 w-full h-full" />
@@ -45,26 +53,30 @@ export default function ActiveJobScreen() {
 				<View className="mt-[145] flex-1 justify-between items-center">
 					<View className="mx-[50] gap-[10]">
 						<Text className="text-center font-zain-extrabold uppercase text-muted">
-							Take a walk with Max
+							{ongoingJob.listing.title}
 						</Text>
 						<Text className="text-center text-xl font-zain-bold leading-6">
 							Everything's on track! We'll keep you updated in case anything
 							happens!
 						</Text>
 						<Text className="text-center text-sm text-muted">
-							Your location is actively being shared with Péter.
+							Your location is actively being shared with{" "}
+							{ongoingJob.listing.user.name}.
 						</Text>
 					</View>
 					<View className="w-full">
-						<TouchableOpacity className="bg-theme rounded-lg shadow-custom mx-[20] p-3 items-center justify-between">
+						<TouchableOpacity
+							onPress={() => router.replace("/messages/recent-messages")}
+							className="bg-theme rounded-lg shadow-custom mx-[20] p-3 items-center justify-between"
+						>
 							<Text className="text-xl  text-white font-zain-bold">
-								Message Péter
+								Message {ongoingJob.listing.user.name}
 							</Text>
 						</TouchableOpacity>
 					</View>
 				</View>
 			</View>
-			<ProgressBar elapsedTime={18} maxTime={60} />
+			<ProgressBar elapsedTime={elapsedTime} maxTime={maxTime} />
 		</SafeAreaView>
 	);
 }

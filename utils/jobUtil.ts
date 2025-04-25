@@ -10,3 +10,19 @@ export function sortUpcomingJobs(jobs: JobWithUser[]) {
 		return 0;
 	});
 }
+
+export function selectClosestJob(jobs: JobWithUser[]) {
+	if (!Array.isArray(jobs) || jobs.length === 0) return null;
+
+	const now = Date.now();
+
+	return jobs.reduce((closest, job) => {
+		const jobTime = new Date(job.listing.date).getTime();
+		const closestTime = new Date(closest.listing.date).getTime();
+
+		// Compare absolute distance to now
+		return Math.abs(jobTime - now) < Math.abs(closestTime - now)
+			? job
+			: closest;
+	}, jobs[0]);
+}
