@@ -43,7 +43,7 @@ export function SettingsSection({
 	children: ReactNode;
 }) {
 	return (
-		<View className="my-[15] flex-col">
+		<View className="my-[15] flex-col flex-1">
 			<View className="flex-row mx-[20] py-[5]">
 				<Text className="text-xl font-zain-bold">{title}</Text>
 			</View>

@@ -24,6 +24,7 @@ import {
 } from "@/components/ui/BottomSheet";
 import { AreYouSureModal } from "@/components/ui/AreYouSureModal";
 import { FLoatingActiveOrder } from "@/components/home/FloatingActiveOrder";
+import { usePaymentHistory } from "@/hooks/stripe/usePaymentHistory";
 
 const data = [
 	{
@@ -58,6 +59,7 @@ export default function ProfileScreen() {
 	const { updateRole } = useUserRoleUpdate();
 	const navigation = useNavigation();
 	const { open, close } = useBottomSheet();
+	const { paymentHistory } = usePaymentHistory();
 
 	async function handleModalConfirm() {
 		try {
@@ -83,7 +85,7 @@ export default function ProfileScreen() {
 					<ProfilePaymentBox>
 						<ProfilePaymentBoxItem
 							title={"Payment history"}
-							subtitle={"15 payments"}
+							subtitle={`${paymentHistory?.length ?? "0"} payments`}
 							onPress={() =>
 								router.push("/(worker)/(settings)/(payment)/history")
 							}

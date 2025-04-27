@@ -31,6 +31,8 @@ export type OutgoingPayment = {
 	createdAt: string;
 };
 
+export type PaymentHistoryItem = OutgoingPayment;
+
 export async function hasAccountConnected() {
 	const res = await fetchWithAuth(`${BACKEND_API_BASE_URL}/stripe/has-account`);
 	return res as {
@@ -123,5 +125,14 @@ export async function fetchOutgoingPayments() {
 	);
 	return res as {
 		outgoingPayments: OutgoingPayment[];
+	};
+}
+
+export async function fetchPaymentHistory() {
+	const res = await fetchWithAuth(
+		`${BACKEND_API_BASE_URL}/stripe/payment-history-worker`
+	);
+	return res as {
+		paymentHistory: PaymentHistoryItem[];
 	};
 }

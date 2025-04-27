@@ -1,5 +1,6 @@
 import { JobStatus } from "@/api/jobFunctions";
 import { JobType } from "@/api/listingFunctions";
+import { TransactionStatus } from "@/api/stripeFunctions";
 
 function jobTypeText(type: JobType) {
 	switch (type) {
@@ -27,4 +28,17 @@ function jobStatusText(status: JobStatus) {
 	}
 }
 
-export { jobTypeText, jobStatusText };
+function transactionStatusText(status: TransactionStatus) {
+	switch (status) {
+		case "ON_WAY_TO_FRILASNSR":
+			return "On way to Frilansr";
+		case "ARRIVED_AT_FRILANSR":
+			return "Arrived at Frilansr";
+		case "ON_WAY_TO_DESTINATION":
+			return "On way to destination";
+		case "ARRIVED_AT_DESTINATION":
+			return "Arrived at destination";
+	}
+}
+
+export { jobTypeText, jobStatusText, transactionStatusText };
