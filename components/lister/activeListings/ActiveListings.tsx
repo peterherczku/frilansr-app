@@ -1,4 +1,4 @@
-import { Job, JobWithUser } from "@/api/jobFunctions";
+import { JobWithUser } from "@/api/jobFunctions";
 import { LocationMapView } from "@/components/listing/LocationBox";
 import { Text } from "@/components/ui/Text";
 import { formatRawMoney } from "@/utils/numberUtil";

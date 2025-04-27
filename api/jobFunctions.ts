@@ -3,23 +3,7 @@ import { Listing } from "./listingFunctions";
 
 export type JobStatus = "WAITING_FOR_WORKER" | "IN_PROGRESS" | "COMPLETED";
 
-export interface Job {
-	id: string;
-	listing: Listing;
-	status: "PENDING" | "ACCEPTED" | "ONGOING" | "COMPLETED";
-	applications?: {
-		id: string;
-		imageUrl: string;
-		name: string;
-	}[];
-	worker?: {
-		id: string;
-		imageUrl: string;
-		name: string;
-	};
-}
-
-export interface JobWithUser {
+export type BaseJobWithUser = {
 	id: string;
 	status: JobStatus;
 	createdAt: string;
@@ -30,36 +14,23 @@ export interface JobWithUser {
 		imageUrl: string;
 	};
 	listing: Listing;
-}
+};
 
-export interface OngoingJobWithUser {
-	id: string;
-	status: JobStatus;
-	createdAt: string;
-	updatedAt: string;
+export type JobWithUser = BaseJobWithUser;
+
+export type OngoingJobWithUser = BaseJobWithUser & {
 	startTime: string;
-	worker: {
-		id: string;
-		name: string;
-		imageUrl: string;
-	};
-	listing: Listing;
-}
+};
 
-export interface CompletedJobWithUser {
-	id: string;
-	status: JobStatus;
-	createdAt: string;
-	updatedAt: string;
+export type CompletedJobWithUser = BaseJobWithUser & {
 	startTime: string;
 	stopTime: string;
-	worker: {
-		id: string;
-		name: string;
-		imageUrl: string;
-	};
-	listing: Listing;
-}
+};
+
+export type AnyJobWithUser =
+	| JobWithUser
+	| OngoingJobWithUser
+	| CompletedJobWithUser;
 
 export async function fetchActiveJobs() {
 	const res = await fetchWithAuth(`${BACKEND_API_BASE_URL}/jobs/active`);
@@ -96,4 +67,11 @@ export async function stopJob(jobId: string) {
 		}
 	);
 	return res as CompletedJobWithUser;
+}
+
+export async function fetchRecentWorkerJobs() {
+	const res = await fetchWithAuth(
+		`${BACKEND_API_BASE_URL}/jobs/recent-jobs-worker`
+	);
+	return res as CompletedJobWithUser[];
 }

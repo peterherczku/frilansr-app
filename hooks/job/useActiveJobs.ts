@@ -1,11 +1,17 @@
 import { fetchActiveJobs } from "@/api/jobFunctions";
-import { useQuery } from "@tanstack/react-query";
-import { act } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 export function useActiveJobs() {
+	const queryClient = useQueryClient();
 	const { data, isLoading, error } = useQuery({
 		queryKey: ["active-jobs"],
-		queryFn: fetchActiveJobs,
+		queryFn: async () => {
+			const activeJobs = await fetchActiveJobs();
+			activeJobs.filter((activeJob) => {
+				queryClient.setQueryData(["jobs", activeJob.id], activeJob);
+			});
+			return activeJobs;
+		},
 	});
 
 	return { activeJobs: data, isLoading, error };
