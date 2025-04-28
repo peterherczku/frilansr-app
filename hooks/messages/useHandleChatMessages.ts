@@ -10,6 +10,7 @@ import { useAblyClient } from "./context/AblyClientContext";
 import { usePathname } from "expo-router";
 
 function useHandleAutomaticSeen() {
+	const queryClient = useQueryClient();
 	const pathname = usePathname();
 	const pathnameRef = useRef(pathname);
 
@@ -19,7 +20,17 @@ function useHandleAutomaticSeen() {
 
 	const handleAutomaticSeen = useCallback(async (conversationId: string) => {
 		const segments = pathnameRef.current.split("/");
-		if (segments[1] !== "messages" || segments[2] !== conversationId) return;
+		if (segments[1] !== "messages" || segments[2] !== conversationId) {
+			if (queryClient.getQueryData(["unseen-messages-count"])) {
+				queryClient.setQueryData(
+					["unseen-messages-count"],
+					(oldData: number) => oldData + 1
+				);
+			} else {
+				queryClient.setQueryData(["unseen-messages-count"], 1);
+			}
+			return;
+		}
 		await sendSeen(conversationId);
 	}, []);
 	return { handleAutomaticSeen };

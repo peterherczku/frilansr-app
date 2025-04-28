@@ -82,3 +82,10 @@ export async function sendSeen(conversationId: string) {
 		}),
 	});
 }
+
+export async function fetchUnseenMessagesCount() {
+	const res = await fetchWithAuth(
+		`${BACKEND_API_BASE_URL}/messages/unseen-count`
+	);
+	return res.count as number;
+}

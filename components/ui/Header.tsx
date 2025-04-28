@@ -9,6 +9,7 @@ import { cssInterop } from "nativewind";
 import { Text } from "./Text";
 import { cn } from "@/utils/cn";
 import { useUserRole } from "@/hooks/user/useUserRole";
+import { useUnreadMessagesCount } from "@/hooks/messages/useUnreadMessagesCount";
 
 const Image = cssInterop(ExpoImage, {
 	className: "style",
@@ -19,6 +20,7 @@ export function Header() {
 	const role = useUserRole();
 	const router = useRouter();
 	const color = useColorScheme();
+	const { unreadMessages } = useUnreadMessagesCount();
 
 	function handleProfilePressOnSignedOut() {
 		router.push("/(auth)/sign-in");
@@ -31,6 +33,8 @@ export function Header() {
 	function handleLogoPressed() {
 		router.push("/(worker)/(tabs)");
 	}
+
+	const hasMessage = isSignedIn && unreadMessages && unreadMessages != 0;
 
 	return (
 		<View className="flex-row pb-[20] px-[20] items-center justify-between">
@@ -53,11 +57,11 @@ export function Header() {
 					<View
 						className={cn(
 							"absolute right-[-3] top-[-3] bg-theme rounded-full w-[18] h-[18] z-[100] items-center justify-center",
-							!isSignedIn && "bg-muted"
+							!hasMessage && "bg-muted"
 						)}
 					>
 						<Text className="text-white font-zain-bold text-[13px]">
-							{isSignedIn ? 3 : 0}
+							{hasMessage ? unreadMessages : 0}
 						</Text>
 					</View>
 					<Ionicons
