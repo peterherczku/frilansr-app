@@ -1,5 +1,5 @@
 import { TouchableOpacity, View } from "react-native";
-import { useClerk, useUser } from "@clerk/clerk-expo";
+import { useUser } from "@clerk/clerk-expo";
 import { Image as ExpoImage } from "expo-image";
 import { useRouter } from "expo-router";
 import { cssInterop } from "nativewind";

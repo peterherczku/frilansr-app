@@ -1,5 +1,4 @@
 import { ApplicationsList } from "@/components/lister/applications/ApplicationsList";
-import { Text } from "@/components/ui/Text";
 import { useApplications } from "@/hooks/listing/useApplications";
 import { useLocalSearchParams } from "expo-router";
 import { ActivityIndicator, View } from "react-native";

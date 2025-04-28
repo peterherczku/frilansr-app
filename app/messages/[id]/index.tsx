@@ -10,7 +10,7 @@ import { useKeyboardHeight } from "@/hooks/useKeyboardHeight";
 import { Ionicons } from "@expo/vector-icons";
 import { Image as ExpoImage } from "expo-image";
 import { router } from "expo-router";
-import { useLocalSearchParams, useSearchParams } from "expo-router/build/hooks";
+import { useLocalSearchParams } from "expo-router/build/hooks";
 import { cssInterop } from "nativewind";
 import { TouchableOpacity, View, ActivityIndicator } from "react-native";
 import {

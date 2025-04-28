@@ -1,5 +1,3 @@
-import { useEffect, useState } from "react";
-import * as Location from "expo-location";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { fetchNearbyListings } from "@/api/listingFunctions";
 import { useLocation } from "../useLocation";

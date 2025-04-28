@@ -12,7 +12,6 @@ import {
 	View,
 } from "react-native";
 import { SafeAreaView as RNSafeAreaView } from "react-native-safe-area-context";
-import { SetupCustomerAccount } from "@/components/lister/settings/payment/SetupCustomerAccount";
 import { SetupConnectAccount } from "@/components/settings/payment/SetupConnectAccount";
 
 const SafeAreaView = cssInterop(RNSafeAreaView, {

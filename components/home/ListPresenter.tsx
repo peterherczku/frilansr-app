@@ -7,7 +7,7 @@ import { router } from "expo-router";
 import { Listing } from "@/api/listingFunctions";
 import { Skeleton } from "@/components/ui/Skeleton";
 import { cn } from "@/utils/cn";
-import { cssInterop, remapProps } from "nativewind";
+import { cssInterop } from "nativewind";
 import { Text } from "../ui/Text";
 
 const CustomAntDesign = cssInterop(AntDesign, {

@@ -1,12 +1,11 @@
-import { TouchableOpacity, View } from "react-native";
-import { Text } from "../ui/Text";
+import { TouchableOpacity } from "react-native";
 import { router } from "expo-router";
 import CircularProgress from "react-native-circular-progress-indicator";
 import { Colors } from "@/constants/Colors";
 import { useOngoingJob } from "@/hooks/job/useOngoingJob";
 import { elapsedTimeInMinutes } from "@/utils/dateUtil";
 
-export function FLoatingActiveOrder() {
+export function FloatingActiveOrder() {
 	const { ongoingJob, isLoading, error } = useOngoingJob();
 	if (isLoading || error || ongoingJob === undefined) return null;
 	const startDate = new Date(ongoingJob.startTime);

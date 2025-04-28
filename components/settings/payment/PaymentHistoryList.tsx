@@ -1,18 +1,9 @@
-import {
-	ActivityIndicator,
-	FlatList,
-	TouchableOpacity,
-	View,
-} from "react-native";
-import { FontAwesome5, MaterialCommunityIcons } from "@expo/vector-icons";
+import { ActivityIndicator, FlatList, View } from "react-native";
+import { FontAwesome5 } from "@expo/vector-icons";
 import { Colors } from "@/constants/Colors";
-import { router } from "expo-router";
 import { Text } from "../../ui/Text";
 import { SettingsSection, SettingsSectionItemCard } from "../SettingsSection";
-import {
-	ConnectedBankAccount,
-	PaymentHistoryItem,
-} from "@/api/stripeFunctions";
+import { PaymentHistoryItem } from "@/api/stripeFunctions";
 import { usePaymentHistory } from "@/hooks/stripe/usePaymentHistory";
 import { formatRawMoney } from "@/utils/numberUtil";
 import { formatDate } from "@/utils/dateUtil";

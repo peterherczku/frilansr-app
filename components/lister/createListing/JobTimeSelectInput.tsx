@@ -1,5 +1,4 @@
 import { TouchableOpacity, View } from "react-native";
-import Ionicons from "@expo/vector-icons/Ionicons";
 import { Colors } from "@/constants/Colors";
 import { Text } from "@/components/ui/Text";
 import { formatDateWithoutDate } from "@/utils/dateUtil";

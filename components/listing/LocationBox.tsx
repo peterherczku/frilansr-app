@@ -1,5 +1,5 @@
 import { cn } from "@/utils/cn";
-import { cssInterop, remapProps } from "nativewind";
+import { cssInterop } from "nativewind";
 import { ReactNode } from "react";
 import { View } from "react-native";
 import { Details, Region, default as RNMapView } from "react-native-maps";

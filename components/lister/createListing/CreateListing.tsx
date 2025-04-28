@@ -12,10 +12,7 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import Feather from "@expo/vector-icons/Feather";
 import { ReactNode } from "react";
-import {
-	CreateListingPageType,
-	getPreviousPage,
-} from "@/utils/createListingUtil";
+import { CreateListingPageType } from "@/utils/createListingUtil";
 import { ZodIssue } from "zod";
 
 export function CreateListingErrors({ errors }: { errors: ZodIssue[] }) {

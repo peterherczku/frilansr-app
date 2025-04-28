@@ -2,13 +2,7 @@ import { JobType, jobTypes } from "@/api/listingFunctions";
 import { Text } from "@/components/ui/Text";
 import { jobTypeText } from "@/utils/enumUtils";
 import { useState } from "react";
-import {
-	FlatList,
-	Pressable,
-	TouchableOpacity,
-	TouchableWithoutFeedback,
-	View,
-} from "react-native";
+import { FlatList, Pressable, TouchableOpacity, View } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Colors } from "@/constants/Colors";
 import { cn } from "@/utils/cn";

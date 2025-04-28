@@ -19,7 +19,7 @@ import {
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { router, useLocalSearchParams } from "expo-router";
 import { cssInterop } from "nativewind";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import {
 	ActivityIndicator,
 	Alert,
@@ -29,7 +29,6 @@ import {
 	ScrollView,
 	TextInput,
 	TouchableOpacity,
-	TouchableWithoutFeedback,
 	View,
 } from "react-native";
 import { Circle } from "react-native-maps";

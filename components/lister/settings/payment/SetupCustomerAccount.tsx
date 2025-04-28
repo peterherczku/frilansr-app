@@ -3,8 +3,6 @@ import { TouchableOpacity, View } from "react-native";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import { Colors } from "@/constants/Colors";
 import { useCreateCustomerAccount } from "@/hooks/stripe/useCreateCustomerAccount";
-import { useState } from "react";
-import { isLoading } from "expo-font";
 
 export function SetupCustomerAccount() {
 	const { createCustomerAccount, isPending, error } =

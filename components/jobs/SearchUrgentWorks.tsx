@@ -2,7 +2,7 @@ import { Colors } from "@/constants/Colors";
 import { FontAwesome6 } from "@expo/vector-icons";
 import { Image as ExpoImage } from "expo-image";
 import { router } from "expo-router";
-import { cssInterop, remapProps } from "nativewind";
+import { cssInterop } from "nativewind";
 import { FlatList, TouchableOpacity, View } from "react-native";
 import { Text } from "../ui/Text";
 

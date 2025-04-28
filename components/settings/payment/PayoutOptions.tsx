@@ -7,19 +7,6 @@ import { SettingsSection, SettingsSectionItemCard } from "../SettingsSection";
 import { useConnectedBankAccounts } from "@/hooks/stripe/useConnectedBankAccounts";
 import { ConnectedBankAccount } from "@/api/stripeFunctions";
 
-/*const payoutOptions = [
-	{
-		id: 0,
-		accountNumber: "OTP BANK PLC. (HU) ●●●●  4999",
-		active: true,
-	},
-	{
-		id: 1,
-		accountNumber: "SWEDBANK LTD. (SE) ●●●●  1111",
-		active: false,
-	},
-];*/
-
 export function PayoutOptions() {
 	const { connectedBankAccounts, isLoading, error } =
 		useConnectedBankAccounts();

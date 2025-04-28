@@ -1,4 +1,4 @@
-import { fetchFeaturedListings, fetchListing } from "@/api/listingFunctions";
+import { fetchFeaturedListings } from "@/api/listingFunctions";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 export function useFeaturedListings() {

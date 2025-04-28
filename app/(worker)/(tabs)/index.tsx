@@ -10,7 +10,7 @@ import { Footer } from "@/components/ui/Footer";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { NearbyListings } from "@/components/home/NearbyListings";
 import { Text } from "@/components/ui/Text";
-import { FLoatingActiveOrder } from "@/components/home/FloatingActiveOrder";
+import { FloatingActiveOrder } from "@/components/home/FloatingActiveOrder";
 
 export default function HomeScreen() {
 	return (
@@ -33,7 +33,7 @@ export default function HomeScreen() {
 				</ListingPresenter>
 				<Footer />
 			</ScrollView>
-			<FLoatingActiveOrder />
+			<FloatingActiveOrder />
 		</SafeAreaView>
 	);
 }

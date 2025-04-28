@@ -1,17 +1,8 @@
 import { Alert, Platform } from "react-native";
 import { Text } from "@/components/ui/Text";
-import {
-	CardActionError,
-	CardForm,
-	useStripe,
-} from "@stripe/stripe-react-native";
+import { CardForm, useStripe } from "@stripe/stripe-react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import {
-	KeyboardAvoidingView,
-	ScrollView,
-	TouchableOpacity,
-	View,
-} from "react-native";
+import { KeyboardAvoidingView, TouchableOpacity, View } from "react-native";
 import { useState } from "react";
 import { Details } from "@stripe/stripe-react-native/lib/typescript/src/types/components/CardFormView";
 import { createSetupIntent } from "@/api/stripeFunctions";

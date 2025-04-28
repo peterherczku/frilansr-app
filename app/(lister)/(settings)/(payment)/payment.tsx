@@ -1,5 +1,4 @@
 import { CardOptions } from "@/components/settings/payment/CardOptions";
-import { PayoutOptions } from "@/components/settings/payment/PayoutOptions";
 import { Text } from "@/components/ui/Text";
 import { Colors } from "@/constants/Colors";
 import { useHasConnectedAccount } from "@/hooks/stripe/useHasConnectedAccount";
@@ -14,8 +13,6 @@ import {
 	View,
 } from "react-native";
 import { SafeAreaView as RNSafeAreaView } from "react-native-safe-area-context";
-import { CardField, CardForm, useStripe } from "@stripe/stripe-react-native";
-import { useBottomSheet } from "@/components/ui/BottomSheet";
 import { SetupCustomerAccount } from "@/components/lister/settings/payment/SetupCustomerAccount";
 
 const SafeAreaView = cssInterop(RNSafeAreaView, {

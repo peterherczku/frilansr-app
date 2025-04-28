@@ -1,5 +1,5 @@
 import { cn } from "@/utils/cn";
-import { cssInterop, remapProps } from "nativewind";
+import { cssInterop } from "nativewind";
 import React, { useEffect, useRef } from "react";
 import { Animated } from "react-native";
 

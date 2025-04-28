@@ -1,4 +1,3 @@
-import { BACKEND_API_BASE_URL } from "@/api/apiClient";
 import { fetchConversation } from "@/api/messageFunctions";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 
